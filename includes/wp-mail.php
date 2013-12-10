@@ -136,12 +136,21 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
 		'from' => "{$from_name} <{$from_email}>",
 		'to' => $to,
 		'subject' => $subject,
-		'text' => $message,
-		'o:tag' => array( 'WordPress', $sitename )
+		'text' => $message
 	);
 
-	if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'mailgun-test' )
-		$body['o:tag'][] = 'test';
+	$body['o:tracking-clicks'] = $mailgun['track-clicks'] ? $mailgun['track-clicks'] : "no";
+	$body['o:tracking-opens'] = $mailgun['track-opens'] ? "yes" : "no";
+
+	if ( isset( $mailgun['tag'] ) ){
+		$tags = explode(",", str_replace(" ","", $mailgun['tag']));
+		$body['o:tag'] = $tags;
+	}
+
+	if ( isset( $mailgun['campaign-id'] ) ){
+		$campaigns = explode(",", str_replace(" ","", $mailgun['campaign-id']));
+		$body['o:campaign'] = $campaigns;
+	}
 
 	if ( ! empty( $cc ) && is_array( $cc ) )
 		$body['cc'] = implode( ', ', $cc );
@@ -182,23 +191,57 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
 		//	$phpmailer->AddCustomHeader( sprintf( "Content-Type: %s;\n\t boundary=\"%s\"", $content_type, $boundary ) );
 	}
 
-	if ( !empty( $attachments ) ) {
-		foreach ( $attachments as $attachment ) {
-			$i = 1;
-			foreach ( $attachments as $attachment ) {
-				if ( file_exists( $attachment ) ) {
-					$body["attachment[{$i}]"] = "@{$attachment}";
-					$i++;
-				}
+	/*
+	 * Deconstruct post array and create POST payload.
+	 * This entire routine is because wp_remote_post does
+	 * not support files directly.
+	 */
+
+	// First, generate a boundary for the multipart message.
+	$boundary = base_convert(uniqid('boundary', true), 10, 36);
+
+	$payload = null;
+
+	// Iterate through pre-built params and build payload:
+	foreach ( $body as $key => $value ) {
+		if ( is_array( $value ) ){
+			$parent_key = $key;
+			foreach($value as $key => $value){
+				$payload .= '--' . $boundary;
+		        $payload .= "\r\n";
+		        $payload .= 'Content-Disposition: form-data; name="' . $parent_key . '[' . $key . ']"' . "\r\n\r\n";
+		        $payload .= $value;
+		        $payload .= "\r\n";
 			}
+		}
+		else{
+			$payload .= '--' . $boundary;
+	        $payload .= "\r\n";
+	        $payload .= 'Content-Disposition: form-data; name="' . $key . '"' . "\r\n\r\n";
+	        $payload .= $value;
+	        $payload .= "\r\n";
 		}
 	}
 
+	// If we have attachments, add them to the payload.
+	if ( !empty( $attachments ) ){
+		$i = 0;
+		foreach ( $attachments as $attachment ) {
+		    $payload .= '--' . $boundary;
+		    $payload .= "\r\n";
+	        $payload .= 'Content-Disposition: form-data; name="attachment[' . $i . ']"; filename="' . basename( $attachment ) . '"' . "\r\n\r\n";
+	        $payload .= file_get_contents( $attachment );
+	        $payload .= "\r\n";
+	        $i++;
+		}
+	}
+	
+	$payload .= '--' . $boundary . '--';
+	
 	$data = array(
-		'body' => $body,
-		'headers' => array(
-			'Authorization' => 'Basic ' . base64_encode( "api:{$apiKey}" )
-		)
+		'body' => $payload,
+		'headers' => array('Authorization' => 'Basic ' . base64_encode( "api:{$apiKey}"), 
+					       'content-type' => 'multipart/form-data; boundary=' . $boundary)
 	);
 
 	$url = "https://api.mailgun.net/v2/{$domain}/messages";

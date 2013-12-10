@@ -35,6 +35,11 @@ class MailgunAdmin extends Mailgun {
 	 * @since 0.1
 	 */
 	function init() {
+		$sitename = strtolower( $_SERVER['SERVER_NAME'] );
+		if ( substr( $sitename, 0, 4 ) == 'www.' ) {
+			$sitename = substr( $sitename, 4 );
+		}
+		
 		$defaults = array(
 			'useAPI' => '1',
 			'apiKey' => '',
@@ -42,6 +47,10 @@ class MailgunAdmin extends Mailgun {
 			'username' => '',
 			'password' => '',
 			'secure' => '1',
+			'track-clicks' => '',
+			'track-opens' => '',
+			'campaign-id' => '',
+			'tag' => $sitename,
 		);
 		if ( ! $this->options ) {
 			$this->options = $defaults;
