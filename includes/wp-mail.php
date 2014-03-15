@@ -139,8 +139,8 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
 		'text' => $message
 	);
 
-	$body['o:tracking-clicks'] = $mailgun['track-clicks'] ? $mailgun['track-clicks'] : "no";
-	$body['o:tracking-opens'] = $mailgun['track-opens'] ? "yes" : "no";
+	$body['o:tracking-clicks'] = isset( $mailgun['track-clicks'] ) ? $mailgun['track-clicks'] : "no";
+	$body['o:tracking-opens'] = isset( $mailgun['track-opens'] ) ? "yes" : "no";
 
 	if ( isset( $mailgun['tag'] ) ){
 		$tags = explode(",", str_replace(" ","", $mailgun['tag']));
@@ -235,12 +235,12 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
 	        $i++;
 		}
 	}
-	
+
 	$payload .= '--' . $boundary . '--';
-	
+
 	$data = array(
 		'body' => $payload,
-		'headers' => array('Authorization' => 'Basic ' . base64_encode( "api:{$apiKey}"), 
+		'headers' => array('Authorization' => 'Basic ' . base64_encode( "api:{$apiKey}"),
 					       'content-type' => 'multipart/form-data; boundary=' . $boundary)
 	);
 
