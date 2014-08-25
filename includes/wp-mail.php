@@ -227,12 +227,14 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
 	if ( !empty( $attachments ) ){
 		$i = 0;
 		foreach ( $attachments as $attachment ) {
-		    $payload .= '--' . $boundary;
-		    $payload .= "\r\n";
-	        $payload .= 'Content-Disposition: form-data; name="attachment[' . $i . ']"; filename="' . basename( $attachment ) . '"' . "\r\n\r\n";
-	        $payload .= file_get_contents( $attachment );
-	        $payload .= "\r\n";
-	        $i++;
+		    if ( !empty( $attachment ) ) {
+		        $payload .= '--' . $boundary;
+		        $payload .= "\r\n";
+	            $payload .= 'Content-Disposition: form-data; name="attachment[' . $i . ']"; filename="' . basename( $attachment ) . '"' . "\r\n\r\n";
+	            $payload .= file_get_contents( $attachment );
+	            $payload .= "\r\n";
+	            $i++;
+		    }
 		}
 	}
 
