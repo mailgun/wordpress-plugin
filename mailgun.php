@@ -69,7 +69,7 @@ class Mailgun {
 
 		$phpmailer->Mailer = 'smtp';
 		$phpmailer->SMTPSecure = (bool) $secure ? 'ssl' : 'none';
-		$phpmailer->Host = 'smtp.mailgun.net';
+		$phpmailer->Host = 'smtp.mailgun.org';
 		$phpmailer->Port = (bool) $secure ? 465 : 587;
 		$phpmailer->SMTPAuth = true;
 		$phpmailer->Username = $username;
