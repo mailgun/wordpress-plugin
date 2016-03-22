@@ -95,23 +95,39 @@
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<?php _e( 'Campaign ID' , 'mailgun' ); ?>
+							<?php _e( 'Tag' , 'mailgun' ); ?>
 						</th>
 						<td>
-							<input type="text" class="regular-text" name="mailgun[campaign-id]" value="<?php esc_attr_e( $this->get_option( 'campaign-id' ) ); ?>" placeholder="campaign-id" />
-							<p class="description"><?php _e( 'If added, this campaign will exist on every outbound message. Statistics will be populated in the Mailgun Control Panel. Use a comma to define multiple campaigns.', 'mailgun' ); ?>  <a href="http://documentation.mailgun.com/user_manual.html#campaign-analytics" target="_blank">Campaign Documentation</a></p>
+							<input type="text" class="regular-text" name="mailgun[campaign-id]" value="<?php esc_attr_e( $this->get_option( 'campaign-id' ) ); ?>" placeholder="tag" />
+							<p class="description"><?php _e( 'If added, this tag will exist on every outbound message. Statistics will be populated in the Mailgun Control Panel. Use a comma to define multiple tags.', 'mailgun' ); ?> <?php _e('Learn more about','mailgun'); ?> <a href="https://documentation.mailgun.com/user_manual.html#tracking-messages" target="_blank">Tracking</a> <?php _e('and','mailgun'); ?> <a href="https://documentation.mailgun.com/user_manual.html#tagging" target="_blank">Tagging</a>.</p>
+						</td>
+					</tr>
+				</table>
+				<h3><?php _e( 'Lists' , 'mailgun' ); ?></h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row">
+							<?php _e( 'Shortcode' , 'mailgun' ); ?>
+						</th>
+						<td>
+							<div>
+								<strong>[mailgun id="<em>{mailgun list id}</em>" collect_name="true"]</strong>
+							</div>
+							<div>
+								<p class="description"><?php _e( 'Use the shortcode above to associate a widget instance with a mailgun list', 'mailgun' ); ?></p>
+							</div>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<?php _e( 'Tag' , 'mailgun' ); ?>
+							<?php _e( 'Lists' , 'mailgun' ); ?>
 						</th>
 						<td>
-							<input type="text" class="regular-text" name="mailgun[tag]" value="<?php esc_attr_e( $this->get_option( 'tag' ) ); ?>" placeholder="tag" />
-							<p class="description"><?php _e( 'If added, this tag will exist on every outbound message. Statistics will be populated in the Mailgun Control Panel. Use a comma to define multiple tags.', 'mailgun' ); ?> <a href="http://documentation.mailgun.com/user_manual.html#tagging" target="_blank">Tagging Documentation</a></p>
+							<a href="?page=mailgun-lists">View available lists</a>
 						</td>
 					</tr>
 				</table>
+
 				<p><?php _e( 'Before attempting to test the configuration, please click "Save Changes".', 'mailgun' ); ?></p>
 				<p class="submit">
 					<input type="submit" class="button-primary" value="<?php _e( 'Save Changes' , 'mailgun' ); ?>" />
