@@ -151,7 +151,7 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
     // campaign-id now refers to a list of tags which will be appended to the site tag
 	if ( isset( $mailgun['campaign-id'] ) ){
 		$tags = explode(",", str_replace(" ","", $mailgun['campaign-id']));
-		if ($body['o:tag']=='') {
+		if (!isset($body['o:tag'])) {
 			$body['o:tag']= $tags;
 		} else {
 			$body['o:tag'].=','.$tags;
