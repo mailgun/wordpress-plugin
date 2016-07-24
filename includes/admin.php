@@ -17,18 +17,18 @@ class MailgunAdmin extends Mailgun
         load_plugin_textdomain('mailgun', false, 'mailgun/languages');
 
         // Activation hook
-        register_activation_hook($this->plugin_file, array(&$this, 'init'));
+        register_activation_hook($this->plugin_file, [&$this, 'init']);
 
         if (!defined('MAILGUN_USEAPI') || !MAILGUN_USEAPI) {
             // Hook into admin_init and register settings and potentially register an admin_notice
-            add_action('admin_init', array(&$this, 'admin_init'));
+            add_action('admin_init', [&$this, 'admin_init']);
 
             // Activate the options page
-            add_action('admin_menu', array(&$this, 'admin_menu'));
+            add_action('admin_menu', [&$this, 'admin_menu']);
         }
 
         // Register an AJAX action for testing mail sending capabilities
-        add_action('wp_ajax_mailgun-test', array(&$this, 'ajax_send_test'));
+        add_action('wp_ajax_mailgun-test', [&$this, 'ajax_send_test']);
     }
 
     /**
@@ -45,18 +45,18 @@ class MailgunAdmin extends Mailgun
             $sitename = substr($sitename, 4);
         }
 
-        $defaults = array(
-         'useAPI' => '1',
-         'apiKey' => '',
-         'domain' => '',
-         'username' => '',
-         'password' => '',
-         'secure' => '1',
+        $defaults = [
+         'useAPI'       => '1',
+         'apiKey'       => '',
+         'domain'       => '',
+         'username'     => '',
+         'password'     => '',
+         'secure'       => '1',
          'track-clicks' => '',
-         'track-opens' => '',
-         'campaign-id' => '',
-         'tag' => $sitename,
-        );
+         'track-opens'  => '',
+         'campaign-id'  => '',
+         'tag'          => $sitename,
+        ];
         if (!$this->options) {
             $this->options = $defaults;
             add_option('mailgun', $this->options);
@@ -73,10 +73,10 @@ class MailgunAdmin extends Mailgun
     public function admin_menu()
     {
         if (current_user_can('manage_options')) {
-            $this->hook_suffix = add_options_page(__('Mailgun', 'mailgun'), __('Mailgun', 'mailgun'), 'manage_options', 'mailgun', array(&$this, 'options_page'));
-            add_action("admin_print_scripts-{$this->hook_suffix}", array(&$this, 'admin_js'));
-            add_filter("plugin_action_links_{$this->plugin_basename}", array(&$this, 'filter_plugin_actions'));
-            add_action("admin_footer-{$this->hook_suffix}", array(&$this, 'admin_footer_js'));
+            $this->hook_suffix = add_options_page(__('Mailgun', 'mailgun'), __('Mailgun', 'mailgun'), 'manage_options', 'mailgun', [&$this, 'options_page']);
+            add_action("admin_print_scripts-{$this->hook_suffix}", [&$this, 'admin_js']);
+            add_filter("plugin_action_links_{$this->plugin_basename}", [&$this, 'filter_plugin_actions']);
+            add_action("admin_footer-{$this->hook_suffix}", [&$this, 'admin_footer_js']);
         }
     }
 
@@ -185,7 +185,7 @@ class MailgunAdmin extends Mailgun
         $useAPI = $this->get_option('useAPI');
         $password = $this->get_option('password');
         if ((empty($apiKey) && $useAPI == '1') || (empty($password) && $useAPI == '0')) {
-            add_action('admin_notices', array(&$this, 'admin_notices'));
+            add_action('admin_notices', [&$this, 'admin_notices']);
         }
     }
 
@@ -198,7 +198,7 @@ class MailgunAdmin extends Mailgun
      */
     public function register_settings()
     {
-        register_setting('mailgun', 'mailgun', array(&$this, 'validation'));
+        register_setting('mailgun', 'mailgun', [&$this, 'validation']);
     }
 
     /**
@@ -289,13 +289,13 @@ class MailgunAdmin extends Mailgun
         nocache_headers();
         header('Content-Type: application/json');
 
-        if (!current_user_can('manage_options') || !wp_verify_nonce($_GET[ '_wpnonce' ])) {
+        if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['_wpnonce'])) {
             die(
                 json_encode(
-                    array(
+                    [
                     'message' => __('Unauthorized', 'mailgun'),
-                    'method' => null,
-                    )
+                    'method'  => null,
+                    ]
                 )
             );
         }
@@ -318,19 +318,19 @@ class MailgunAdmin extends Mailgun
         if ($result) {
             die(
                    json_encode(
-                       array(
+                       [
                        'message' => __('Success', 'mailgun'),
-                       'method' => $method,
-                       )
+                       'method'  => $method,
+                       ]
                    )
                );
         } else {
             die(
                  json_encode(
-                     array(
+                     [
                      'message' => __('Failure', 'mailgun'),
-                     'method' => $method,
-                     )
+                     'method'  => $method,
+                     ]
                  )
              );
         }

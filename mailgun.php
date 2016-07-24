@@ -34,7 +34,7 @@ class mailgun
                 }
             }
         } else {
-            add_action('phpmailer_init', array(&$this, 'phpmailer_init'));
+            add_action('phpmailer_init', [&$this, 'phpmailer_init']);
         }
     }
 
