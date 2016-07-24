@@ -16,7 +16,7 @@
  *
  * @since  0.1
  */
-function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
+function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
 {
     // Compact the input, apply the filters, and extract them back out
     extract(apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments')));
@@ -35,7 +35,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 
     // Headers
     if (empty($headers)) {
-        $headers = array();
+        $headers = [];
     } else {
         if (!is_array($headers)) {
             // Explode the headers out, so this function can take both
@@ -44,9 +44,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         } else {
             $tempheaders = $headers;
         }
-        $headers = array();
-        $cc = array();
-        $bcc = array();
+        $headers = [];
+        $cc = [];
+        $bcc = [];
 
         // If it's actually got contents
         if (!empty($tempheaders)) {
@@ -55,7 +55,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
                 if (strpos($header, ':') === false) {
                     if (false !== stripos($header, 'boundary=')) {
                         $parts = preg_split('/boundary=/i', trim($header));
-                        $boundary = trim(str_replace(array("'", '"'), '', $parts[1]));
+                        $boundary = trim(str_replace(["'", '"'], '', $parts[1]));
                     }
                     continue;
                 }
@@ -87,9 +87,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
                         list($type, $charset) = explode(';', $content);
                         $content_type = trim($type);
                         if (false !== stripos($charset, 'charset=')) {
-                            $charset = trim(str_replace(array('charset=', '"'), '', $charset));
+                            $charset = trim(str_replace(['charset=', '"'], '', $charset));
                         } elseif (false !== stripos($charset, 'boundary=')) {
-                            $boundary = trim(str_replace(array('BOUNDARY=', 'boundary=', '"'), '', $charset));
+                            $boundary = trim(str_replace(['BOUNDARY=', 'boundary=', '"'], '', $charset));
                             $charset = '';
                         }
                     } else {
@@ -138,12 +138,12 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     $from_email = apply_filters('wp_mail_from', $from_email);
     $from_name = apply_filters('wp_mail_from_name', $from_name);
 
-    $body = array(
-    'from' => "{$from_name} <{$from_email}>",
-    'to' => $to,
+    $body = [
+    'from'    => "{$from_name} <{$from_email}>",
+    'to'      => $to,
     'subject' => $subject,
-    'text' => $message,
-    );
+    'text'    => $message,
+    ];
 
     $body['o:tracking-clicks'] = isset($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
     $body['o:tracking-opens'] = isset($mailgun['track-opens']) ? 'yes' : 'no';
@@ -250,11 +250,11 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 
     $payload .= '--'.$boundary.'--';
 
-    $data = array(
-    'body' => $payload,
-    'headers' => array('Authorization' => 'Basic '.base64_encode("api:{$apiKey}"),
-                           'content-type' => 'multipart/form-data; boundary='.$boundary, ),
-    );
+    $data = [
+    'body'    => $payload,
+    'headers' => ['Authorization'         => 'Basic '.base64_encode("api:{$apiKey}"),
+                           'content-type' => 'multipart/form-data; boundary='.$boundary, ],
+    ];
 
     $url = "https://api.mailgun.net/v2/{$domain}/messages";
 
