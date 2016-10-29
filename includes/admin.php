@@ -67,6 +67,7 @@ class MailgunAdmin extends Mailgun {
 	function admin_menu() {
 		if ( current_user_can( 'manage_options' ) ) {
 			$this->hook_suffix = add_options_page( __( 'Mailgun', 'mailgun' ), __( 'Mailgun', 'mailgun' ), 'manage_options', 'mailgun', array( &$this , 'options_page' ) );
+			add_options_page( __( 'Mailgun Lists', 'mailgun' ), __( 'Mailgun Lists', 'mailgun' ), 'manage_options', 'mailgun-lists', array( &$this , 'lists_page' ) );
 			add_action( "admin_print_scripts-{$this->hook_suffix}" , array( &$this , 'admin_js' ) );
 			add_filter( "plugin_action_links_{$this->plugin_basename}" , array( &$this , 'filter_plugin_actions' ) );
 			add_action( "admin_footer-{$this->hook_suffix}" , array( &$this , 'admin_footer_js' ) );
@@ -155,6 +156,20 @@ class MailgunAdmin extends Mailgun {
 			printf( __( '<div id="message" class="updated fade"><p>The options page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>', 'mailgun'), dirname( __FILE__ ) . '/options-page.php' );
 		}
 	}
+	
+	/**
+	 * Output the lists page
+	 *
+	 * @return none
+	 * @since 0.1
+	 */
+	function lists_page() {
+		if ( ! @include( 'lists-page.php' ) ) {
+			printf( __( '<div id="message" class="updated fade"><p>The lists page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>', 'mailgun'), dirname( __FILE__ ) . '/lists-page.php' );
+		}
+	}	
+	
+	// /options-general.php?page=mailgun-lists
 
 	/**
 	 * Wrapper function hooked into admin_init to register settings
