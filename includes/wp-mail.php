@@ -139,6 +139,7 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
 		'text' => $message
 	);
 
+	$body['o:tag'] = '';
 	$body['o:tracking-clicks'] = isset( $mailgun['track-clicks'] ) ? $mailgun['track-clicks'] : "no";
 	$body['o:tracking-opens'] = isset( $mailgun['track-opens'] ) ? "yes" : "no";
 
