@@ -165,8 +165,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
         'text'    => $message,
     ];
 
+    $body['o:tag'] = '';
     $body['o:tracking-clicks'] = isset($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
-    $body['o:tracking-opens'] = isset($mailgun['track-opens']) ? 'yes' : 'no';
+    $body['o:tracking-opens'] = empty($mailgun['track-opens']) ? 'no' : 'yes';
 
     // this is the wordpress site tag
     if (isset($mailgun['tag'])) {
