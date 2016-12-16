@@ -93,7 +93,7 @@ class MailgunAdmin extends Mailgun
     {
         if (current_user_can('manage_options')) {
             $this->hook_suffix = add_options_page(__('Mailgun', 'mailgun'), __('Mailgun', 'mailgun'), 'manage_options', 'mailgun', [&$this, 'options_page']);
-            add_options_page(__('Mailgun Lists', 'mailgun'), null, 'manage_options', 'mailgun-lists', [&$this, 'lists_page']);
+            add_options_page(__('Mailgun Lists', 'mailgun'), __('Mailgun Lists', 'mailgun'), 'manage_options', 'mailgun-lists', [&$this, 'lists_page']);
             add_action("admin_print_scripts-{$this->hook_suffix}", [&$this, 'admin_js']);
             add_filter("plugin_action_links_{$this->plugin_basename}", [&$this, 'filter_plugin_actions']);
             add_action("admin_footer-{$this->hook_suffix}", [&$this, 'admin_footer_js']);
