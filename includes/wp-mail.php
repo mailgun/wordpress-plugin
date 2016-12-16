@@ -88,44 +88,44 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
 
                 switch (strtolower($name)) {
                     // Mainly for legacy -- process a From: header if it's there
-                    case 'from':
-                        if (strpos($content, '<') !== false) {
-                            // So... making my life hard again?
-                            $from_name = substr($content, 0, strpos($content, '<') - 1);
-                            $from_name = str_replace('"', '', $from_name);
-                            $from_name = trim($from_name);
+                case 'from':
+                    if (strpos($content, '<') !== false) {
+                        // So... making my life hard again?
+                        $from_name = substr($content, 0, strpos($content, '<') - 1);
+                        $from_name = str_replace('"', '', $from_name);
+                        $from_name = trim($from_name);
 
-                            $from_email = substr($content, strpos($content, '<') + 1);
-                            $from_email = str_replace('>', '', $from_email);
-                            $from_email = trim($from_email);
-                        } else {
-                            $from_email = trim($content);
+                        $from_email = substr($content, strpos($content, '<') + 1);
+                        $from_email = str_replace('>', '', $from_email);
+                        $from_email = trim($from_email);
+                    } else {
+                        $from_email = trim($content);
+                    }
+                    break;
+                case 'content-type':
+                    if (strpos($content, ';') !== false) {
+                        list($type, $charset) = explode(';', $content);
+                        $content_type = trim($type);
+                        if (false !== stripos($charset, 'charset=')) {
+                            $charset = trim(str_replace(['charset=', '"'], '', $charset));
+                        } elseif (false !== stripos($charset, 'boundary=')) {
+                            $boundary = trim(str_replace(['BOUNDARY=', 'boundary=', '"'], '', $charset));
+                            $charset = '';
                         }
-                        break;
-                    case 'content-type':
-                        if (strpos($content, ';') !== false) {
-                            list($type, $charset) = explode(';', $content);
-                            $content_type = trim($type);
-                            if (false !== stripos($charset, 'charset=')) {
-                                $charset = trim(str_replace(['charset=', '"'], '', $charset));
-                            } elseif (false !== stripos($charset, 'boundary=')) {
-                                $boundary = trim(str_replace(['BOUNDARY=', 'boundary=', '"'], '', $charset));
-                                $charset = '';
-                            }
-                        } else {
-                            $content_type = trim($content);
-                        }
-                        break;
-                    case 'cc':
-                        $cc = array_merge((array) $cc, explode(',', $content));
-                        break;
-                    case 'bcc':
-                        $bcc = array_merge((array) $bcc, explode(',', $content));
-                        break;
-                    default:
-                        // Add it to our grand headers array
-                        $headers[trim($name)] = trim($content);
-                        break;
+                    } else {
+                        $content_type = trim($content);
+                    }
+                    break;
+                case 'cc':
+                    $cc = array_merge((array) $cc, explode(',', $content));
+                    break;
+                case 'bcc':
+                    $bcc = array_merge((array) $bcc, explode(',', $content));
+                    break;
+                default:
+                    // Add it to our grand headers array
+                    $headers[trim($name)] = trim($content);
+                    break;
                 }
             }
         }
