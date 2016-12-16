@@ -184,7 +184,7 @@ class MailgunAdmin extends Mailgun
      */
     public function options_page()
     {
-        if (!@include('options-page.php')) {
+        if (!@include 'options-page.php') {
             printf(__('<div id="message" class="updated fade"><p>The options page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>', 'mailgun'), dirname(__FILE__).'/options-page.php');
         }
     }
@@ -198,7 +198,7 @@ class MailgunAdmin extends Mailgun
      */
     public function lists_page()
     {
-        if (!@include('lists-page.php')) {
+        if (!@include 'lists-page.php') {
             printf(__('<div id="message" class="updated fade"><p>The lists page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>', 'mailgun'), dirname(__FILE__).'/lists-page.php');
         }
     }

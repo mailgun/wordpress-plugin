@@ -50,7 +50,7 @@ class Mailgun
         // Mailgun SMTP servers
         if ($this->get_option('useAPI') || (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI)) {
             if (!function_exists('wp_mail')) {
-                if (!@include(dirname(__FILE__).'/includes/wp-mail.php')) {
+                if (!@include dirname(__FILE__).'/includes/wp-mail.php') {
                     self::deactivate_and_die(dirname(__FILE__).'/includes/wp-mail.php');
                 }
             }
@@ -147,19 +147,19 @@ class Mailgun
         $headers = ['Authorization' => 'Basic '.base64_encode("api:{$apiKey}")];
 
         switch ($method) {
-            case 'GET':
-                $params['sess'] = '';
-                $querystring = http_build_query($params);
-                $url = $url.'?'.$querystring;
-                $params = '';
-                break;
-            case 'POST':
-            case 'PUT':
-            case 'DELETE':
-                $params['sess'] = '';
-                $params['time'] = $time;
-                $params['hash'] = sha1(date('U'));
-                break;
+        case 'GET':
+            $params['sess'] = '';
+            $querystring = http_build_query($params);
+            $url = $url.'?'.$querystring;
+            $params = '';
+            break;
+        case 'POST':
+        case 'PUT':
+        case 'DELETE':
+            $params['sess'] = '';
+            $params['time'] = $time;
+            $params['hash'] = sha1(date('U'));
+            break;
         }
 
         // make the request
@@ -289,12 +289,12 @@ class Mailgun
             continue;
         } ?>
                             <li>
-                                <input type="checkbox" class="mailgun-list-name" name="addresses[<?=$la['address']; ?>]" /> <?php echo $la['name']; ?>
+                                <input type="checkbox" class="mailgun-list-name" name="addresses[<?php echo $la['address']; ?>]" /> <?php echo $la['name']; ?>
                             </li>
                         <?php endforeach; ?>
                     </ul>
                 <?php else : ?>
-                    <input type="hidden" name="addresses[<?=$list_addresses[0]; ?>]" value="on" />
+                    <input type="hidden" name="addresses[<?php echo $list_addresses[0]; ?>]" value="on" />
                 <?php endif; ?>
 
                 <input class="mailgun-list-submit-button" data-form-id="<?php echo $form_class_id; ?>" type="button" value="Subscribe" />
@@ -417,14 +417,14 @@ class Mailgun
 
 $mailgun = new Mailgun();
 
-if (@include(dirname(__FILE__).'/includes/widget.php')) {
+if (@include dirname(__FILE__).'/includes/widget.php') {
     add_action('widgets_init', [&$mailgun, 'load_list_widget']);
     add_action('wp_ajax_nopriv_add_list', [&$mailgun, 'add_list']);
     add_action('wp_ajax_add_list', [&$mailgun, 'add_list']);
 }
 
 if (is_admin()) {
-    if (@include(dirname(__FILE__).'/includes/admin.php')) {
+    if (@include dirname(__FILE__).'/includes/admin.php') {
         $mailgunAdmin = new MailgunAdmin();
     } else {
         Mailgun::deactivate_and_die(dirname(__FILE__).'/includes/admin.php');
