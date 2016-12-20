@@ -5,16 +5,15 @@ Mailgun for WordPress
 Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
-Tested up to: 4.3
-Stable tag: 1.4.1
+Tested up to: 4.7
+Stable tag: 1.5.0
 License: GPLv2 or later
 ```
 
-Easily send email from your WordPress site through Mailgun using the HTTP API or SMTP. And now, the plugin supports Mailgun List subscription allowing your visitors to subscribe to one or more e-mail lists via widgets or shortcodes.
+Easily send email from your WordPress site through Mailgun using the HTTP API or SMTP.
 
 
-Description
-===========
+== Description ==
 
 [Mailgun](http://www.mailgun.com/) is the email automation engine trusted by over 10,000 website and application developers for sending, receiving and tracking emails. By taking advantage of Mailgun's powerful email APIs, developers can spend more time building awesome websites and less time fighting with email servers. Mailgun supports all of the most popular languages including PHP, Ruby, Python, C# and Java.
 
@@ -25,8 +24,7 @@ The latest version of this plugin adds support for Mailgun list subscription. Us
 The current version of this plugin only handles sending emails, tracking and tagging and list subscription. 
 
 
-Installation
-============
+== Installation ==
 
 1. Upload the `mailgun` folder to the `/wp-content/plugins/` directory or install directly through the plugin installer
 2. Activate the plugin through the 'Plugins' menu in WordPress or by using the link provided by the plugin installer
@@ -35,8 +33,7 @@ Installation
 5. Click View Available Lists to review shortcode settings for lists in your Mailgun account that you may wish to help users subscribe to
 
 
-Frequently Asked Questions
-==========================
+== Frequently Asked Questions ==
 
 - Testing the configuration fails when using the HTTP API =
 
@@ -60,8 +57,7 @@ MAILGUN_SECURE   Type: boolean
 ```
 
 
-Screenshots
-===========
+== Screenshots ==
 
 1. Configuration options for using the Mailgun HTTP API
 2. Configuration options for using the Mailgun SMTP servers
