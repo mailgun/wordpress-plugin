@@ -20,6 +20,30 @@
  */
 
 /**
+ * mg_api_last_error is a compound getter/setter for the last error that was
+ * encountered during a Mailgun API call.
+ *
+ * @param string $error OPTIONAL
+ *
+ * @return string Last error that occurred.
+ *
+ * @since 1.5
+ */
+function mg_api_last_error($error = null)
+{
+    static $last_error;
+
+    if (null === $error) {
+        return $last_error;
+    } else {
+        $tmp = $last_error;
+        $last_error = $error;
+
+        return $tmp;
+    }
+}
+
+/**
  * wp_mail function to be loaded in to override the core wp_mail function
  * from wp-includes/pluggable.php.
  *
@@ -166,7 +190,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
     ];
 
     $body['o:tag'] = '';
-    $body['o:tracking-clicks'] = isset($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
+    $body['o:tracking-clicks'] = !empty($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
     $body['o:tracking-opens'] = empty($mailgun['track-opens']) ? 'no' : 'yes';
 
     // this is the wordpress site tag
@@ -178,8 +202,10 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
     // campaign-id now refers to a list of tags which will be appended to the site tag
     if (isset($mailgun['campaign-id'])) {
         $tags = explode(',', str_replace(' ', '', $mailgun['campaign-id']));
-        if (!isset($body['o:tag'])) {
+        if (empty($body['o:tag'])) {
             $body['o:tag'] = $tags;
+        } elseif (is_array($body['o:tag'])) {
+            $body['o:tag'] = array_merge($body['o:tag'], $tags);
         } else {
             $body['o:tag'] .= ','.$tags;
         }
@@ -193,16 +219,41 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
         $body['bcc'] = implode(', ', $bcc);
     }
 
-    // Set Content-Type and charset
-    // If we don't have a content-type from the input headers
+    // If we are not given a Content-Type from the supplied headers, use
+    // text/html and *attempt* to strip tags and provide a text/plain
+    // version.
     if (!isset($content_type)) {
-        $content_type = 'text/plain';
-    }
-
-    $content_type = apply_filters('wp_mail_content_type', $content_type);
-    if ($content_type == 'text/html') {
-        $body['html'] = $message;
-        $body['text'] = strip_tags($message);
+        // If there is no pre-provided Content-Type, *assume* that it is
+        // plain text and treat it as such. Pros: WP password reset will
+        // not break. Cons: if it is HTML, the mail will be raw HTML.
+        $content_type = 'text/html';
+        $body['text'] = $message;
+        // <br /> tags need a space in front of them because otherwise,
+        // URLs with a EOL directly following get missed by Mailgun's
+        // URL eater.
+        $body['html'] = str_replace(["\r\n", "\r", "\n"], ' <br />', $message);
+    } else {
+        // Depending on the given input content type, create the
+        // corresponding body output. Mails sent here will ALWAYS
+        // have both a text/plain part and text/html part with a
+        // final Content-Type of multipart.
+        if ($content_type === 'text/html') {
+            $body['html'] = $message;
+            // It won't be pretty, but just use the HTML message as the text
+            // part. No escape, no strip tags. In the case of WP's password
+            // reset, both of those would blow up the URL since it is wrapped
+            // in < >.
+            $body['text'] = $message;
+        } elseif ($content_type === 'text/plain') {
+            $content_type = 'text/html';
+            $body['text'] = $message;
+            // Add HTML line breaks for each newline.
+            $body['html'] = nl2br($message);
+        } else {
+            // Unknown Content-Type??
+            $body['text'] = $message;
+            $body['html'] = $message;
+        }
     }
 
     // If we don't have a charset from the input headers
@@ -279,27 +330,41 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
 
     $data = [
         'body'    => $payload,
-        'headers' => ['Authorization'     => 'Basic '.base64_encode("api:{$apiKey}"),
-                           'content-type' => 'multipart/form-data; boundary='.$boundary, ],
+        'headers' => ['Authorization' => 'Basic '.base64_encode("api:{$apiKey}"),
+                      'Content-Type'  => 'multipart/form-data; boundary='.$boundary, ],
     ];
 
-    $url = "https://api.mailgun.net/v2/{$domain}/messages";
+    $url = "https://api.mailgun.net/v3/{$domain}/messages";
 
     // TODO: Mailgun only supports 1000 recipients per request, since we are
     // overriding this function, let's add looping here to handle that
     $response = wp_remote_post($url, $data);
     if (is_wp_error($response)) {
+        // Store WP error in last error.
+        mg_api_last_error($response->get_error_message());
+
         return false;
     }
 
     $response_code = wp_remote_retrieve_response_code($response);
-    if ((int) $response_code != 200) {
+    $response_body = json_decode(wp_remote_retrieve_body($response));
+
+    // Mailgun API should *always* return a `message` field, even when
+    // $response_code != 200, so a lack of `message` indicates something
+    // is broken.
+    if ((int) $response_code != 200 && !isset($response_body->message)) {
+        // Store response code and HTTP response message in last error.
+        $response_message = wp_remote_retrieve_response_message($response);
+        $errmsg = "$response_code - $response_message";
+        mg_api_last_error($errmsg);
+
         return false;
     }
 
     // Not sure there is any additional checking that needs to be done here, but why not?
-    $response_body = json_decode(wp_remote_retrieve_body($response));
-    if (!isset($response_body->message) || $response_body->message != 'Queued. Thank you.') {
+    if ($response_body->message != 'Queued. Thank you.') {
+        mg_api_last_error($response_body->message);
+
         return false;
     }
 

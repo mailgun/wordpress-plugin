@@ -1,6 +1,22 @@
 Changelog
 =========
 
+1.5 (2016-12-19):
+* Added Catalan language support (@DavidGarciaCat)
+* Added Spanish language support (@DavidGarciaCat)
+* Added German language support (@lsinger)
+* Fixed incorrect SMTP hostname
+* Applied PSR standards across codebase
+* Applied open tracking bugfix
+* Applied tags bugfix
+* Applied `Mailgun Lists` admin panel bugfix
+* Fixed click tracking dropdown
+* Fixed click tracking and open tracking
+* Now try to process *all* sent mails as HTML, see L201 wp-mail.php for details
+* Mailgun logo now loads on both admin pages ;)
+* Now using the Mailgun API v3 endpoint!
+* Configuration test will now present either an error from the API or the HTTP response code + message
+
 1.4.1 (2015-12-01):
 * Clarify compatibility with WordPress 4.3
 
