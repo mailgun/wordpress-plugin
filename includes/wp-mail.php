@@ -155,9 +155,20 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
         }
     }
 
+    // Attempt to apply external filters to these values before using our own.
+    if (has_filter('wp_mail_from')) {
+        $from_email = apply_filters('wp_mail_from', $from_email);
+    }
+
+    if (has_filter('wp_mail_from_name')) {
+        $from_name = apply_filters('wp_mail_from_name', $from_name);
+    }
+
     // From email and name
     // If we don't have a name from the input headers
-    if (!isset($from_name)) {
+    if (!isset($from_name) && !empty($mailgun['from-name'])) {
+        $from_name = $mailgun['from-name'];
+    } else {
         $from_name = 'WordPress';
     }
 
@@ -168,7 +179,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
      * http://trac.wordpress.org/ticket/5007.
      */
 
-    if (!isset($from_email)) {
+    if (!isset($from_email) && !empty($mailgun['from-address'])) {
+        $from_email = $mailgun['from-address'];
+    } else {
         // Get the site domain and get rid of www.
         $sitename = strtolower($_SERVER['SERVER_NAME']);
         if (substr($sitename, 0, 4) == 'www.') {
@@ -177,10 +190,6 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
 
         $from_email = 'wordpress@'.$sitename;
     }
-
-    // Plugin authors can override the potentially troublesome default
-    $from_email = apply_filters('wp_mail_from', $from_email);
-    $from_name = apply_filters('wp_mail_from_name', $from_name);
 
     $body = [
         'from'    => "{$from_name} <{$from_email}>",
