@@ -2,19 +2,19 @@
 # This file is distributed under the same license as the Mailgun package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mailgun 1.5.1\n"
+"Project-Id-Version: Mailgun 1.5.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mailgun\n"
 "POT-Creation-Date: 2016-12-21 20:39:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2016-12-21 14:49-0600\n"
+"Last-Translator: Sean Johnson <sean@mailgun.com>\n"
+"Language-Team: Mailgun <support@mailgun.com>\n"
 
-#. #-#-#-#-#  plugin.pot (Mailgun 1.5.1)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Mailgun 1.5.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#. #-#-#-#-#  plugin.pot (Mailgun 1.5.1)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Mailgun 1.5.2)  #-#-#-#-#
 #. Author of the plugin/theme
 #: includes/admin.php:95 includes/options-page.php:26
 msgid "Mailgun"
@@ -216,10 +216,10 @@ msgstr ""
 
 #: includes/options-page.php:124
 msgid ""
-"The <address@mydomain.com> part of the sender information (\"Excited User "
-"<user@samples.mailgun.org>\"). This address will appear as the `From` "
-"address on sent mail. It is recommended that the @mydomain portion matches "
-"your WordPress domain."
+"The <address@mydomain.com> part of the sender information (<code>\"Excited "
+"User &lt;user@samples.mailgun.org&gt;\"</code>). This address will appear as "
+"the `From` address on sent mail. It is recommended that the @mydomain "
+"portion matches your WordPress domain."
 msgstr ""
 
 #: includes/options-page.php:129
@@ -228,8 +228,8 @@ msgstr ""
 
 #: includes/options-page.php:133
 msgid ""
-"The \"User Name\" part of the sender information (\"Excited User "
-"<user@samples.mailgun.org>\")."
+"The \"User Name\" part of the sender information (<code>\"Excited User &lt;"
+"user@samples.mailgun.org&gt;\"</code>)."
 msgstr ""
 
 #: includes/options-page.php:138
