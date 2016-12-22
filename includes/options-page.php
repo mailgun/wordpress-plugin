@@ -117,6 +117,24 @@
                     </tr>
                     <tr valign="top">
                         <th scope="row">
+                            <?php _e('From Address', 'mailgun'); ?>
+                        </th>
+                        <td>
+                            <input type="text" class="regular-text" name="mailgun[from-address]" value="<?php esc_attr_e($this->get_option('from-address')); ?>" placeholder="wordpress@mydomain.com" />
+                            <p class="description"><?php _e('The <address@mydomain.com> part of the sender information (<code>"Excited User &lt;user@samples.mailgun.org&gt;"</code>). This address will appear as the `From` address on sent mail. It is recommended that the @mydomain portion matches your WordPress domain.', 'mailgun'); ?></p>
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row">
+                            <?php _e('From Name', 'mailgun'); ?>
+                        </th>
+                        <td>
+                            <input type="text" class="regular-text" name="mailgun[from-name]" value="<?php esc_attr_e($this->get_option('from-name')); ?>" placeholder="WordPress" />
+                            <p class="description"><?php _e('The "User Name" part of the sender information (<code>"Excited User &lt;user@samples.mailgun.org&gt;"</code>).', 'mailgun'); ?></p>
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row">
                             <?php _e('Tag', 'mailgun'); ?>
                         </th>
                         <td>

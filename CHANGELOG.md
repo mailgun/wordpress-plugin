@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.5.2 (2016-12-22):
+* Added option fields for setting a From name and address
+
+1.5.1 (2016-12-21):
+* Fixed an issue causing plugin upgrades from <1.5 -> >=1.5 to deactivate
+
 1.5 (2016-12-19):
 * Added Catalan language support (@DavidGarciaCat)
 * Added Spanish language support (@DavidGarciaCat)
