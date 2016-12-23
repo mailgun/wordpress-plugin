@@ -103,7 +103,7 @@ class list_widget extends WP_Widget
     // Updating widget replacing old instances with new
     public function update($new_instance, $old_instance)
     {
-        $instance = [];
+        $instance = array();
         $instance = $new_instance;
 
         return $instance;

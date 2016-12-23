@@ -27,7 +27,7 @@
  *
  * @return string Last error that occurred.
  *
- * @since 1.5
+ * @since 1.5.0
  */
 function mg_api_last_error($error = null)
 {
@@ -40,6 +40,31 @@ function mg_api_last_error($error = null)
         $last_error = $error;
 
         return $tmp;
+    }
+}
+
+/**
+ * Tries several methods to get the MIME Content-Type of a file.
+ *
+ * @param string $filepath
+ * @param string $default_type If all methods fail, fallback to $default_type
+ *
+ * @return string Content-Type
+ *
+ * @since 1.5.4
+ */
+function get_mime_content_type($filepath, $default_type = 'text/plain')
+{
+    if (function_exists('mime_content_type')) {
+        return mime_content_type($filepath);
+    } elseif (function_exists('finfo_file')) {
+        $fi = finfo_open(FILEINFO_MIME_TYPE);
+        $ret = finfo_file($fi, $filepath);
+        finfo_close($fi);
+
+        return $ret;
+    } else {
+        return $default_type;
     }
 }
 
@@ -60,7 +85,7 @@ function mg_api_last_error($error = null)
  *
  * @since 0.1
  */
-function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
+function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 {
     // Compact the input, apply the filters, and extract them back out
     extract(apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments')));
@@ -79,7 +104,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
 
     // Headers
     if (empty($headers)) {
-        $headers = [];
+        $headers = array();
     } else {
         if (!is_array($headers)) {
             // Explode the headers out, so this function can take both
@@ -88,9 +113,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
         } else {
             $tempheaders = $headers;
         }
-        $headers = [];
-        $cc = [];
-        $bcc = [];
+        $headers = array();
+        $cc = array();
+        $bcc = array();
 
         // If it's actually got contents
         if (!empty($tempheaders)) {
@@ -155,21 +180,6 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
         }
     }
 
-    // Attempt to apply external filters to these values before using our own.
-    if (has_filter('wp_mail_from')) {
-        $from_email = apply_filters(
-            'wp_mail_from',
-            isset($from_email) ? $from_email : null
-        );
-    }
-
-    if (has_filter('wp_mail_from_name')) {
-        $from_name = apply_filters(
-            'wp_mail_from_name',
-            isset($from_name) ? $from_name : null
-        );
-    }
-
     // From email and name
     // If we don't have a name from the input headers
     if (!isset($from_name) && !empty($mailgun['from-name'])) {
@@ -197,12 +207,27 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
         $from_email = 'wordpress@'.$sitename;
     }
 
-    $body = [
+    // Attempt to apply external filters to these values before using our own.
+    if (has_filter('wp_mail_from')) {
+        $from_email = apply_filters(
+            'wp_mail_from',
+            $from_email
+        );
+    }
+
+    if (has_filter('wp_mail_from_name')) {
+        $from_name = apply_filters(
+            'wp_mail_from_name',
+            $from_name
+        );
+    }
+
+    $body = array(
         'from'    => "{$from_name} <{$from_email}>",
         'to'      => $to,
         'subject' => $subject,
         'text'    => $message,
-    ];
+    );
 
     $body['o:tag'] = '';
     $body['o:tracking-clicks'] = !empty($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
@@ -246,7 +271,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
         fclose($tmp);
 
         // Get mime type with mime_content_type
-        $content_type = mime_content_type($tmppath);
+        $content_type = get_mime_content_type($tmppath, 'text/plain');
 
         // Remove the tmpfile
         unlink($tmppath);
@@ -332,11 +357,13 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
 
     $payload .= '--'.$boundary.'--';
 
-    $data = [
+    $data = array(
         'body'    => $payload,
-        'headers' => ['Authorization' => 'Basic '.base64_encode("api:{$apiKey}"),
-                      'Content-Type'  => 'multipart/form-data; boundary='.$boundary, ],
-    ];
+        'headers' => array(
+            'Authorization' => 'Basic '.base64_encode("api:{$apiKey}"),
+            'Content-Type'  => 'multipart/form-data; boundary='.$boundary,
+        ),
+    );
 
     $url = "https://api.mailgun.net/v3/{$domain}/messages";
 
