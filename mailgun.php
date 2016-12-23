@@ -23,7 +23,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.5.2
+ * Version:      1.5.3
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -55,7 +55,7 @@ class Mailgun
                 }
             }
         } else {
-            add_action('phpmailer_init', [&$this, 'phpmailer_init']);
+            add_action('phpmailer_init', array(&$this, 'phpmailer_init'));
         }
     }
 
@@ -226,9 +226,9 @@ class Mailgun
                 );
             }
 
-            echo json_encode(['status' => 200, 'message' => 'Thank you!']);
+            echo json_encode(array('status' => 200, 'message' => 'Thank you!'));
         } else {
-            echo json_encode(['status' => 500, 'message' => 'Uh oh. We weren\'t able to add you to the list'.count($list_addresses) ? 's.' : '. Please try again.']);
+            echo json_encode(array('status' => 500, 'message' => 'Uh oh. We weren\'t able to add you to the list'.count($list_addresses) ? 's.' : '. Please try again.'));
         }
 
         wp_die();
@@ -411,16 +411,16 @@ class Mailgun
     public function load_list_widget()
     {
         register_widget('list_widget');
-        add_shortcode('mailgun', [&$this, 'build_list_form']);
+        add_shortcode('mailgun', array(&$this, 'build_list_form'));
     }
 }
 
 $mailgun = new Mailgun();
 
 if (@include dirname(__FILE__).'/includes/widget.php') {
-    add_action('widgets_init', [&$mailgun, 'load_list_widget']);
-    add_action('wp_ajax_nopriv_add_list', [&$mailgun, 'add_list']);
-    add_action('wp_ajax_add_list', [&$mailgun, 'add_list']);
+    add_action('widgets_init', array(&$mailgun, 'load_list_widget'));
+    add_action('wp_ajax_nopriv_add_list', array(&$mailgun, 'add_list'));
+    add_action('wp_ajax_add_list', array(&$mailgun, 'add_list'));
 }
 
 if (is_admin()) {

@@ -29,7 +29,7 @@ class list_widget extends WP_Widget
             // Widget name will appear in UI
             __('Mailgun List Widget', 'wpb_widget_domain'),
             // Widget description
-            ['description' => __('Mailgun list widget', 'wpb_widget_domain')]
+            array('description' => __('Mailgun list widget', 'wpb_widget_domain'))
         );
     }
 

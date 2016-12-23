@@ -22,7 +22,7 @@
 ?>
         <div class="wrap">
             <div id="icon-options-general" class="icon32"><br /></div>
-            <span class="alignright"><a target="_blank" href="http://www.mailgun.com/"><img src="http://www.mailgun.com/static/img/mailgun.svg" alt="Mailgun" style="width: 10em;"/></a></span>
+            <span class="alignright"><a target="_blank" href="http://www.mailgun.com/"><img src="https://www.mailgun.com/static/img/mailgun.svg" alt="Mailgun" style="width: 10em;"/></a></span>
             <h2><?php _e('Mailgun', 'mailgun'); ?></h2>
             <p>A <a target="_blank" href="http://www.mailgun.com/">Mailgun</a> account is required to use this plugin and the Mailgun service.</p>
             <p>If you need to register for an account, you can do so at <a target="_blank" href="http://www.mailgun.com/">http://www.mailgun.com/</a>.</p>

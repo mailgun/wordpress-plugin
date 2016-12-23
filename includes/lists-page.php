@@ -44,7 +44,7 @@ $lists_arr = $mailgun->get_lists();
 
     <span class="alignright">
         <a target="_blank" href="http://www.mailgun.com/">
-            <img src="http://www.mailgun.com/static/img/mailgun.svg" alt="Mailgun" style="width: 10em;"/>
+            <img src="https://www.mailgun.com/static/img/mailgun.svg" alt="Mailgun" style="width: 10em;"/>
         </a>
     </span>
 
