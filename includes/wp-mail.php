@@ -99,7 +99,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
                 if (strpos($header, ':') === false) {
                     if (false !== stripos($header, 'boundary=')) {
                         $parts = preg_split('/boundary=/i', trim($header));
-                        $boundary = trim(str_replace(["'", '"'], '', $parts[1]));
+                        $boundary = trim(str_replace(array("'", '"'), '', $parts[1]));
                     }
                     continue;
                 }
@@ -131,9 +131,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
                         list($type, $charset) = explode(';', $content);
                         $content_type = trim($type);
                         if (false !== stripos($charset, 'charset=')) {
-                            $charset = trim(str_replace(['charset=', '"'], '', $charset));
+                            $charset = trim(str_replace(array('charset=', '"'), '', $charset));
                         } elseif (false !== stripos($charset, 'boundary=')) {
-                            $boundary = trim(str_replace(['BOUNDARY=', 'boundary=', '"'], '', $charset));
+                            $boundary = trim(str_replace(array('BOUNDARY=', 'boundary=', '"'), '', $charset));
                             $charset = '';
                         }
                     } else {
@@ -157,11 +157,17 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
 
     // Attempt to apply external filters to these values before using our own.
     if (has_filter('wp_mail_from')) {
-        $from_email = apply_filters('wp_mail_from', $from_email);
+        $from_email = apply_filters(
+            'wp_mail_from',
+            isset($from_email) ? $from_email : null
+        );
     }
 
     if (has_filter('wp_mail_from_name')) {
-        $from_name = apply_filters('wp_mail_from_name', $from_name);
+        $from_name = apply_filters(
+            'wp_mail_from_name',
+            isset($from_name) ? $from_name : null
+        );
     }
 
     // From email and name
@@ -232,37 +238,26 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
     // text/html and *attempt* to strip tags and provide a text/plain
     // version.
     if (!isset($content_type)) {
-        // If there is no pre-provided Content-Type, *assume* that it is
-        // plain text and treat it as such. Pros: WP password reset will
-        // not break. Cons: if it is HTML, the mail will be raw HTML.
-        $content_type = 'text/html';
+        // Try to figure out the content type with mime_content_type.
+        $tmppath = tempnam(sys_get_temp_dir(), 'mg');
+        $tmp = fopen($tmppath, 'w+');
+
+        fwrite($tmp, $message);
+        fclose($tmp);
+
+        // Get mime type with mime_content_type
+        $content_type = mime_content_type($tmppath);
+
+        // Remove the tmpfile
+        unlink($tmppath);
+    }
+
+    if ('text/plain' === $content_type) {
         $body['text'] = $message;
-        // <br /> tags need a space in front of them because otherwise,
-        // URLs with a EOL directly following get missed by Mailgun's
-        // URL eater.
-        $body['html'] = str_replace(["\r\n", "\r", "\n"], ' <br />', $message);
     } else {
-        // Depending on the given input content type, create the
-        // corresponding body output. Mails sent here will ALWAYS
-        // have both a text/plain part and text/html part with a
-        // final Content-Type of multipart.
-        if ($content_type === 'text/html') {
-            $body['html'] = $message;
-            // It won't be pretty, but just use the HTML message as the text
-            // part. No escape, no strip tags. In the case of WP's password
-            // reset, both of those would blow up the URL since it is wrapped
-            // in < >.
-            $body['text'] = $message;
-        } elseif ($content_type === 'text/plain') {
-            $content_type = 'text/html';
-            $body['text'] = $message;
-            // Add HTML line breaks for each newline.
-            $body['html'] = nl2br($message);
-        } else {
-            // Unknown Content-Type??
-            $body['text'] = $message;
-            $body['html'] = $message;
-        }
+        // Unknown Content-Type??
+        $body['text'] = $message;
+        $body['html'] = $message;
     }
 
     // If we don't have a charset from the input headers

@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.7
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 
 
@@ -67,6 +67,12 @@ MAILGUN_SECURE   Type: boolean
 
 
 == Changelog ==
+
+= 1.5.3 (2016-12-22): =
+* Changed all bracketed array usages to `array()` syntax for older PHP support
+* Redesigned `Content-Type` processing code to not make such large assumptions
+* Mailgun logo is now loaded over HTTPS
+* Fixed undefined variable issue with from email / from name code
 
 = 1.5.2 (2016-12-22): =
 * Added option fields for setting a From name and address
