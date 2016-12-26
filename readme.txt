@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.7
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv2 or later
 
 
@@ -67,6 +67,11 @@ MAILGUN_SECURE   Type: boolean
 
 
 == Changelog ==
+
+= 1.5.4 (2016-12-23): =
+* Changed some missed bracketed array usages to `array()` syntax
+* Fix `wp_mail_from` / `wp_mail_from_name` not working on old PHP / WP versions
+* Add a wrapper for using `mime_content_type` / `finfo_file`
 
 = 1.5.3 (2016-12-22): =
 * Changed all bracketed array usages to `array()` syntax for older PHP support

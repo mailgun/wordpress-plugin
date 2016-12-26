@@ -23,7 +23,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.5.3
+ * Version:      1.5.4
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -136,7 +136,7 @@ class Mailgun
      *
      * @since 0.1
      */
-    public function api_call($uri, $params = [], $method = 'POST')
+    public function api_call($uri, $params = array(), $method = 'POST')
     {
         $options = get_option('mailgun');
         $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $options['apiKey'];
@@ -144,7 +144,9 @@ class Mailgun
 
         $time = time();
         $url = $this->api_endpoint.$uri;
-        $headers = ['Authorization' => 'Basic '.base64_encode("api:{$apiKey}")];
+        $headers = array(
+            'Authorization' => 'Basic '.base64_encode("api:{$apiKey}")
+        );
 
         switch ($method) {
         case 'GET':
@@ -163,12 +165,12 @@ class Mailgun
         }
 
         // make the request
-        $args = [
+        $args = array(
             'method'    => $method,
             'body'      => $params,
             'headers'   => $headers,
             'sslverify' => true,
-        ];
+        );
 
         // make the remote request
         $result = wp_remote_request($url, $args);
@@ -188,9 +190,9 @@ class Mailgun
      */
     public function get_lists()
     {
-        $results = [];
+        $results = array();
 
-        $lists_json = $this->api_call('lists', [], 'GET');
+        $lists_json = $this->api_call('lists', array(), 'GET');
         $lists_arr = json_decode($lists_json, true);
         if (isset($lists_arr['items']) && !empty($lists_arr['items'])) {
             $results = $lists_arr['items'];
@@ -208,7 +210,7 @@ class Mailgun
      */
     public function add_list()
     {
-        $response = [];
+        $response = array();
 
         $name = isset($_POST['name']) ? $_POST['name'] : null;
         $email = isset($_POST['email']) ? $_POST['email'] : null;
@@ -219,10 +221,10 @@ class Mailgun
             foreach ($list_addresses as $address => $val) {
                 $response[] = $this->api_call(
                     "lists/{$address}/members",
-                    [
+                    array(
                         'address' => $email,
                         'name'    => $name,
-                    ]
+                    )
                 );
             }
 
@@ -243,7 +245,7 @@ class Mailgun
      *
      * @since 0.1
      */
-    public function list_form($list_address, $args = [], $instance = [])
+    public function list_form($list_address, $args = array(), $instance = array())
     {
         $widget_class_id = "mailgun-list-widget-{$args['widget_id']}";
         $form_class_id = "list-form-{$args['widget_id']}";
