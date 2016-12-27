@@ -135,6 +135,18 @@
                     </tr>
                     <tr valign="top">
                         <th scope="row">
+                            <?php _e('Override "From" Details', 'mailgun'); ?>
+                        </th>
+                        <td>
+                            <select name="mailgun[override-from]">
+                                <option value="1"<?php selected('1', $this->get_option('override-from', null, '0')); ?>><?php _e('Yes', 'mailgun'); ?></option>
+                                <option value="0"<?php selected('0', $this->get_option('override-from', null, '0')); ?>><?php _e('No', 'mailgun'); ?></option>
+                            </select>
+                            <p class="description"><?php _e('If enabled, all emails will be sent with the above "From Name" and "From Address", regardless of values set by other plugins. Useful for cases where other plugins don\'t play nice with our "From Name" / "From Address" setting.', 'mailgun'); ?></p>
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row">
                             <?php _e('Tag', 'mailgun'); ?>
                         </th>
                         <td>

@@ -180,46 +180,63 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         }
     }
 
-    // From email and name
-    // If we don't have a name from the input headers
-    if (!isset($from_name) && !empty($mailgun['from-name'])) {
+    if ($mailgun['override-from'] && !empty($mailgun['from-name'])
+        && !empty($mailgun['from-address'])
+    ) {
         $from_name = $mailgun['from-name'];
-    } else {
-        $from_name = 'WordPress';
-    }
-
-    /* If we don't have an email from the input headers default to wordpress@$sitename
-     * Some hosts will block outgoing mail from this address if it doesn't exist but
-     * there's no easy alternative. Defaulting to admin_email might appear to be another
-     * option but some hosts may refuse to relay mail from an unknown domain. See
-     * http://trac.wordpress.org/ticket/5007.
-     */
-
-    if (!isset($from_email) && !empty($mailgun['from-address'])) {
         $from_email = $mailgun['from-address'];
     } else {
-        // Get the site domain and get rid of www.
-        $sitename = strtolower($_SERVER['SERVER_NAME']);
-        if (substr($sitename, 0, 4) == 'www.') {
-            $sitename = substr($sitename, 4);
+        // From email and name
+        // If we don't have a name from the input headers
+        if (empty($from_name) && !empty($mailgun['from-name'])) {
+            $from_name = $mailgun['from-name'];
+        } elseif (empty($from_email) && empty($mailgun['from-name'])) {
+            if (function_exists('get_current_site')) {
+                $from_name = get_current_site()->site_name;
+            } else {
+                $from_name = 'WordPress';
+            }
         }
 
-        $from_email = 'wordpress@'.$sitename;
-    }
+        /* If we don't have `From` input headers, use wordpress@$sitedomain
+         * Some hosts will block outgoing mail from this address if it doesn't
+         * exist but there's no easy alternative. Defaulting to admin_email
+         * might appear to be another option but some hosts may refuse to
+         * relay mail from an unknown domain.
+         *
+         * @link http://trac.wordpress.org/ticket/5007.
+         */
 
-    // Attempt to apply external filters to these values before using our own.
-    if (has_filter('wp_mail_from')) {
-        $from_email = apply_filters(
-            'wp_mail_from',
-            $from_email
-        );
-    }
+        if (empty($from_email) && !empty($mailgun['from-address'])) {
+            $from_email = $mailgun['from-address'];
+        } elseif (empty($from_email) && empty($mailgun['from-address'])) {
+            if (function_exists('get_current_site')) {
+                $sitedomain = get_current_site()->domain;
+            } else {
+                // Get the site domain and get rid of www.
+                $sitedomain = strtolower($_SERVER['SERVER_NAME']);
+                if (substr($sitedomain, 0, 4) == 'www.') {
+                    $sitedomain = substr($sitedomain, 4);
+                }
+            }
 
-    if (has_filter('wp_mail_from_name')) {
-        $from_name = apply_filters(
-            'wp_mail_from_name',
-            $from_name
-        );
+            $from_email = 'wordpress@'.$sitedomain;
+        }
+
+        // Attempt to apply external filters to these values before using our own.
+        if (has_filter('wp_mail_from')) {
+            $from_email = apply_filters(
+                'wp_mail_from',
+                $from_email
+            );
+        }
+
+        if (has_filter('wp_mail_from_name')) {
+            $from_name = apply_filters(
+                'wp_mail_from_name',
+                $from_name
+            );
+        }
     }
 
     $body = array(

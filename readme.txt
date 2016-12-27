@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.7
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 License: GPLv2 or later
 
 
@@ -34,26 +34,26 @@ The current version of this plugin only handles sending emails, tracking and tag
 
 == Frequently Asked Questions ==
 
-- Testing the configuration fails when using the HTTP API =
+- Testing the configuration fails when using the HTTP API
 
 Your web server may not allow outbound HTTP connections. Set `Use HTTP API` to "No", and fill out the configuration options to SMTP and test again.
 
-- Testing the configuration fails when using SMTP =
+- Testing the configuration fails when using SMTP
 
 Your web server may not allow outbound SMTP connections on port 465 for secure connections or 587 for unsecured connections. Try changing `Use Secure SMTP` to "No" or "Yes" depending on your current configuration and testing again. If both fail, try setting `Use HTTP API` to "Yes" and testing again.
 
-- Can this be configured globally for WordPress Multisite? =
+- Can this be configured globally for WordPress Multisite?
 
 Yes, using the following constants that can be placed in wp-config.php:
 
-```
+`
 MAILGUN_USEAPI   Type: boolean
 MAILGUN_APIKEY   Type: string
 MAILGUN_DOMAIN   Type: string
 MAILGUN_USERNAME Type: string
 MAILGUN_PASSWORD Type: string
 MAILGUN_SECURE   Type: boolean
-```
+`
 
 
 == Screenshots ==
@@ -67,6 +67,14 @@ MAILGUN_SECURE   Type: boolean
 
 
 == Changelog ==
+
+= 1.5.5 (2016-12-27): =
+* Restructure the `admin_notices` code
+* Restructure the "From Name" / "From Address" code
+* Add option to override "From Name" / "From Address" setting set by other plugins
+* Fix a bug causing default "From Name" / "From Address" to be always applied in some cases
+* Moved plugin header up in entrypoint file (https://wordpress.org/support/topic/plugin-activation-due-to-header/#post-8598062)
+* Fixed a bug causing "Override From" to be set to "yes" after upgrades
 
 = 1.5.4 (2016-12-23): =
 * Changed some missed bracketed array usages to `array()` syntax

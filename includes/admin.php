@@ -65,16 +65,17 @@ class MailgunAdmin extends Mailgun
         }
 
         $defaults = array(
-            'useAPI'       => '1',
-            'apiKey'       => '',
-            'domain'       => '',
-            'username'     => '',
-            'password'     => '',
-            'secure'       => '1',
-            'track-clicks' => '',
-            'track-opens'  => '',
-            'campaign-id'  => '',
-            'tag'          => $sitename,
+            'useAPI'            => '1',
+            'apiKey'            => '',
+            'domain'            => '',
+            'username'          => '',
+            'password'          => '',
+            'secure'            => '1',
+            'track-clicks'      => '',
+            'track-opens'       => '',
+            'campaign-id'       => '',
+            'override-from'     => '0',
+            'tag'               => $sitename,
         );
         if (!$this->options) {
             $this->options = $defaults;
@@ -223,9 +224,8 @@ class MailgunAdmin extends Mailgun
         $apiKey = $this->get_option('apiKey');
         $useAPI = $this->get_option('useAPI');
         $password = $this->get_option('password');
-        if ((empty($apiKey) && $useAPI == '1') || (empty($password) && $useAPI == '0')) {
-            add_action('admin_notices', array(&$this, 'admin_notices'));
-        }
+
+        add_action('admin_notices', array(&$this, 'admin_notices'));
     }
 
     /**
@@ -293,10 +293,22 @@ class MailgunAdmin extends Mailgun
         $screen = get_current_screen();
         if ($screen->id == $this->hook_suffix) {
             return;
-        } ?>
-        <div id='mailgun-warning' class='updated fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
-<?php
+        }
 
+        if ((empty($this->get_option('apiKey')) && $this->get_option('useAPI') == '1')
+            || (empty($this->get_option('password')) && $this->get_option('useAPI') == '0')
+        ) { ?>
+            <div id='mailgun-warning' class='updated fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
+<?php
+        }
+
+        if ($this->get_option('override-from') === '1'
+            && (empty($this->get_option('from-name'))
+            || empty($this->get_option('from-address')))
+        ) { ?>
+            <div id='mailgun-warning' class='updated fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('"Override From" option requires that "From Name" and "From Address" be set to work properly! <a href="%1$s">Configure Mailgun now</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
+<?php
+        }
     }
 
     /**

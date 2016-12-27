@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.5.5 (2016-12-27):
+* Restructure the `admin_notices` code
+* Restructure the "From Name" / "From Address" code
+* Add option to override "From Name" / "From Address" setting set by other plugins
+* Fix a bug causing default "From Name" / "From Address" to be always applied in some cases
+* Moved plugin header up in entrypoint file (https://wordpress.org/support/topic/plugin-activation-due-to-header/#post-8598062)
+* Fixed a bug causing "Override From" to be set to "yes" after upgrades
+
 1.5.4 (2016-12-23):
 * Changed some missed bracketed array usages to `array()` syntax
 * Fix `wp_mail_from` / `wp_mail_from_name` not working on old PHP / WP versions
