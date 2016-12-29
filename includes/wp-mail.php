@@ -276,6 +276,14 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         $body['bcc'] = implode(', ', $bcc);
     }
 
+    // Allow external content type filter to function normally 
+    if (has_filter('wp_mail_content_type')) {
+        $content_type = apply_filters(
+            'wp_mail_content_type',
+            $content_type
+        );
+    }
+    
     // If we are not given a Content-Type from the supplied headers, use
     // text/html and *attempt* to strip tags and provide a text/plain
     // version.
