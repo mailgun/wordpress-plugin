@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Plugin Name:  Mailgun
+ * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
+ * Description:  Mailgun integration for WordPress
+ * Version:      1.5.5
+ * Author:       Mailgun
+ * Author URI:   http://www.mailgun.com/
+ * License:      GPLv2 or later
+ * Text Domain:  mailgun
+ * Domain Path:  /languages/.
+ */
+
 /*
  * mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
  * Copyright (C) 2016 Mailgun, et al.
@@ -19,17 +31,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/**
- * Plugin Name:  Mailgun
- * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
- * Description:  Mailgun integration for WordPress
- * Version:      1.5.4
- * Author:       Mailgun
- * Author URI:   http://www.mailgun.com/
- * License:      GPLv2 or later
- * Text Domain:  mailgun
- * Domain Path:  /languages/.
- */
 class Mailgun
 {
     /**
@@ -68,7 +69,7 @@ class Mailgun
      *
      * @since 0.1
      */
-    public function get_option($option, $options = null)
+    public function get_option($option, $options = null, $default = false)
     {
         if (is_null($options)) {
             $options = &$this->options;
@@ -76,7 +77,7 @@ class Mailgun
         if (isset($options[$option])) {
             return $options[$option];
         } else {
-            return false;
+            return $default;
         }
     }
 
