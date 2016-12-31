@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.6 (2016-12-30):
+* Fix a very subtle bug causing fatal errors with older PHP versions < 5.5
+* Respect `wp_mail_content_type` (#37 - @FPCSJames)
+
 1.5.5 (2016-12-27):
 * Restructure the `admin_notices` code
 * Restructure the "From Name" / "From Address" code

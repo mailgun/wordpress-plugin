@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.7
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: GPLv2 or later
 
 
@@ -67,6 +67,10 @@ MAILGUN_SECURE   Type: boolean
 
 
 == Changelog ==
+
+= 1.5.6 (2016-12-30): =
+* Fix a very subtle bug causing fatal errors with older PHP versions < 5.5
+* Respect `wp_mail_content_type` (#37 - @FPCSJames)
 
 = 1.5.5 (2016-12-27): =
 * Restructure the `admin_notices` code
