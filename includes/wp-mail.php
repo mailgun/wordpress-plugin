@@ -69,6 +69,49 @@ function get_mime_content_type($filepath, $default_type = 'text/plain')
 }
 
 /**
+ * Wordpress filter to mutate a `To` header to use recipient variables.
+ * Uses the `mg_use_recipient_vars_syntax` filter to apply the actual
+ * change. Otherwise, just a list of `To` addresses will be returned.
+ *
+ * @param string|array $to_addrs Array or comma-separated list of email addresses to mutate.
+ *
+ * @return array Array containing list of `To` addresses and recipient vars array
+ *
+ * @since 1.5.7
+ */
+add_filter('mg_mutate_to_rcpt_vars', 'mg_mutate_to_rcpt_vars_cb');
+function mg_mutate_to_rcpt_vars_cb($to_addrs)
+{
+    if (is_string($to_addrs)) {
+        $to_addrs = explode(',', $to_addrs);
+    }
+
+    if (has_filter('mg_use_recipient_vars_syntax')) {
+        $use_rcpt_vars = apply_filters('mg_use_recipient_vars_syntax', null);
+        if ($use_rcpt_vars) {
+            $vars = array();
+
+            $idx = 0;
+            foreach ($to_addrs as $addr) {
+                $rcpt_vars[$addr] = array("batch_msg_id" => $idx);
+                $idx++;
+            }
+
+            // TODO: Also add folding to prevent hitting the 998 char limit on headers.
+            return array(
+                'to'        => '%recipient%',
+                'rcpt_vars' => json_encode($rcpt_vars),
+            );
+        }
+    }
+
+    return array(
+        'to'        => $to_addrs,
+        'rcpt_vars' => null,
+    );
+}
+
+/**
  * wp_mail function to be loaded in to override the core wp_mail function
  * from wp-includes/pluggable.php.
  *
@@ -246,6 +289,11 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         'text'    => $message,
     );
 
+    $rcpt_data = apply_filters('mg_mutate_to_rcpt_vars', $to);
+    if (!is_null($rcpt_data['rcpt_vars'])) {
+        $body['recipient-variables'] = $rcpt_data['rcpt_vars'];
+    }
+
     $body['o:tag'] = '';
     $body['o:tracking-clicks'] = !empty($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
     $body['o:tracking-opens'] = empty($mailgun['track-opens']) ? 'no' : 'yes';
@@ -276,14 +324,6 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         $body['bcc'] = implode(', ', $bcc);
     }
 
-    // Allow external content type filter to function normally 
-    if (has_filter('wp_mail_content_type')) {
-        $content_type = apply_filters(
-            'wp_mail_content_type',
-            $content_type
-        );
-    }
-    
     // If we are not given a Content-Type from the supplied headers, use
     // text/html and *attempt* to strip tags and provide a text/plain
     // version.
@@ -300,6 +340,14 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 
         // Remove the tmpfile
         unlink($tmppath);
+    }
+
+    // Allow external content type filter to function normally
+    if (has_filter('wp_mail_content_type')) {
+        $content_type = apply_filters(
+            'wp_mail_content_type',
+            $content_type
+        );
     }
 
     if ('text/plain' === $content_type) {
