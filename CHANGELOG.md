@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.7.1 (2017-01-18):
+* Fix an odd `Undefined property: MailgunAdmin::$defaults` when saving config
+* Fix strict mode notice for using `$mailgun['override-from']` without checking `isset`
+
 1.5.7 (2017-01-04):
 * Add better support for using recipient variables for batch mailing.
 * Clarify wording on `From Address` note

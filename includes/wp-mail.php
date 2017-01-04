@@ -223,8 +223,8 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         }
     }
 
-    if ($mailgun['override-from'] && !empty($mailgun['from-name'])
-        && !empty($mailgun['from-address'])
+    if ((isset($mailgun['override-from']) && $mailgun['override-from'])
+        && !empty($mailgun['from-name']) && !empty($mailgun['from-address'])
     ) {
         $from_name = $mailgun['from-name'];
         $from_email = $mailgun['from-address'];
