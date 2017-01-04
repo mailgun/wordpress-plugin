@@ -368,6 +368,12 @@ class MailgunAdmin extends Mailgun
             array('Content-Type: text/plain')
         );
 
+        if ((bool) $useAPI) {
+            $error_msg = mg_api_last_error();
+        } else {
+            $error_msg = mg_smtp_last_error();
+        }
+
         if ($result) {
             die(
                 json_encode(
@@ -384,7 +390,7 @@ class MailgunAdmin extends Mailgun
                     array(
                         'message' => __('Failure', 'mailgun'),
                         'method'  => $method,
-                        'error'   => mg_api_last_error(),
+                        'error'   => $error_msg,
                     )
                 )
             );
