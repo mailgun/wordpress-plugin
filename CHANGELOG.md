@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.5.7 (2017-01-04):
+* Add better support for using recipient variables for batch mailing.
+* Clarify wording on `From Address` note
+* Detect from name and address for `phpmailer_init` / SMTP now will honour Mailgun "From Name / From Addr" settings
+* SMTP configuration test will now provide the error message, if the send fails
+* Fix `undefined variable: content_type` error in `wp-mail.php` (https://wordpress.org/support/topic/minor-bug-on-version-version-1-5-6/#post-8634762)
+* Fix `undefined index: override-from` error in `wp-mail.php` (https://wordpress.org/support/topic/php-notice-undefined-index-override-from/)
+
 1.5.6 (2016-12-30):
 * Fix a very subtle bug causing fatal errors with older PHP versions < 5.5
 * Respect `wp_mail_content_type` (#37 - @FPCSJames)

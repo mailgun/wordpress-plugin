@@ -64,7 +64,7 @@ class MailgunAdmin extends Mailgun
             $sitename = substr($sitename, 4);
         }
 
-        $defaults = array(
+        $this->defaults = array(
             'useAPI'            => '1',
             'apiKey'            => '',
             'domain'            => '',
@@ -78,7 +78,7 @@ class MailgunAdmin extends Mailgun
             'tag'               => $sitename,
         );
         if (!$this->options) {
-            $this->options = $defaults;
+            $this->options = $this->defaults;
             add_option('mailgun', $this->options);
         }
     }
@@ -275,6 +275,16 @@ class MailgunAdmin extends Mailgun
             $options[$key] = trim($value);
         }
 
+        if (empty($options['override-from'])) {
+            $options['override-from'] = $this->defaults['override-from'];
+        }
+        // alternatively:
+        // foreach ($defaults as $key => $value) {
+        //   if (empty($options[$key])) {
+        //     $options[$key] = $value;
+        //   }
+        // }
+
         $this->options = $options;
 
         return $options;
@@ -368,6 +378,12 @@ class MailgunAdmin extends Mailgun
             array('Content-Type: text/plain')
         );
 
+        if ((bool) $useAPI) {
+            $error_msg = mg_api_last_error();
+        } else {
+            $error_msg = mg_smtp_last_error();
+        }
+
         if ($result) {
             die(
                 json_encode(
@@ -384,7 +400,7 @@ class MailgunAdmin extends Mailgun
                     array(
                         'message' => __('Failure', 'mailgun'),
                         'method'  => $method,
-                        'error'   => mg_api_last_error(),
+                        'error'   => $error_msg,
                     )
                 )
             );
