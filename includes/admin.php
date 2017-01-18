@@ -22,6 +22,11 @@
 class MailgunAdmin extends Mailgun
 {
     /**
+     * @var array $defaults Array of "safe" option defaults.
+     */
+    private $defaults;
+
+    /**
      * Setup backend functionality in WordPress.
      *
      * @return none
