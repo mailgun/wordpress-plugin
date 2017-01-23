@@ -4,7 +4,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.5.7.1
+ * Version:      1.5.8
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -32,45 +32,6 @@
  */
 
 /**
- * mg_smtp_last_error is a compound getter/setter for the last error that was
- * encountered during a Mailgun SMTP conversation.
- *
- * @param string $error OPTIONAL
- *
- * @return string Last error that occurred.
- *
- * @since 1.5.0
- */
-function mg_smtp_last_error($error = null)
-{
-    static $last_error;
-
-    if (null === $error) {
-        return $last_error;
-    } else {
-        $tmp = $last_error;
-        $last_error = $error;
-
-        return $tmp;
-    }
-}
-
-/**
- * Debugging output function for PHPMailer.
- *
- * @param string $str   Log message
- * @param string $level Logging level
- *
- * @return none
- *
- * @since 1.5.7
- */
-function phpmailer_debug_output($str, $level)
-{
-    error_log("PHPMailer [$level] $str");
-}
-
-/**
  * Entrypoint for the Mailgun plugin. Sets up the mailing "strategy" -
  * either API or SMTP.
  *
@@ -95,15 +56,24 @@ class Mailgun
 
         // Either override the wp_mail function or configure PHPMailer to use the
         // Mailgun SMTP servers
+        // When using SMTP, we also need to inject a `wp_mail` filter to make "from" settings
+        // work properly. Fixes issues with 1.5.7+
         if ($this->get_option('useAPI') || (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI)) {
             if (!function_exists('wp_mail')) {
-                if (!@include dirname(__FILE__).'/includes/wp-mail.php') {
-                    self::deactivate_and_die(dirname(__FILE__).'/includes/wp-mail.php');
+                if (!@include dirname(__FILE__).'/includes/wp-mail-api.php') {
+                    self::deactivate_and_die(dirname(__FILE__).'/includes/wp-mail-api.php');
                 }
             }
         } else {
+            // Using SMTP, include the SMTP filter
+            if (!function_exists('mg_smtp_mail_filter')) {
+                if (!@include dirname(__FILE__).'/includes/wp-mail-smtp.php') {
+                    self::deactivate_and_die(dirname(__FILE__).'/includes/wp-mail-smtp.php');
+                }
+            }
+            add_filter('wp_mail', 'mg_smtp_mail_filter');
             add_action('phpmailer_init', array(&$this, 'phpmailer_init'));
-            add_action('wp_mail_failed', array(&$this, 'wp_mail_failed'));
+            add_action('wp_mail_failed', 'wp_mail_failed');
         }
     }
 
@@ -146,9 +116,6 @@ class Mailgun
         $secure = (defined('MAILGUN_SECURE') && MAILGUN_SECURE) ? MAILGUN_SECURE : $this->get_option('secure');
         $password = (defined('MAILGUN_PASSWORD') && MAILGUN_PASSWORD) ? MAILGUN_PASSWORD : $this->get_option('password');
 
-        $from_name = (defined('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) ? MAILGUN_FROM_NAME : $this->detect_from_name();
-        $from_address = (defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) ? MAILGUN_FROM_ADDRESS : $this->detect_from_address();
-
         $phpmailer->Mailer = 'smtp';
         $phpmailer->Host = 'smtp.mailgun.org';
         $phpmailer->Port = (bool) $secure ? 465 : 587;
@@ -158,29 +125,8 @@ class Mailgun
 
         $phpmailer->SMTPSecure = (bool) $secure ? 'ssl' : 'none';
         // Without this line... wp_mail for SMTP-only will always return false. But why? :(
-        $phpmailer->Debugoutput = 'phpmailer_debug_output';
+        $phpmailer->Debugoutput = 'mg_smtp_debug_output';
         $phpmailer->SMTPDebug = 2;
-        $phpmailer->From = $from_address;
-        $phpmailer->FromName = $from_name;
-    }
-
-    /**
-     * Capture and store the failure message from PHPmailer so the user will
-     * actually know what is wrong.
-     *
-     * @param WP_Error $error Error raised by Wordpress/PHPmailer
-     *
-     * @return none
-     *
-     * @since 1.5.7
-     */
-    public function wp_mail_failed($error)
-    {
-        if (is_wp_error($error)) {
-            mg_smtp_last_error($error->get_error_message());
-        } else {
-            mg_smtp_last_error($error->__toString());
-        }
     }
 
     /**
@@ -221,7 +167,7 @@ class Mailgun
         $time = time();
         $url = $this->api_endpoint.$uri;
         $headers = array(
-            'Authorization' => 'Basic '.base64_encode("api:{$apiKey}")
+            'Authorization' => 'Basic '.base64_encode("api:{$apiKey}"),
         );
 
         switch ($method) {
@@ -490,81 +436,6 @@ class Mailgun
     {
         register_widget('list_widget');
         add_shortcode('mailgun', array(&$this, 'build_list_form'));
-    }
-
-    /**
-     * Find the sending "From Name" with a similar process used in `wp_mail`.
-     *
-     * @return string
-     *
-     * @since 1.5.7
-     */
-    private function detect_from_name()
-    {
-        $from_name = null;
-
-        if ($this->get_option('override-from') && !is_null($this->get_option('from-name'))) {
-            $from_name = $this->get_option('from-name');
-        } else {
-            if (is_null($this->get_option('from-name'))) {
-                if (function_exists('get_current_site')) {
-                    $from_name = get_current_site()->site_name;
-                } else {
-                    $from_name = 'WordPress';
-                }
-            } else {
-                $from_name = $this->get_option('from-name');
-            }
-        }
-
-        if (has_filter('wp_mail_from_name')) {
-            $from_name = apply_filters(
-                'wp_mail_from_name',
-                $from_name
-            );
-        }
-
-        return $from_name;
-    }
-
-    /**
-     * Find the sending "From Address" with a similar process used in `wp_mail`.
-     *
-     * @return string
-     *
-     * @since 1.5.7
-     */
-    private function detect_from_address()
-    {
-        $from_addr = null;
-
-        if ($this->get_option('override-from') && !is_null($this->get_option('from-address'))) {
-            $from_addr = $this->get_option('from-address');
-        } else {
-            if (is_null($this->get_option('from-address'))) {
-                if (function_exists('get_current_site')) {
-                    $from_addr = get_current_site()->domain;
-                } else {
-                    $sitedomain = strtolower($_SERVER['SERVER_NAME']);
-                    if (substr($sitedomain, 0, 4) === 'www.') {
-                        $sitedomain = substr($sitedomain, 4);
-                    }
-                }
-
-                $from_addr = $sitedomain;
-            } else {
-                $from_addr = $this->get_option('from-address');
-            }
-        }
-
-        if (has_filter('wp_mail_from')) {
-            $from_addr = apply_filters(
-                'wp_mail_from',
-                $from_addr
-            );
-        }
-
-        return $from_addr;
     }
 }
 
