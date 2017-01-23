@@ -167,7 +167,7 @@ class Mailgun
         $time = time();
         $url = $this->api_endpoint.$uri;
         $headers = array(
-            'Authorization' => 'Basic '.base64_encode("api:{$apiKey}")
+            'Authorization' => 'Basic '.base64_encode("api:{$apiKey}"),
         );
 
         switch ($method) {
