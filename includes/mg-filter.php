@@ -73,9 +73,9 @@ function mg_detect_from_name($from_name_header = null)
 
     if ($mg_override_from && !is_null($mg_from_name)) {
         $from_name = $mg_from_name;
-    } else if (!is_null($from_name_header)) {
+    } elseif (!is_null($from_name_header)) {
         $from_name = $from_name_header;
-    } else if (DEFINED('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) {
+    } elseif (defined('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) {
         $from_name = MAILGUN_FROM_NAME;
     } else {
         if (is_null($mg_from_name)) {
@@ -142,9 +142,9 @@ function mg_detect_from_address($from_addr_header = null)
 
     if ($mg_override_from && !is_null($mg_from_addr)) {
         $from_addr = $this->get_option('from-address');
-    } else if (!is_null($from_addr_header)) {
+    } elseif (!is_null($from_addr_header)) {
         $from_addr = $from_addr_header;
-    } else if (DEFINED('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) {
+    } elseif (defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) {
         $from_addr = MAILGUN_FROM_ADDRESS;
     } else {
         if (is_null($mg_from_addr)) {
@@ -261,7 +261,8 @@ function mg_parse_headers($headers = array())
  *
  * @since 1.5.8
  */
-function mg_dump_headers($headers = null) {
+function mg_dump_headers($headers = null)
+{
     if (is_null($headers) || !is_array($headers)) {
         return '';
     }
@@ -274,5 +275,3 @@ function mg_dump_headers($headers = null) {
 
     return $header_string;
 }
-
-?>
