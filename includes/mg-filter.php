@@ -72,7 +72,7 @@ function mg_detect_from_name($from_name_header = null)
     $from_name = null;
 
     if ($mg_override_from && !is_null($mg_from_name)) {
-        $from_name = $mg_from_name
+        $from_name = $mg_from_name;
     } else if (!is_null($from_name_header)) {
         $from_name = $from_name_header;
     } else if (DEFINED('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) {
