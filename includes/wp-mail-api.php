@@ -19,6 +19,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+// Include MG filter functions
+if (!@include dirname(__FILE__).'/mg-filter.php') {
+    Mailgun::deactivate_and_die(dirname(__FILE__).'/mg-filter.php');
+}
+
 /**
  * mg_api_last_error is a compound getter/setter for the last error that was
  * encountered during a Mailgun API call.
@@ -40,31 +45,6 @@ function mg_api_last_error($error = null)
         $last_error = $error;
 
         return $tmp;
-    }
-}
-
-/**
- * Tries several methods to get the MIME Content-Type of a file.
- *
- * @param string $filepath
- * @param string $default_type If all methods fail, fallback to $default_type
- *
- * @return string Content-Type
- *
- * @since 1.5.4
- */
-function get_mime_content_type($filepath, $default_type = 'text/plain')
-{
-    if (function_exists('mime_content_type')) {
-        return mime_content_type($filepath);
-    } elseif (function_exists('finfo_file')) {
-        $fi = finfo_open(FILEINFO_MIME_TYPE);
-        $ret = finfo_file($fi, $filepath);
-        finfo_close($fi);
-
-        return $ret;
-    } else {
-        return $default_type;
     }
 }
 
@@ -223,64 +203,8 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         }
     }
 
-    if ((isset($mailgun['override-from']) && $mailgun['override-from'])
-        && !empty($mailgun['from-name']) && !empty($mailgun['from-address'])
-    ) {
-        $from_name = $mailgun['from-name'];
-        $from_email = $mailgun['from-address'];
-    } else {
-        // From email and name
-        // If we don't have a name from the input headers
-        if (empty($from_name) && !empty($mailgun['from-name'])) {
-            $from_name = $mailgun['from-name'];
-        } elseif (empty($from_email) && empty($mailgun['from-name'])) {
-            if (function_exists('get_current_site')) {
-                $from_name = get_current_site()->site_name;
-            } else {
-                $from_name = 'WordPress';
-            }
-        }
-
-        /* If we don't have `From` input headers, use wordpress@$sitedomain
-         * Some hosts will block outgoing mail from this address if it doesn't
-         * exist but there's no easy alternative. Defaulting to admin_email
-         * might appear to be another option but some hosts may refuse to
-         * relay mail from an unknown domain.
-         *
-         * @link http://trac.wordpress.org/ticket/5007.
-         */
-
-        if (empty($from_email) && !empty($mailgun['from-address'])) {
-            $from_email = $mailgun['from-address'];
-        } elseif (empty($from_email) && empty($mailgun['from-address'])) {
-            if (function_exists('get_current_site')) {
-                $sitedomain = get_current_site()->domain;
-            } else {
-                // Get the site domain and get rid of www.
-                $sitedomain = strtolower($_SERVER['SERVER_NAME']);
-                if (substr($sitedomain, 0, 4) == 'www.') {
-                    $sitedomain = substr($sitedomain, 4);
-                }
-            }
-
-            $from_email = 'wordpress@'.$sitedomain;
-        }
-
-        // Attempt to apply external filters to these values before using our own.
-        if (has_filter('wp_mail_from')) {
-            $from_email = apply_filters(
-                'wp_mail_from',
-                $from_email
-            );
-        }
-
-        if (has_filter('wp_mail_from_name')) {
-            $from_name = apply_filters(
-                'wp_mail_from_name',
-                $from_name
-            );
-        }
-    }
+    $from_name = mg_detect_from_name($from_name);
+    $from_email = mg_detect_from_address($from_email);
 
     $body = array(
         'from'    => "{$from_name} <{$from_email}>",
