@@ -48,7 +48,7 @@ function mg_api_last_error($error = null)
     }
 }
 
-/**
+/*
  * Wordpress filter to mutate a `To` header to use recipient variables.
  * Uses the `mg_use_recipient_vars_syntax` filter to apply the actual
  * change. Otherwise, just a list of `To` addresses will be returned.

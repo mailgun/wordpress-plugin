@@ -275,5 +275,3 @@ function mg_dump_headers($headers = null)
 
     return $header_string;
 }
-
-?>
