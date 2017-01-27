@@ -73,7 +73,7 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs)
 
             $idx = 0;
             foreach ($to_addrs as $addr) {
-                $rcpt_vars[$addr] = array("batch_msg_id" => $idx);
+                $rcpt_vars[$addr] = array('batch_msg_id' => $idx);
                 $idx++;
             }
 

@@ -4,6 +4,7 @@ Changelog
 1.5.8 (2017-01-23):
 * Rewrite a large chunk of old SMTP code
 * Fix a bug with SMTP + "override from" that was introduced in 1.5.7
+* SMTP debug logging is now controlled by `MG_DEBUG_SMTP` constant
 
 1.5.7.1 (2017-01-18):
 * Fix an odd `Undefined property: MailgunAdmin::$defaults` when saving config

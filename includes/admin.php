@@ -22,7 +22,7 @@
 class MailgunAdmin extends Mailgun
 {
     /**
-     * @var array $defaults Array of "safe" option defaults.
+     * @var array Array of "safe" option defaults.
      */
     private $defaults;
 
@@ -312,20 +312,23 @@ class MailgunAdmin extends Mailgun
 
         if ((!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
             || (!$this->get_option('password') && $this->get_option('useAPI') === '0')
-        ) { ?>
+        ) {
+            ?>
             <div id='mailgun-warning' class='updated fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
 <?php
+
         }
 
         if ($this->get_option('override-from') === '1'
             && (!$this->get_option('from-name')
             || !$this->get_option('from-address'))
-        ) { ?>
+        ) {
+            ?>
             <div id='mailgun-warning' class='updated fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('"Override From" option requires that "From Name" and "From Address" be set to work properly! <a href="%1$s">Configure Mailgun now</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
 <?php
+
         }
     }
-
 
     /**
      * Add a settings link to the plugin actions.
@@ -362,6 +365,7 @@ class MailgunAdmin extends Mailgun
                     array(
                         'message' => __('Unauthorized', 'mailgun'),
                         'method'  => null,
+                        'error'   => __('Unauthorized', 'mailgun'),
                     )
                 )
             );

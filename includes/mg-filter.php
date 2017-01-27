@@ -73,12 +73,12 @@ function mg_detect_from_name($from_name_header = null)
 
     if ($mg_override_from && !is_null($mg_from_name)) {
         $from_name = $mg_from_name;
-    } else if (!is_null($from_name_header)) {
+    } elseif (!is_null($from_name_header)) {
         $from_name = $from_name_header;
-    } else if (DEFINED('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) {
+    } elseif (defined('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) {
         $from_name = MAILGUN_FROM_NAME;
     } else {
-        if (is_null($mg_from_name)) {
+        if (is_null($mg_from_name) || empty($mg_from_name)) {
             if (function_exists('get_current_site')) {
                 $from_name = get_current_site()->site_name;
             } else {
@@ -95,7 +95,7 @@ function mg_detect_from_name($from_name_header = null)
             'wp_mail_from_name',
             $from_name
         );
-        if (!is_null($filter_from_name)) {
+        if (!is_null($filter_from_name) && !empty($filter_from_name)) {
             $from_name = $filter_from_name;
         }
     }
@@ -142,14 +142,14 @@ function mg_detect_from_address($from_addr_header = null)
 
     if ($mg_override_from && !is_null($mg_from_addr)) {
         $from_addr = $mg_from_addr;
-    } else if (!is_null($from_addr_header)) {
+    } elseif (!is_null($from_addr_header)) {
         $from_addr = $from_addr_header;
-    } else if (DEFINED('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) {
+    } elseif (defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) {
         $from_addr = MAILGUN_FROM_ADDRESS;
     } else {
-        if (is_null($mg_from_addr)) {
+        if (is_null($mg_from_addr) || empty($mg_from_addr)) {
             if (function_exists('get_current_site')) {
-                $from_addr = get_current_site()->domain;
+                $sitedomain = get_current_site()->domain;
             } else {
                 $sitedomain = strtolower($_SERVER['SERVER_NAME']);
                 if (substr($sitedomain, 0, 4) === 'www.') {
@@ -157,7 +157,7 @@ function mg_detect_from_address($from_addr_header = null)
                 }
             }
 
-            $from_addr = $sitedomain;
+            $from_addr = 'wordpress@'.$sitedomain;
         } else {
             $from_addr = $mg_from_addr;
         }
@@ -169,7 +169,7 @@ function mg_detect_from_address($from_addr_header = null)
             'wp_mail_from',
             $from_addr
         );
-        if (!is_null($filter_from_addr)) {
+        if (!is_null($filter_from_addr) || !empty($filter_from_addr)) {
             $from_addr = $filter_from_addr;
         }
     }
@@ -238,7 +238,7 @@ function mg_parse_headers($headers = array())
 
             // Clean up the values
             $name = trim($name);
-            $content = trim($content);
+            $value = trim($value);
 
             $new_headers[$name] = array(
                 'value'     => $value,
@@ -261,7 +261,8 @@ function mg_parse_headers($headers = array())
  *
  * @since 1.5.8
  */
-function mg_dump_headers($headers = null) {
+function mg_dump_headers($headers = null)
+{
     if (is_null($headers) || !is_array($headers)) {
         return '';
     }
@@ -269,7 +270,7 @@ function mg_dump_headers($headers = null) {
     $header_string = '';
     foreach ($headers as $name => $content) {
         // XXX - Is it actually okay to discard `parts` and `boundary`?
-        $header_string .= sprintf('%s: %s\r\n', $name, $content['value']);
+        $header_string .= sprintf("%s: %s\r\n", $name, $content['value']);
     }
 
     return $header_string;
