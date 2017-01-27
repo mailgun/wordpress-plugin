@@ -48,7 +48,7 @@ function mg_api_last_error($error = null)
     }
 }
 
-/**
+/*
  * Wordpress filter to mutate a `To` header to use recipient variables.
  * Uses the `mg_use_recipient_vars_syntax` filter to apply the actual
  * change. Otherwise, just a list of `To` addresses will be returned.
@@ -73,7 +73,7 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs)
 
             $idx = 0;
             foreach ($to_addrs as $addr) {
-                $rcpt_vars[$addr] = array("batch_msg_id" => $idx);
+                $rcpt_vars[$addr] = array('batch_msg_id' => $idx);
                 $idx++;
             }
 

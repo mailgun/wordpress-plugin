@@ -125,7 +125,7 @@ class Mailgun
 
         $phpmailer->SMTPSecure = (bool) $secure ? 'ssl' : 'none';
         // Without this line... wp_mail for SMTP-only will always return false. But why? :(
-        $phpmailer->Debugoutput = 'phpmailer_debug_output';
+        $phpmailer->Debugoutput = 'mg_smtp_debug_output';
         $phpmailer->SMTPDebug = 2;
     }
 
@@ -167,7 +167,7 @@ class Mailgun
         $time = time();
         $url = $this->api_endpoint.$uri;
         $headers = array(
-            'Authorization' => 'Basic '.base64_encode("api:{$apiKey}")
+            'Authorization' => 'Basic '.base64_encode("api:{$apiKey}"),
         );
 
         switch ($method) {

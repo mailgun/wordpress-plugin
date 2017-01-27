@@ -58,9 +58,11 @@ function mg_smtp_last_error($error = null)
  *
  * @since 1.5.7
  */
-function phpmailer_debug_output($str, $level)
+function mg_smtp_debug_output($str, $level)
 {
-    error_log("PHPMailer [$level] $str");
+    if (defined('MG_DEBUG_SMTP') && MG_DEBUG_SMTP) {
+        error_log("PHPMailer [$level] $str");
+    }
 }
 
 /**
@@ -133,7 +135,7 @@ function mg_smtp_mail_filter(array $args)
     $mg_headers['From'] = $from_header;
 
     // Header compaction
-    $headers = mg_dump_headers($mg_headers); // XXX - TO BE IMPLEMENTED
+    $headers = mg_dump_headers($mg_headers);
 
     return compact('to', 'subject', 'message', 'headers', 'attachments');
 }
