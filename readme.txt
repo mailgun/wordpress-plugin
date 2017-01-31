@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.7.1
-Stable tag: 1.5.7.1
+Stable tag: 1.5.8
 License: GPLv2 or later
 
 
@@ -42,6 +42,12 @@ Your web server may not allow outbound HTTP connections. Set `Use HTTP API` to "
 
 Your web server may not allow outbound SMTP connections on port 465 for secure connections or 587 for unsecured connections. Try changing `Use Secure SMTP` to "No" or "Yes" depending on your current configuration and testing again. If both fail, try setting `Use HTTP API` to "Yes" and testing again.
 
+If you *have* to use SMTP and something is still going horribly wrong, enable debug mode in WordPress and also add the `MG_DEBUG_SMTP` constant to your `wp-config.php`, like so:
+
+`
+define( 'MG_DEBUG_SMTP', true );
+`
+
 - Can this be configured globally for WordPress Multisite?
 
 Yes, using the following constants that can be placed in wp-config.php:
@@ -69,6 +75,11 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.5.8 (2017-01-23): =
+* Rewrite a large chunk of old SMTP code
+* Fix a bug with SMTP + "override from" that was introduced in 1.5.7
+* SMTP debug logging is now controlled by `MG_DEBUG_SMTP` constant
 
 = 1.5.7.1 (2017-01-18): =
 * Fix an odd `Undefined property: MailgunAdmin::$defaults` when saving config
