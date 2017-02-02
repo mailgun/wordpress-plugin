@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.7.1
-Stable tag: 1.5.8
+Stable tag: 1.5.8.1
 License: GPLv2 or later
 
 
@@ -75,6 +75,11 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.5.8.1 (2017-02-06): =
+- Fix "Undefined property: MailgunAdmin::$hook_suffix" (#48)
+- Fix "Undefined variable: from_name on every email process" (API and SMTP) (#49)
+- Admin code now loads only on admin user access
 
 = 1.5.8 (2017-01-23): =
 * Rewrite a large chunk of old SMTP code
