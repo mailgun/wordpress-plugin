@@ -306,7 +306,8 @@ class MailgunAdmin extends Mailgun
     public function admin_notices()
     {
         $screen = get_current_screen();
-        if ($screen->id == $this->hook_suffix) {
+        if (!current_user_can('manage_options') || $screen->id == $this->hook_suffix
+        ) {
             return;
         }
 
@@ -314,7 +315,7 @@ class MailgunAdmin extends Mailgun
             || (!$this->get_option('password') && $this->get_option('useAPI') === '0')
         ) {
             ?>
-            <div id='mailgun-warning' class='updated fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
+            <div id='mailgun-warning' class='notice notice-warning fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
 <?php
 
         }
@@ -324,7 +325,7 @@ class MailgunAdmin extends Mailgun
             || !$this->get_option('from-address'))
         ) {
             ?>
-            <div id='mailgun-warning' class='updated fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('"Override From" option requires that "From Name" and "From Address" be set to work properly! <a href="%1$s">Configure Mailgun now</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
+            <div id='mailgun-warning' class='notice notice-warning fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('"Override From" option requires that "From Name" and "From Address" be set to work properly! <a href="%1$s">Configure Mailgun now</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
 <?php
 
         }

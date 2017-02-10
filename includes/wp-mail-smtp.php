@@ -128,6 +128,14 @@ function mg_smtp_mail_filter(array $args)
         }
     }
 
+    if (!isset($from_name)) {
+        $from_name = null;
+    }
+
+    if (!isset($from_addr)) {
+        $from_addr = null;
+    }
+
     $from_name = mg_detect_from_name($from_name);
     $from_addr = mg_detect_from_address($from_addr);
 

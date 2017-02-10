@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.5.8.1 (2017-02-06):
+- Fix "Undefined property: MailgunAdmin::$hook_suffix" (#48)
+- Fix "Undefined variable: from_name on every email process" (API and SMTP) (#49)
+- Admin code now loads only on admin user access
+
 1.5.8 (2017-01-23):
 * Rewrite a large chunk of old SMTP code
 * Fix a bug with SMTP + "override from" that was introduced in 1.5.7

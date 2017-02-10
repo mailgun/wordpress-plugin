@@ -203,6 +203,14 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         }
     }
 
+    if (!isset($from_name)) {
+        $from_name = null;
+    }
+
+    if (!isset($from_email)) {
+        $from_email = null;
+    }
+
     $from_name = mg_detect_from_name($from_name);
     $from_email = mg_detect_from_address($from_email);
 
