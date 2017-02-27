@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.7.1
-Stable tag: 1.5.8.1
+Stable tag: 1.5.8.2
 License: GPLv2 or later
 
 
@@ -63,6 +63,31 @@ MAILGUN_FROM_NAME    Type: string
 MAILGUN_FROM_ADDRESS Type: string
 `
 
+- What hooks are available for use with other plugins?
+
+`mg_use_recipient_vars_syntax`
+  Mutates messages to use recipient variables syntax - see
+  https://documentation.mailgun.com/user_manual.html#batch-sending for more info.
+
+  Should accept a list of `To` addressses.
+
+  Should *only* return `true` or `false`.
+
+`mg_mutate_message_body`
+  Allows an external plugin to mutate the message body before sending.
+
+  Should accept an array, `$body`.
+
+  Should return a new array to replace `$body`.
+
+`mg_mutate_attachments`
+  Allows an external plugin to mutate the attachments on the message before
+  sending.
+
+  Should accept an array, `$attachments`.
+
+  Should return a new array to replace `$attachments`.
+
 
 == Screenshots ==
 
@@ -75,6 +100,12 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.5.8.2 (2017-02-27): =
+- Fix a bug causing empty tags to be sent with messages (#51)
+- Add `mg_mutate_message_body` hook to allow other plugins to modify the message body before send
+- Add `mg_mutate_attachments` hook to allow other plugins to modify the message attachments before send
+- Fix a bug causing the AJAX test to fail incorrectly.
 
 = 1.5.8.1 (2017-02-06): =
 - Fix "Undefined property: MailgunAdmin::$hook_suffix" (#48)
