@@ -389,8 +389,20 @@ class MailgunAdmin extends Mailgun
         );
 
         if ((bool) $useAPI) {
+            if (!function_exists('mg_api_last_error')) {
+                if (!include dirname(__FILE__).'/wp-mail-api.php') {
+                    self::deactivate_and_die(dirname(__FILE__).'/wp-mail-api.php');
+                }
+            }
+
             $error_msg = mg_api_last_error();
         } else {
+            if (!function_exists('mg_smtp_last_error')) {
+                if (!include dirname(__FILE__).'/wp-mail-smtp.php') {
+                    self::deactivate_and_die(dirname(__FILE__).'/wp-mail-smtp.php');
+                }
+            }
+
             $error_msg = mg_smtp_last_error();
         }
 

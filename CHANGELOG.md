@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.5.8.2 (2017-02-27):
+- Fix a bug causing empty tags to be sent with messages (#51)
+- Add `mg_mutate_message_body` hook to allow other plugins to modify the message body before send
+- Add `mg_mutate_attachments` hook to allow other plugins to modify the message attachments before send
+- Fix a bug causing the AJAX test to fail incorrectly.
+
 1.5.8.1 (2017-02-06):
 - Fix "Undefined property: MailgunAdmin::$hook_suffix" (#48)
 - Fix "Undefined variable: from_name on every email process" (API and SMTP) (#49)

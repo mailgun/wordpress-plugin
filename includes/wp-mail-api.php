@@ -226,7 +226,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         $body['recipient-variables'] = $rcpt_data['rcpt_vars'];
     }
 
-    $body['o:tag'] = '';
+    $body['o:tag'] = array();
     $body['o:tracking-clicks'] = !empty($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
     $body['o:tracking-opens'] = empty($mailgun['track-opens']) ? 'no' : 'yes';
 
@@ -237,7 +237,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     }
 
     // campaign-id now refers to a list of tags which will be appended to the site tag
-    if (isset($mailgun['campaign-id'])) {
+    if (!empty($mailgun['campaign-id'])) {
         $tags = explode(',', str_replace(' ', '', $mailgun['campaign-id']));
         if (empty($body['o:tag'])) {
             $body['o:tag'] = $tags;
@@ -325,6 +325,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 
     $payload = null;
 
+    // Allow other plugins to apply body changes before writing the payload.
+    $body = apply_filters('mg_mutate_message_body', $body);
+
     // Iterate through pre-built params and build payload:
     foreach ($body as $key => $value) {
         if (is_array($value)) {
@@ -344,6 +347,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
             $payload .= "\r\n";
         }
     }
+
+    // Allow other plugins to apply attachent changes before writing to the payload.
+    $attachments = apply_filters('mg_mutate_attachments', $attachments);
 
     // If we have attachments, add them to the payload.
     if (!empty($attachments)) {
