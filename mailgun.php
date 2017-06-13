@@ -296,12 +296,12 @@ class Mailgun
                     <?php endif; ?>
                     <?php if (isset($args['collect_name']) && intval($args['collect_name']) === 1) : ?>
                         <p class="mailgun-list-widget-name">
-                            <strong>Name:</strong>
+                            <strong><?php echo __('Name', 'mailgun'); ?>:</strong>
                             <input type="text" name="name" />
                         </p>
                     <?php endif; ?>
                     <p class="mailgun-list-widget-email">
-                        <strong>Email:</strong>
+                        <strong><?php echo __('Email', 'mailgun'); ?>:</strong>
                         <input type="text" name="email" />
                     </p>
                 </div>
@@ -321,12 +321,12 @@ class Mailgun
                     <input type="hidden" name="addresses[<?php echo $list_addresses[0]; ?>]" value="on" />
                 <?php endif; ?>
 
-                <input class="mailgun-list-submit-button" data-form-id="<?php echo $form_class_id; ?>" type="button" value="Subscribe" />
+                <input class="mailgun-list-submit-button" data-form-id="<?php echo $form_class_id; ?>" type="button" value="<?php echo __('Subscribe', 'mailgun'); ?>" />
                 <input type="hidden" name="mailgun-submission" value="1" />
 
             </form>
             <div class="widget-list-panel result-panel" style="display:none;">
-                <span>Thank you for subscribing!</span>
+                <span><?php echo __('Thank you for subscribing!', 'mailgun'); ?></span>
             </div>
         </div>
 
@@ -339,17 +339,17 @@ class Mailgun
                 var form_id = jQuery(this).data('form-id');
 
                 if(jQuery('.mailgun-list-name').length > 0 && jQuery('.'+form_id+' .mailgun-list-name:checked').length < 1) {
-                    alert('Please select a list to subscribe to.');
+                    alert('<?php echo __('Please select a list to subscribe to.', 'mailgun'); ?>');
                     return;
                 }
 
                 if(jQuery('.'+form_id+' .mailgun-list-widget-name input') && jQuery('.'+form_id+' .mailgun-list-widget-name input').val() === '') {
-                    alert('Please enter your subscription name.');
+                    alert('<?php echo __('Please enter your subscription name.', 'mailgun'); ?>');
                     return;
                 }
 
                 if(jQuery('.'+form_id+' .mailgun-list-widget-email input').val() === '') {
-                    alert('Please enter your subscription email.');
+                    alert('<?php echo __('Please enter your subscription email.', 'mailgun'); ?>');
                     return;
                 }
 
