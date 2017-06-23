@@ -240,11 +240,15 @@ function mg_parse_headers($headers = array())
             $name = trim($name);
             $value = trim($value);
 
-            $new_headers[$name] = array(
+            if ( !isset($new_headers[$name]) ) {
+                $new_headers[$name] = array();
+            }
+
+            array_push($new_headers[$name], array(
                 'value'     => $value,
                 'boundary'  => $boundary,
                 'parts'     => $parts,
-            );
+            ));
         }
     }
 
@@ -268,10 +272,18 @@ function mg_dump_headers($headers = null)
     }
 
     $header_string = '';
-    foreach ($headers as $name => $content) {
-        // XXX - Is it actually okay to discard `parts` and `boundary`?
-        $header_string .= sprintf("%s: %s\r\n", $name, $content['value']);
+    foreach ($headers as $name => $values) {
+        $header_string .= sprintf("%s: ", $name);
+        $header_values = array();
+
+        foreach ($values as $content) {
+            // XXX - Is it actually okay to discard `parts` and `boundary`?
+            array_push($header_values, $content['value']);
+        }
+
+        $header_string .= sprintf("%s\r\n", implode(", ", $header_values));
     }
 
     return $header_string;
 }
+

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.8.3 (2017-06-13):
+- Fix a bug causing only the last header value to be used when multiple headers of the same type are specified (https://wordpress.org/support/topic/bug-with-mg_parse_headers/)
+- Added `pt_BR` translations (thanks @emersonbroga)
+
 1.5.8.2 (2017-02-27):
 - Fix a bug causing empty tags to be sent with messages (#51)
 - Add `mg_mutate_message_body` hook to allow other plugins to modify the message body before send
