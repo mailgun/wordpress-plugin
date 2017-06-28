@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.5.8.4 (2017-06-28):
+- Packaging fix which takes care of an odd filtering issue (https://wordpress.org/support/topic/1-5-8-3-broke-the-mg_mutate_message_body-filter)
+
 1.5.8.3 (2017-06-13):
 - Fix a bug causing only the last header value to be used when multiple headers of the same type are specified (https://wordpress.org/support/topic/bug-with-mg_parse_headers/)
 - Added `pt_BR` translations (thanks @emersonbroga)
