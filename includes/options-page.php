@@ -96,8 +96,8 @@
                         </th>
                         <td>
                             <select name="mailgun[track-clicks]">
-                                <option value="yes"<?php selected('yes', $this->get_option('track-clicks')); ?>><?php _e('Yes', 'mailgun'); ?></option>
                                 <option value="htmlonly"<?php selected('htmlonly', $this->get_option('track-clicks')); ?>><?php _e('HTML Only', 'mailgun'); ?></option>
+                                <option value="yes"<?php selected('yes', $this->get_option('track-clicks')); ?>><?php _e('Yes', 'mailgun'); ?></option>
                                 <option value="no"<?php selected('no', $this->get_option('track-clicks')); ?>><?php _e('No', 'mailgun'); ?></option>
                             </select>
                             <p class="description"><?php _e('If enabled, Mailgun will  and track links.', 'mailgun'); ?> <a href="http://documentation.mailgun.com/user_manual.html#tracking-clicks" target="_blank">Click Tracking Documentation</a></p>
