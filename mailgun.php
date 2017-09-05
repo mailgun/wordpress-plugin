@@ -4,7 +4,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.5.8.4
+ * Version:      1.5.8.5
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -123,7 +123,7 @@ class Mailgun
         $phpmailer->Username = $username;
         $phpmailer->Password = $password;
 
-        $phpmailer->SMTPSecure = (bool) $secure ? 'ssl' : 'none';
+        $phpmailer->SMTPSecure = (bool) $secure ? 'tls' : 'none';
         // Without this line... wp_mail for SMTP-only will always return false. But why? :(
         $phpmailer->Debugoutput = 'mg_smtp_debug_output';
         $phpmailer->SMTPDebug = 2;

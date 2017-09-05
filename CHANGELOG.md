@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.8.5 (2017-09-05):
+- Change default click tracking setting to `htmlonly` (https://github.com/mailgun/wordpress-plugin/pull/58)
+- Change PHPMailer set-up stanza to use TLS
+
 1.5.8.4 (2017-06-28):
 - Packaging fix which takes care of an odd filtering issue (https://wordpress.org/support/topic/1-5-8-3-broke-the-mg_mutate_message_body-filter)
 
