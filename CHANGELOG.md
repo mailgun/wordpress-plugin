@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.5.9 (2017-09-13):
+- Add a configuration option to allow setting security type for SMTP connection (SSL / TLS)
+
 1.5.8.5 (2017-09-05):
 - Change default click tracking setting to `htmlonly` (https://github.com/mailgun/wordpress-plugin/pull/58)
 - Change PHPMailer set-up stanza to use TLS

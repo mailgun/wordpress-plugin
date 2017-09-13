@@ -76,6 +76,7 @@ class MailgunAdmin extends Mailgun
             'username'          => '',
             'password'          => '',
             'secure'            => '1',
+            'sectype'           => 'tls',
             'track-clicks'      => '',
             'track-opens'       => '',
             'campaign-id'       => '',
@@ -283,6 +284,10 @@ class MailgunAdmin extends Mailgun
         if (empty($options['override-from'])) {
             $options['override-from'] = $this->defaults['override-from'];
         }
+
+        if (empty($options['sectype'])) {
+            $options['sectype'] = $this->defaults['sectype'];
+        }
         // alternatively:
         // foreach ($defaults as $key => $value) {
         //   if (empty($options[$key])) {
@@ -374,10 +379,15 @@ class MailgunAdmin extends Mailgun
 
         $useAPI = (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI) ? MAILGUN_USEAPI : $this->get_option('useAPI');
         $secure = (defined('MAILGUN_SECURE') && MAILGUN_SECURE) ? MAILGUN_SECURE : $this->get_option('secure');
+        $sectype = (defined('MAILGUN_SECTYPE') && MAILGUN_SECTYPE) ? MAILGUN_SECTYPE : $this->get_option('sectype');
+
         if ((bool) $useAPI) {
             $method = __('HTTP API', 'mailgun');
         } else {
             $method = ((bool) $secure) ? __('Secure SMTP', 'mailgun') : __('SMTP', 'mailgun');
+            if ((bool) $secure) {
+                $method = $method . sprintf(__(' via %s', $sectype));
+            }
         }
 
         $admin_email = get_option('admin_email');

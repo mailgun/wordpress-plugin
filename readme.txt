@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.8
-Stable tag: 1.5.8.5
+Stable tag: 1.5.8
 License: GPLv2 or later
 
 
@@ -59,6 +59,7 @@ MAILGUN_DOMAIN       Type: string
 MAILGUN_USERNAME     Type: string
 MAILGUN_PASSWORD     Type: string
 MAILGUN_SECURE       Type: boolean
+MAILGUN_SECTYPE      Type: string   Choices: 'ssl' or 'tls'
 MAILGUN_FROM_NAME    Type: string
 MAILGUN_FROM_ADDRESS Type: string
 `
@@ -125,6 +126,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.5.9 (2017-09-13): =
+- Add a configuration option to allow setting security type for SMTP connection (SSL / TLS)
 
 = 1.5.8.5 (2017-09-05): =
 - Change default click tracking setting to `htmlonly` (https://github.com/mailgun/wordpress-plugin/pull/58)

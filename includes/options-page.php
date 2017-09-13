@@ -90,6 +90,18 @@
                             <p class="description"><?php _e('Set this to "No" if your server cannot establish SSL SMTP connections or if emails are not being delivered. If you set this to "No" your password will be sent in plain text. Only valid for use with SMTP. Default "Yes".', 'mailgun'); ?></p>
                         </td>
                     </tr>
+                    <tr valign="top" class="mailgun-smtp">
+                        <th scope="row">
+                            <?php _e('Security Type', 'mailgun'); ?>
+                        </th>
+                        <td>
+                            <select name="mailgun[sectype]">
+                                <option value="ssl"<?php selected('ssl', $this->get_option('sectype')); ?>>SSL</option>
+                                <option value="tls"<?php selected('tls', $this->get_option('sectype')); ?>>TLS</option>
+                            </select>
+                            <p class="description"><php _e('Leave this at "TLS" unless mail sending fails. This option only matters for Secure SMTP. Default "TLS".', 'mailgun'); ?></p>
+                        </td>
+                    </tr>
                     <tr valign="top">
                         <th scope="row">
                             <?php _e('Click Tracking', 'mailgun'); ?>
