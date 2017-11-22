@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.10 (2017-11-22):
+- Fix back to settings link on lists page (https://github.com/mailgun/wordpress-plugin/pull/65)
+- Fix a bug causing `text/html` emails to send as both `text/plain` *and* `text/html` parts
+
 1.5.9 (2017-09-13):
 - Add a configuration option to allow setting security type for SMTP connection (SSL / TLS)
 

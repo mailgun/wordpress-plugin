@@ -218,7 +218,6 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         'from'    => "{$from_name} <{$from_email}>",
         'to'      => $to,
         'subject' => $subject,
-        'text'    => $message,
     );
 
     $rcpt_data = apply_filters('mg_mutate_to_rcpt_vars', $to);
@@ -256,21 +255,18 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         $body['bcc'] = implode(', ', $bcc);
     }
 
-    // If we are not given a Content-Type from the supplied headers, use
-    // text/html and *attempt* to strip tags and provide a text/plain
-    // version.
+    // If we are not given a Content-Type in the supplied headers,
+    // write the message body to a file and try to determine the mimetype
+    // using get_mime_content_type.
     if (!isset($content_type)) {
-        // Try to figure out the content type with mime_content_type.
         $tmppath = tempnam(sys_get_temp_dir(), 'mg');
         $tmp = fopen($tmppath, 'w+');
 
         fwrite($tmp, $message);
         fclose($tmp);
 
-        // Get mime type with mime_content_type
         $content_type = get_mime_content_type($tmppath, 'text/plain');
 
-        // Remove the tmpfile
         unlink($tmppath);
     }
 
@@ -284,8 +280,11 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 
     if ('text/plain' === $content_type) {
         $body['text'] = $message;
+    } else if ('text/html' === $content_type) {
+        $body['html'] = $message;
     } else {
         // Unknown Content-Type??
+        error_log('[mailgun] Got unknown Content-Type: ' . $content_type);
         $body['text'] = $message;
         $body['html'] = $message;
     }
@@ -320,50 +319,32 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
      * not support files directly.
      */
 
+    $payload = '';
+
     // First, generate a boundary for the multipart message.
     $boundary = base_convert(uniqid('boundary', true), 10, 36);
 
-    $payload = null;
-
-    // Allow other plugins to apply body changes before writing the payload.
+    // Allow other plugins to apply body changes before creating the payload.
     $body = apply_filters('mg_mutate_message_body', $body);
-
-    // Iterate through pre-built params and build payload:
-    foreach ($body as $key => $value) {
-        if (is_array($value)) {
-            $parent_key = $key;
-            foreach ($value as $key => $value) {
-                $payload .= '--'.$boundary;
-                $payload .= "\r\n";
-                $payload .= 'Content-Disposition: form-data; name="'.$parent_key."\"\r\n\r\n";
-                $payload .= $value;
-                $payload .= "\r\n";
-            }
-        } else {
-            $payload .= '--'.$boundary;
-            $payload .= "\r\n";
-            $payload .= 'Content-Disposition: form-data; name="'.$key.'"'."\r\n\r\n";
-            $payload .= $value;
-            $payload .= "\r\n";
-        }
+    if ( ($body_payload = mg_build_payload_from_body($body, $boundary)) != null ) {
+        $payload .= $body_payload;
     }
+
+    // TODO: Special handling for multipart/alternative mail
+    // if ('multipart/alternative' === $content_type) {
+    //     // Build payload from mime
+    //     // error_log(sprintf('building message payload from multipart/alternative'));
+    //     // error_log($body['message']);
+    //     // error_log('Attachments:');
+    //     // foreach ($attachments as $attachment) {
+    //     //     error_log($attachment);
+    //     // }
+    // }
 
     // Allow other plugins to apply attachent changes before writing to the payload.
     $attachments = apply_filters('mg_mutate_attachments', $attachments);
-
-    // If we have attachments, add them to the payload.
-    if (!empty($attachments)) {
-        $i = 0;
-        foreach ($attachments as $attachment) {
-            if (!empty($attachment)) {
-                $payload .= '--'.$boundary;
-                $payload .= "\r\n";
-                $payload .= 'Content-Disposition: form-data; name="attachment['.$i.']"; filename="'.basename($attachment).'"'."\r\n\r\n";
-                $payload .= file_get_contents($attachment);
-                $payload .= "\r\n";
-                $i++;
-            }
-        }
+    if ( ($attachment_payload = mg_build_attachments_payload($attachments, $boundary)) != null ) {
+        $payload .= $attachment_payload;
     }
 
     $payload .= '--'.$boundary.'--';
@@ -411,4 +392,56 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     }
 
     return true;
+}
+
+function mg_build_payload_from_body($body, $boundary) {
+    $payload = '';
+
+    // Iterate through pre-built params and build payload:
+    foreach ($body as $key => $value) {
+        if (is_array($value)) {
+            $parent_key = $key;
+            foreach ($value as $key => $value) {
+                $payload .= '--'.$boundary;
+                $payload .= "\r\n";
+                $payload .= 'Content-Disposition: form-data; name="'.$parent_key."\"\r\n\r\n";
+                $payload .= $value;
+                $payload .= "\r\n";
+            }
+        } else {
+            $payload .= '--'.$boundary;
+            $payload .= "\r\n";
+            $payload .= 'Content-Disposition: form-data; name="'.$key.'"'."\r\n\r\n";
+            $payload .= $value;
+            $payload .= "\r\n";
+        }
+    }
+
+    return $payload;
+}
+
+function mg_build_payload_from_mime($body, $boundary) {
+}
+
+function mg_build_attachments_payload($attachments, $boundary) {
+    $payload = '';
+
+    // If we have attachments, add them to the payload.
+    if (!empty($attachments)) {
+        $i = 0;
+        foreach ($attachments as $attachment) {
+            if (!empty($attachment)) {
+                $payload .= '--'.$boundary;
+                $payload .= "\r\n";
+                $payload .= 'Content-Disposition: form-data; name="attachment['.$i.']"; filename="'.basename($attachment).'"'."\r\n\r\n";
+                $payload .= file_get_contents($attachment);
+                $payload .= "\r\n";
+                $i++;
+            }
+        }
+    } else {
+        return null;
+    }
+
+    return $payload;
 }
