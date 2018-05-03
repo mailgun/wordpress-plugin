@@ -197,5 +197,8 @@
                     <input type="submit" class="button-primary" value="<?php _e('Save Changes', 'mailgun'); ?>" />
                     <input type="button" id="mailgun-test" class="button-secondary" value="<?php _e('Test Configuration', 'mailgun'); ?>" />
                 </p>
+                <p>
+                    <?php _e("The configuration test email will be sent to your site's administrative email address:", 'mailgun'); ?> <?php echo esc_html(get_option('admin_email'));?>
+                </p>
             </form>
         </div>
