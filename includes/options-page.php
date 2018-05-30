@@ -57,7 +57,7 @@
                         </th>
                         <td>
                             <input type="text" class="regular-text" name="mailgun[apiKey]" value="<?php esc_attr_e($this->get_option('apiKey')); ?>" placeholder="key-3ax6xnjp29jd6fds4gc373sgvjxteol0" />
-                            <p class="description"><?php _e('Your Mailgun API key, that starts with and includes "key-". Only valid for use with the API.', 'mailgun'); ?></p>
+                            <p class="description"><?php _e('Your Mailgun API key. Only valid for use with the API.', 'mailgun'); ?></p>
                         </td>
                     </tr>
                     <tr valign="top" class="mailgun-smtp">

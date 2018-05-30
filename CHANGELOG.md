@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.11 (2018-05-30):
+- Fix an issue with authentication failing for newer API keys
+- Test plugin up to Wordpress 4.9.6
+
 1.5.10 (2017-11-22):
 - Fix back to settings link on lists page (https://github.com/mailgun/wordpress-plugin/pull/65)
 - Fix a bug causing `text/html` emails to send as both `text/plain` *and* `text/html` parts
