@@ -71,6 +71,7 @@ class MailgunAdmin extends Mailgun
 
         $this->defaults = array(
             'useAPI'            => '1',
+            'region'            => '',
             'apiKey'            => '',
             'domain'            => '',
             'username'          => '',

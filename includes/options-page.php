@@ -44,6 +44,18 @@
                     </tr>
                     <tr valign="top">
                         <th scope="row">
+                            <?php _e('Server Region', 'mailgun'); ?>
+                        </th>
+                        <td>
+                            <select id="mailgun-region" name="mailgun[region]">
+                                <option value=""<?php selected('', $this->get_option('region')); ?>><?php _e('US (North America)', 'mailgun'); ?></option>
+                                <option value="eu."<?php selected('eu.', $this->get_option('region')); ?>><?php _e('EU (Europe)', 'mailgun'); ?></option>
+                            </select>
+                            <p class="description"><?php _e('Please select the region where your domain is configured. Defaults to US', 'mailgun'); ?></p>
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row">
                             <?php _e('Mailgun Domain Name', 'mailgun'); ?>
                         </th>
                         <td>
