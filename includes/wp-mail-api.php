@@ -115,6 +115,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 
     $mailgun = get_option('mailgun');
     $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $mailgun['apiKey'];
+    $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $mailgun['region'];
     $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $mailgun['domain'];
 
     if (empty($apiKey) || empty($domain)) {
@@ -357,7 +358,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         ),
     );
 
-    $url = "https://api.mailgun.net/v3/{$domain}/messages";
+    $url = "https://api.{$region}mailgun.net/v3/{$domain}/messages";
 
     // TODO: Mailgun only supports 1000 recipients per request, since we are
     // overriding this function, let's add looping here to handle that

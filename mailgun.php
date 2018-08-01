@@ -52,7 +52,8 @@ class Mailgun
         $this->options = get_option('mailgun');
         $this->plugin_file = __FILE__;
         $this->plugin_basename = plugin_basename($this->plugin_file);
-        $this->api_endpoint = 'https://api.mailgun.net/v3/';
+        $region = $this->get_option('region');
+        $this->api_endpoint = "https://api.{$region}mailgun.net/v3/";
 
         // Either override the wp_mail function or configure PHPMailer to use the
         // Mailgun SMTP servers
@@ -111,6 +112,7 @@ class Mailgun
     public function phpmailer_init(&$phpmailer)
     {
         $username = (defined('MAILGUN_USERNAME') && MAILGUN_USERNAME) ? MAILGUN_USERNAME : $this->get_option('username');
+        $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
         $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $this->get_option('domain');
         $username = preg_replace('/@.+$/', '', $username)."@{$domain}";
         $secure = (defined('MAILGUN_SECURE') && MAILGUN_SECURE) ? MAILGUN_SECURE : $this->get_option('secure');
@@ -118,7 +120,7 @@ class Mailgun
         $password = (defined('MAILGUN_PASSWORD') && MAILGUN_PASSWORD) ? MAILGUN_PASSWORD : $this->get_option('password');
 
         $phpmailer->Mailer = 'smtp';
-        $phpmailer->Host = 'smtp.mailgun.org';
+        $phpmailer->Host = "smtp.{$region}mailgun.org";
         $phpmailer->Port = (bool) $secure ? 465 : 587;
         $phpmailer->SMTPAuth = true;
         $phpmailer->Username = $username;
