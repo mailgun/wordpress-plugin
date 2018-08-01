@@ -55,6 +55,7 @@ Yes, using the following constants that can be placed in wp-config.php:
 `
 MAILGUN_USEAPI       Type: boolean
 MAILGUN_APIKEY       Type: string
+MAILGUN_REGION       Type: string   Choices: '' for US or 'eu.' for Europe
 MAILGUN_DOMAIN       Type: string
 MAILGUN_USERNAME     Type: string
 MAILGUN_PASSWORD     Type: string
