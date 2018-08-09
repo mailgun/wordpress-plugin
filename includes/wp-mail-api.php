@@ -114,7 +114,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     extract(apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments')));
 
     $mailgun = get_option('mailgun');
-	$getRegion = (defined('MAILGUN_REGION') && MAILGUNE_REGION) ? MAILGUN_REGION : $mailgun['region'];
+	$getRegion = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $mailgun['region'];
     $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $mailgun['apiKey'];
     $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $mailgun['domain'];
 

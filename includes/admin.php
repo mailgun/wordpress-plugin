@@ -68,9 +68,10 @@ class MailgunAdmin extends Mailgun
         if (substr($sitename, 0, 4) == 'www.') {
             $sitename = substr($sitename, 4);
         }
+        $regionDefault = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
 
         $this->defaults = array(
-			'region'			=> '0',
+			'region'			=> $regionDefault,
             'useAPI'            => '1',
             'apiKey'            => '',
             'domain'            => '',
