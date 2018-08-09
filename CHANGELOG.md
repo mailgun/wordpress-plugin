@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.12.3 (2018-08-09)
+- Fix Region select menu default when wp-config.php variable is set
+- Fix front end email input validation
+
 1.5.12.2 (2018-08-09)
 - Fix plugin not saving after update
 

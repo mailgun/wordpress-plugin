@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.9.7
-Stable tag: 1.5.12.2
+Stable tag: 1.5.12.3
 License: GPLv2 or later
 
 
@@ -127,6 +127,10 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.5.12.3 (2018-08-09): =
+- Fix Region select menu default when wp-config.php variable is set
+- Fix front end email input validation
 
 = 1.5.12.2 (2018-08-09): =
 - Fix plugin not saving after update
