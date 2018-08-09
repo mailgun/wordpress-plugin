@@ -28,11 +28,11 @@ if (!include dirname(__FILE__).'/mg-filter.php') {
  * mg_api_last_error is a compound getter/setter for the last error that was
  * encountered during a Mailgun API call.
  *
- * @param string $error OPTIONAL
+ * @param	string	$error	OPTIONAL
  *
- * @return string Last error that occurred.
+ * @return	string	Last error that occurred.
  *
- * @since 1.5.0
+ * @since	1.5.0
  */
 function mg_api_last_error($error = null)
 {
@@ -98,15 +98,15 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs)
  * Based off of the core wp_mail function, but with modifications required to
  * send email using the Mailgun HTTP API
  *
- * @param string|array $to          Array or comma-separated list of email addresses to send message.
- * @param string       $subject     Email subject
- * @param string       $message     Message contents
- * @param string|array $headers     Optional. Additional headers.
- * @param string|array $attachments Optional. Files to attach.
+ * @param	string|array	$to				Array or comma-separated list of email addresses to send message.
+ * @param	string			$subject		Email subject
+ * @param	string			$message		Message contents
+ * @param	string|array	$headers		Optional. Additional headers.
+ * @param	string|array	$attachments	Optional. Files to attach.
  *
- * @return bool Whether the email contents were sent successfully.
+ * @return	bool	Whether the email contents were sent successfully.
  *
- * @since 0.1
+ * @since	0.1
  */
 function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 {
@@ -114,12 +114,13 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     extract(apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments')));
 
     $mailgun = get_option('mailgun');
+	$getRegion = (defined('MAILGUN_REGION') && MAILGUNE_REGION) ? MAILGUN_REGION : $mailgun['region'];
     $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $mailgun['apiKey'];
     $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $mailgun['domain'];
 
-    if (empty($apiKey) || empty($domain)) {
-        return false;
-    }
+	if (empty($apiKey) || empty($domain) || (bool) !$getRegion) {
+		return false;
+	}
 
     if (!is_array($attachments)) {
         $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
@@ -341,7 +342,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     //     // }
     // }
 
-    // Allow other plugins to apply attachent changes before writing to the payload.
+    // Allow other plugins to apply attachment changes before writing to the payload.
     $attachments = apply_filters('mg_mutate_attachments', $attachments);
     if ( ($attachment_payload = mg_build_attachments_payload($attachments, $boundary)) != null ) {
         $payload .= $attachment_payload;
@@ -357,7 +358,9 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         ),
     );
 
-    $url = "https://api.mailgun.net/v3/{$domain}/messages";
+    $endpoint = mg_detect_region($getRegion);
+    $endpoint = (isset($endpoint)) ? $endpoint : 'https://api.mailgun.net/v3/';
+    $url = $endpoint."{$domain}/messages";
 
     // TODO: Mailgun only supports 1000 recipients per request, since we are
     // overriding this function, let's add looping here to handle that

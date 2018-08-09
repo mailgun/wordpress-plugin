@@ -30,6 +30,18 @@
                 <?php settings_fields('mailgun'); ?>
                 <h3><?php _e('Configuration', 'mailgun'); ?></h3>
                 <table class="form-table">
+					<tr valign="top">
+						<th scope="row">
+							<?php _e('Select Your Region', 'mailgun'); ?>
+						</th>
+						<td>
+							<select id="mailgun-region" name="mailgun[region]">
+								<option value="us"<?php selected('us', $this->get_option('region')); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
+								<option value="eu"<?php selected('eu', $this->get_option('region')); ?>><?php _e('Europe', 'mailgun') ?></option>
+							</select>
+							<p class="description"><?php _e('Choose a region - U.S./North America or Europe - from which to send email, and to store your customer data.', 'mailgun') ?></p>
+						</td>
+					</tr>
                     <tr valign="top">
                         <th scope="row">
                             <?php _e('Use HTTP API', 'mailgun'); ?>
