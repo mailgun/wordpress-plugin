@@ -307,4 +307,3 @@ function mg_detect_region($getRegion)
 
 	return false;
 }
-

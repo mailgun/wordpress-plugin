@@ -359,7 +359,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     );
 
     $endpoint = mg_detect_region($getRegion);
-    $endpoint = (isset($endpoint)) ? $endpoint : 'https://api.mailgun.net/v3/';
+    $endpoint = ($endpoint) ? $endpoint : 'https://api.mailgun.net/v3/';
     $url = $endpoint."{$domain}/messages";
 
     // TODO: Mailgun only supports 1000 recipients per request, since we are

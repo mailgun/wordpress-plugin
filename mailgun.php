@@ -169,7 +169,7 @@ class Mailgun
         $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $options['domain'];
 
         $region = mg_detect_region($getRegion);
-        $this->api_endpoint = (isset($region)) ? $region : 'https://api.mailgun.net/v3/';
+        $this->api_endpoint = ($region) ? $region : 'https://api.mailgun.net/v3/';
 
         $time = time();
         $url = $this->api_endpoint.$uri;
