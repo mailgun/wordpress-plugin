@@ -309,7 +309,7 @@ class Mailgun
                     <?php endif; ?>
                     <p class="mailgun-list-widget-email">
                         <strong>Email:</strong>
-                        <input type="text" name="email" />
+                        <input type="email" name="email" required="required"/>
                     </p>
                 </div>
 
@@ -341,7 +341,7 @@ class Mailgun
 
         jQuery(document).ready(function(){
 
-            jQuery('.mailgun-list-submit-button').on('click', function() {
+            jQuery('.mailgun-list-submit-button').on('click', function(event) {
 
                 var form_id = jQuery(this).data('form-id');
 
@@ -355,8 +355,8 @@ class Mailgun
                     return;
                 }
 
-                if(jQuery('.'+form_id+' .mailgun-list-widget-email input').val() === '') {
-                    alert('Please enter your subscription email.');
+                if(jQuery('.'+form_id+' .mailgun-list-widget-email input').is(':invalid')) {
+                    alert('Please enter a valid email.');
                     return;
                 }
 
@@ -383,6 +383,10 @@ class Mailgun
                         } else {
                             alert(data_msg);
                         }
+                    },
+				  	error: function(data) {
+					  event.preventDefault();
+					  alert(data.message);
                     }
                 });
             });
