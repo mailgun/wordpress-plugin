@@ -4,8 +4,8 @@ Mailgun for WordPress
 Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
-Tested up to: 4.9.6
-Stable tag: 1.5.11
+Tested up to: 4.9.7
+Stable tag: 1.5.12.3
 License: GPLv2 or later
 
 
@@ -18,7 +18,7 @@ Easily send email from your WordPress site through Mailgun using the HTTP API or
 
 One particularly useful feature of this plugin is that it provides you with a way to send email when the server you are on does not support SMTP or where outbound SMTP is restricted since the plug-in uses the Mailgun HTTP API for sending email by default. All you need to use the plugin is a [Mailgun account](http://www.mailgun.com/). Mailgun has a free account that lets you send up to 200 emails per day, which is great for testing. Paid subscriptions are available for increased limits.
 
-The latest version of this plugin adds support for Mailgun list subscription. Using the shortcode, you can place a form on an article or page to allow the visitor to subscribe to one or more lists. Using the widget, you can provide subscription functionality in sidebars or anywhere widgets are supported e.g. footers.
+The latest version of this plugin now supports regions. Select either U.S./North America or Europe to choose the API endpoint from which you will send email.
 
 The current version of this plugin only handles sending emails, tracking and tagging and list subscription. 
 
@@ -53,6 +53,7 @@ define( 'MG_DEBUG_SMTP', true );
 Yes, using the following constants that can be placed in wp-config.php:
 
 `
+MAILGUN_REGION       Type: string   Choices: 'us' or 'eu'
 MAILGUN_USEAPI       Type: boolean
 MAILGUN_APIKEY       Type: string
 MAILGUN_DOMAIN       Type: string
@@ -70,7 +71,7 @@ MAILGUN_FROM_ADDRESS Type: string
   Mutates messages to use recipient variables syntax - see
   https://documentation.mailgun.com/user_manual.html#batch-sending for more info.
 
-  Should accept a list of `To` addressses.
+  Should accept a list of `To` addresses.
 
   Should *only* return `true` or `false`.
 
@@ -95,7 +96,7 @@ MAILGUN_FROM_ADDRESS Type: string
   Mutates messages to use recipient variables syntax - see
   https://documentation.mailgun.com/user_manual.html#batch-sending for more info.
 
-  Should accept a list of `To` addressses.
+  Should accept a list of `To` addresses.
 
   Should *only* return `true` or `false`.
 
@@ -126,6 +127,21 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.5.12.3 (2018-08-09): =
+- Fix Region select menu default when wp-config.php variable is set
+- Fix front end email input validation
+
+= 1.5.12.2 (2018-08-09): =
+- Fix plugin not saving after update
+
+= 1.5.12.1 (2018-08-06): =
+- Fix for backwards compatibility
+
+= 1.5.12 (2018-08-02): =
+- Add EU endpoint for Mailgun HTTP API
+- Fix broken logo image on Lists page
+- Test plugin up to Wordpress 4.9.7
 
 = 1.5.11 (2018-05-30): =
 - Fix an issue with authentication failing for newer API keys

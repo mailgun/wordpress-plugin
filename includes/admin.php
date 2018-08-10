@@ -22,16 +22,16 @@
 class MailgunAdmin extends Mailgun
 {
     /**
-     * @var array Array of "safe" option defaults.
+     * @var	array	Array of "safe" option defaults.
      */
     private $defaults;
 
     /**
      * Setup backend functionality in WordPress.
      *
-     * @return none
+     * @return	void
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function __construct()
     {
@@ -58,9 +58,9 @@ class MailgunAdmin extends Mailgun
     /**
      * Initialize the default options during plugin activation.
      *
-     * @return none
+     * @return	void
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function init()
     {
@@ -68,8 +68,10 @@ class MailgunAdmin extends Mailgun
         if (substr($sitename, 0, 4) == 'www.') {
             $sitename = substr($sitename, 4);
         }
+        $regionDefault = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
 
         $this->defaults = array(
+			'region'			=> $regionDefault,
             'useAPI'            => '1',
             'apiKey'            => '',
             'domain'            => '',
@@ -92,9 +94,9 @@ class MailgunAdmin extends Mailgun
     /**
      * Add the options page.
      *
-     * @return none
+     * @return	void
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function admin_menu()
     {
@@ -110,9 +112,9 @@ class MailgunAdmin extends Mailgun
     /**
      * Enqueue javascript required for the admin settings page.
      *
-     * @return none
+     * @return	void
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function admin_js()
     {
@@ -122,7 +124,7 @@ class MailgunAdmin extends Mailgun
     /**
      * Output JS to footer for enhanced admin page functionality.
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function admin_footer_js()
     {
@@ -188,9 +190,9 @@ class MailgunAdmin extends Mailgun
     /**
      * Output the options page.
      *
-     * @return none
+     * @return	void
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function options_page()
     {
@@ -202,9 +204,9 @@ class MailgunAdmin extends Mailgun
     /**
      * Output the lists page.
      *
-     * @return none
+     * @return	void
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function lists_page()
     {
@@ -220,13 +222,14 @@ class MailgunAdmin extends Mailgun
      * and potentially register an admin notice if the plugin hasn't
      * been configured yet.
      *
-     * @return none
+     * @return	void
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function admin_init()
     {
         $this->register_settings();
+		$region = $this->get_option('region');
         $apiKey = $this->get_option('apiKey');
         $useAPI = $this->get_option('useAPI');
         $password = $this->get_option('password');
@@ -237,9 +240,9 @@ class MailgunAdmin extends Mailgun
     /**
      * Whitelist the mailgun options.
      *
-     * @since 0.1
-     *
-     * @return none
+	 * @return	void
+	 *
+     * @since	0.1
      */
     public function register_settings()
     {
@@ -249,11 +252,11 @@ class MailgunAdmin extends Mailgun
     /**
      * Data validation callback function for options.
      *
-     * @param array $options An array of options posted from the options page
+     * @param	array	$options	An array of options posted from the options page
      *
-     * @return array
+     * @return	array
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function validation($options)
     {
@@ -309,9 +312,9 @@ class MailgunAdmin extends Mailgun
      * Function to output an admin notice when the plugin has not
      * been configured yet.
      *
-     * @return none
+     * @return	void
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function admin_notices()
     {
@@ -344,11 +347,11 @@ class MailgunAdmin extends Mailgun
     /**
      * Add a settings link to the plugin actions.
      *
-     * @param array $links Array of the plugin action links
+     * @param	array	$links	Array of the plugin action links
      *
-     * @return array
+     * @return	array
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function filter_plugin_actions($links)
     {
@@ -361,9 +364,9 @@ class MailgunAdmin extends Mailgun
     /**
      * AJAX callback function to test mail sending functionality.
      *
-     * @return string
+     * @return	string
      *
-     * @since 0.1
+     * @since	0.1
      */
     public function ajax_send_test()
     {
@@ -382,9 +385,23 @@ class MailgunAdmin extends Mailgun
             );
         }
 
+		$getRegion = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
         $useAPI = (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI) ? MAILGUN_USEAPI : $this->get_option('useAPI');
         $secure = (defined('MAILGUN_SECURE') && MAILGUN_SECURE) ? MAILGUN_SECURE : $this->get_option('secure');
         $sectype = (defined('MAILGUN_SECTYPE') && MAILGUN_SECTYPE) ? MAILGUN_SECTYPE : $this->get_option('sectype');
+
+        if ((bool) !$getRegion) {
+			mg_api_last_error(__("Region has not been selected", "mailgun"));
+		} else {
+
+			if ($getRegion === 'us') {
+				$region = __("U.S./North America", "mailgun");
+			}
+
+			if ($getRegion === "eu") {
+				$region = __("Europe", "mailgun");
+			}
+		}
 
         if ((bool) $useAPI) {
             $method = __('HTTP API', 'mailgun');
@@ -399,7 +416,7 @@ class MailgunAdmin extends Mailgun
         $result = wp_mail(
             $admin_email,
             __('Mailgun WordPress Plugin Test', 'mailgun'),
-            sprintf(__("This is a test email generated by the Mailgun WordPress plugin.\n\nIf you have received this message, the requested test has succeeded.\n\nThe method used to send this email was: %s.", 'mailgun'), $method),
+            sprintf(__('This is a test email generated by the Mailgun WordPress plugin.\n\nIf you have received this message, the requested test has succeeded.\n\nThe sending region is set to %1$s.\n\nThe method used to send this email was: %2$s.', 'mailgun'), $region, $method),
             array('Content-Type: text/plain')
         );
 

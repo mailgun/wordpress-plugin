@@ -22,12 +22,12 @@
 /**
  * Tries several methods to get the MIME Content-Type of a file.
  *
- * @param string $filepath
- * @param string $default_type If all methods fail, fallback to $default_type
+ * @param	string	$filepath
+ * @param	string	$default_type	If all methods fail, fallback to $default_type
  *
- * @return string Content-Type
+ * @return	string	Content-Type
  *
- * @since 1.5.4
+ * @since	1.5.4
  */
 function get_mime_content_type($filepath, $default_type = 'text/plain')
 {
@@ -58,9 +58,9 @@ function get_mime_content_type($filepath, $default_type = 'text/plain')
  * `$from_addr` before being returned. The filtered result is null-tested
  * before being returned.
  *
- * @return string
+ * @return	string
  *
- * @since 1.5.8
+ * @since	1.5.8
  */
 function mg_detect_from_name($from_name_header = null)
 {
@@ -123,13 +123,11 @@ function mg_detect_from_name($from_name_header = null)
  * might appear to be another option but some hosts may refuse to
  * relay mail from an unknown domain.
  *
- * @link http://trac.wordpress.org/ticket/5007.
+ * @link	http://trac.wordpress.org/ticket/5007.
  *
- * @param string $from_addr_header From address given by a header.
+ * @return	string
  *
- * @return string
- *
- * @since 1.5.8
+ * @since	1.5.8
  */
 function mg_detect_from_address($from_addr_header = null)
 {
@@ -194,11 +192,11 @@ function mg_detect_from_address($from_addr_header = null)
  *      )
  *  )
  *
- * @param string|array $headers
+ * @param	string|array	$headers
  *
- * @return array
+ * @return	array
  *
- * @since 1.5.8
+ * @since	1.5.8
  */
 function mg_parse_headers($headers = array())
 {
@@ -259,11 +257,11 @@ function mg_parse_headers($headers = array())
  * Takes a header array in the format produced by mg_parse_headers and
  * dumps them down in to a submittable header format.
  *
- * @param array $headers Headers to dump
+ * @param	array	$headers	Headers to dump
  *
- * @return string String of \r\n separated headers
+ * @return	string	String of \r\n separated headers
  *
- * @since 1.5.8
+ * @since	1.5.8
  */
 function mg_dump_headers($headers = null)
 {
@@ -287,3 +285,25 @@ function mg_dump_headers($headers = null)
     return $header_string;
 }
 
+/**
+ * Set the API endpoint based on the region selected.
+ * Value can be "0" if not selected, "us" or "eu"
+ *
+ * @param	string	$getRegion	Region value set either in config or Mailgun plugin settings.
+ *
+ * @return	bool|string
+ *
+ * @since	1.5.12
+ */
+function mg_detect_region($getRegion)
+{
+	if ($getRegion === 'us') {
+		return 'https://api.mailgun.net/v3/';
+	}
+
+	if ($getRegion === 'eu') {
+		return 'https://api.eu.mailgun.net/v3/';
+	}
+
+	return false;
+}

@@ -30,6 +30,33 @@
                 <?php settings_fields('mailgun'); ?>
                 <h3><?php _e('Configuration', 'mailgun'); ?></h3>
                 <table class="form-table">
+					<tr valign="top">
+						<th scope="row">
+			                <?php
+				                $config_region = (defined('MAILGUN_REGION') && MAILGUN_REGION);
+				                if ($config_region):
+					                _e('Your Region is', 'mailgun');
+				                else:
+					                _e('Select Your Region', 'mailgun');
+				                endif;
+			                ?>
+						</th>
+						<td>
+			                <?php
+				                if ($config_region):
+					                $region = (MAILGUN_REGION === 'us') ? __('U.S./North America', 'mailgun') : __('Europe', 'mailgun');
+					                ?>
+									<input readonly="readonly" id="mailgun-region" type="text" name="mailgun[region]" value="<?php echo $region ?>">
+									<p class="description"><?php _e('You have set the region in your wp-config.php file. Email will be sent from this region, and your customer data will be stored in this region.', 'mailgun') ?></p>
+				                <?php else: ?>
+									<select id="mailgun-region" name="mailgun[region]">
+										<option value="us"<?php selected('us', $this->get_option('region')); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
+										<option value="eu"<?php selected('eu', $this->get_option('region')); ?>><?php _e('Europe', 'mailgun') ?></option>
+									</select>
+									<p class="description"><?php _e('Choose a region - U.S./North America or Europe - from which to send email, and to store your customer data.', 'mailgun') ?></p>
+				                <?php endif; ?>
+						</td>
+					</tr>
                     <tr valign="top">
                         <th scope="row">
                             <?php _e('Use HTTP API', 'mailgun'); ?>
