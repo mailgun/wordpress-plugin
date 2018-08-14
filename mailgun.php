@@ -4,7 +4,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.5.12.3
+ * Version:      1.5.13
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -78,8 +78,8 @@ class Mailgun
      * Get specific option from the options table.
      *
      * @param	string	$option		Name of option to be used as array key for retrieving the specific value
-	 * @param	array	$options	Array to iterate over for specific values
-	 * @param	bool	$default	False if no options are set
+     * @param	array	$options	Array to iterate over for specific values
+     * @param	bool	$default	False if no options are set
      *
      * @return	mixed
      *
@@ -103,7 +103,7 @@ class Mailgun
      *
      * @param	object	$phpmailer	The PHPMailer object to modify by reference
      *
-     * @return 	void
+     * @return	void
      *
      * @since	0.1
      */
@@ -133,10 +133,10 @@ class Mailgun
      * Deactivate this plugin and die.
      * Deactivate the plugin when files critical to it's operation cannot be loaded
      *
-	 * @param	$file	Files critical to plugin functionality
-	 *
-	 * @return	void
-	 *
+     * @param	$file	Files critical to plugin functionality
+     *
+     * @return	void
+     *
      * @since	0.1
      */
     public function deactivate_and_die($file)
@@ -154,8 +154,8 @@ class Mailgun
      * Make a Mailgun api call.
      *
      * @param	string	$uri	The endpoint for the Mailgun API
-	 * @param 	array	$params	Array of parameters passed to the API
-	 * @param 	string	$method	The form request type
+     * @param	array	$params	Array of parameters passed to the API
+     * @param	string	$method	The form request type
      *
      * @return	array
      *
@@ -164,8 +164,8 @@ class Mailgun
     public function api_call($uri, $params = array(), $method = 'POST')
     {
         $options = get_option('mailgun');
-		$getRegion = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $options['region'];
-		$apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $options['apiKey'];
+        $getRegion = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $options['region'];
+        $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $options['apiKey'];
         $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $options['domain'];
 
         $region = mg_detect_region($getRegion);
@@ -394,15 +394,15 @@ class Mailgun
 
     }
 
-	/**
-	 * Initialize List Form.
-	 *
-	 * @param	array	$atts	Form attributes
-	 *
-	 * @return	string
-	 *
-	 * @since	0.1
-	 */
+    /**
+     * Initialize List Form.
+     *
+     * @param	array	$atts	Form attributes
+     *
+     * @return	string
+     *
+     * @since	0.1
+     */
     public function build_list_form($atts)
     {
         if (isset($atts['id']) && $atts['id'] != '') {

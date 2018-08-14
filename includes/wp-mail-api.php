@@ -114,13 +114,19 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     extract(apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments')));
 
     $mailgun = get_option('mailgun');
-	$getRegion = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $mailgun['region'];
+    $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $mailgun['region'];
     $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $mailgun['apiKey'];
     $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $mailgun['domain'];
 
-	if (empty($apiKey) || empty($domain) || (bool) !$getRegion) {
-		return false;
-	}
+    if (empty($apiKey) || empty($domain)) {
+        return false;
+    }
+
+    // If a region is not set via defines or through the options page, default to US region.
+    if (!((bool) $region)) {
+        error_log('[Mailgun] No region configuration was found! Defaulting to US region.');
+        $region = 'us';
+    }
 
     if (!is_array($attachments)) {
         $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
@@ -358,7 +364,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         ),
     );
 
-    $endpoint = mg_detect_region($getRegion);
+    $endpoint = mg_detect_region($region);
     $endpoint = ($endpoint) ? $endpoint : 'https://api.mailgun.net/v3/';
     $url = $endpoint."{$domain}/messages";
 

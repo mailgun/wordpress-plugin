@@ -328,7 +328,14 @@ class MailgunAdmin extends Mailgun
             || (!$this->get_option('password') && $this->get_option('useAPI') === '0')
         ) {
             ?>
-            <div id='mailgun-warning' class='notice notice-warning fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
+            <div id='mailgun-warning' class='notice notice-warning fade'>
+                <p>
+                    <strong>
+                        <?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
+                    </strong>
+                    <?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?>
+                </p>
+            </div>
 <?php
 
         }
@@ -338,9 +345,29 @@ class MailgunAdmin extends Mailgun
             || !$this->get_option('from-address'))
         ) {
             ?>
-            <div id='mailgun-warning' class='notice notice-warning fade'><p><strong><?php _e('Mailgun is almost ready. ', 'mailgun'); ?></strong><?php printf(__('"Override From" option requires that "From Name" and "From Address" be set to work properly! <a href="%1$s">Configure Mailgun now</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?></p></div>
+            <div id='mailgun-warning' class='notice notice-warning fade'>
+                <p>
+                    <strong>
+                        <?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
+                    </strong>
+                    <?php printf(__('"Override From" option requires that "From Name" and "From Address" be set to work properly! <a href="%1$s">Configure Mailgun now</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?>
+                </p>
+            </div>
 <?php
 
+        }
+
+        if (!$this->get_option('region') && $this->get_option('useAPI') === '1') {
+            ?>
+            <div id='mailgun-warning' class='notice notice-warning fade'>
+                <p>
+                    <strong>
+                        <?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
+                    </strong>
+                    <?php printf(__('Mailgun now supports multiple regions! By default, we will use the US region, but we now have an EU region generally available. You can change regions <a href="%1$s">here</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?>
+                </p>
+            </div>
+<?php
         }
     }
 
