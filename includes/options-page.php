@@ -53,7 +53,7 @@
 										<option value="us"<?php selected('us', $this->get_option('region')); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
 										<option value="eu"<?php selected('eu', $this->get_option('region')); ?>><?php _e('Europe', 'mailgun') ?></option>
 									</select>
-									<p class="description"><?php _e('Choose a region - U.S./North America or Europe - from which to send email, and to store your customer data.', 'mailgun') ?></p>
+									<p class="description"><?php _e('Choose a region - U.S./North America or Europe - from which to send email, and to store your customer data. Please note that your sending domain must be set up in whichever region you choose.', 'mailgun') ?></p>
 				                <?php endif; ?>
 						</td>
 					</tr>

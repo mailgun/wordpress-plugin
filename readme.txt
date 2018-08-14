@@ -4,8 +4,8 @@ Mailgun for WordPress
 Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
-Tested up to: 4.9.7
-Stable tag: 1.5.12.3
+Tested up to: 4.9.8
+Stable tag: 1.5.13
 License: GPLv2 or later
 
 
@@ -127,6 +127,11 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.5.13 (2018-08-14): =
+- Default to US region if no region is configured in settings
+- Add admin notification about region configuration
+- Log an error message when an email is sent with no explicit region configured
 
 = 1.5.12.3 (2018-08-09): =
 - Fix Region select menu default when wp-config.php variable is set
