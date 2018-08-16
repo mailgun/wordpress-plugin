@@ -1,6 +1,10 @@
 Changelog
 =========
 
+
+1.5.13.1 (2018-08-15)
+- Fix line breaks in Test Configuration email
+
 1.5.13 (2018-08-14)
 - Default to US region if no region is configured in settings
 - Add admin notification about region configuration
