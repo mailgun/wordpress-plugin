@@ -43,16 +43,14 @@ class MailgunAdmin extends Mailgun
         // Activation hook
         register_activation_hook($this->plugin_file, array(&$this, 'init'));
 
-        if (!defined('MAILGUN_USEAPI') || !MAILGUN_USEAPI) {
-            // Hook into admin_init and register settings and potentially register an admin_notice
-            add_action('admin_init', array(&$this, 'admin_init'));
+		// Hook into admin_init and register settings and potentially register an admin_notice
+		add_action('admin_init', array(&$this, 'admin_init'));
 
-            // Activate the options page
-            add_action('admin_menu', array(&$this, 'admin_menu'));
-        }
+		// Activate the options page
+		add_action('admin_menu', array(&$this, 'admin_menu'));
 
-        // Register an AJAX action for testing mail sending capabilities
-        add_action('wp_ajax_mailgun-test', array(&$this, 'ajax_send_test'));
+		// Register an AJAX action for testing mail sending capabilities
+		add_action('wp_ajax_mailgun-test', array(&$this, 'ajax_send_test'));
     }
 
     /**
@@ -68,7 +66,8 @@ class MailgunAdmin extends Mailgun
         if (substr($sitename, 0, 4) == 'www.') {
             $sitename = substr($sitename, 4);
         }
-        $regionDefault = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
+	    $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
+        $regionDefault = $region ?: 'us';
 
         $this->defaults = array(
 			'region'			=> $regionDefault,
@@ -296,12 +295,6 @@ class MailgunAdmin extends Mailgun
         if (empty($options['sectype'])) {
             $options['sectype'] = $this->defaults['sectype'];
         }
-        // alternatively:
-        // foreach ($defaults as $key => $value) {
-        //   if (empty($options[$key])) {
-        //     $options[$key] = $value;
-        //   }
-        // }
 
         $this->options = $options;
 
@@ -309,8 +302,8 @@ class MailgunAdmin extends Mailgun
     }
 
     /**
-     * Function to output an admin notice when the plugin has not
-     * been configured yet.
+     * Function to output an admin notice
+     * when plugin settings or constants need to be configured
      *
      * @return	void
      *
@@ -319,32 +312,39 @@ class MailgunAdmin extends Mailgun
     public function admin_notices()
     {
         $screen = get_current_screen();
-        if (!current_user_can('manage_options') || $screen->id == $this->hook_suffix
-        ) {
+        if (!current_user_can('manage_options') || $screen->id == $this->hook_suffix) {
             return;
         }
 
-        if ((!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
+        if ( defined('WP_ALLOW_MULTISITE') && !defined('MAILGUN_REGION')
+        	|| (!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
             || (!$this->get_option('password') && $this->get_option('useAPI') === '0')
-        ) {
-            ?>
-            <div id='mailgun-warning' class='notice notice-warning fade'>
+			|| (!$this->get_option('region') && $this->get_option('useAPI') === '1')
+		):
+?>
+            <div id='mailgun-warning' class='notice notice-warning is-dismissible'>
                 <p>
                     <strong>
                         <?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
                     </strong>
-                    <?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?>
+                    <?php printf(
+                    		__('With the latest update, Mailgun now supports multiple regions! By default, we will use the U.S. region, but we now have an EU region available. You can configure your Mailgun settings <a href="%1$s">here</a> or in your wp-config.php.', 'mailgun'),
+							menu_page_url('mailgun', false)
+						);
+                    ?>
                 </p>
+				<button type="button" class="notice-dismiss">
+					<span class="screen-reader-text">Dismiss this notice.</span>
+				</button>
             </div>
 <?php
-
-        }
+        endif;
 
         if ($this->get_option('override-from') === '1'
             && (!$this->get_option('from-name')
             || !$this->get_option('from-address'))
-        ) {
-            ?>
+        ):
+?>
             <div id='mailgun-warning' class='notice notice-warning fade'>
                 <p>
                     <strong>
@@ -354,21 +354,7 @@ class MailgunAdmin extends Mailgun
                 </p>
             </div>
 <?php
-
-        }
-
-        if (!$this->get_option('region') && $this->get_option('useAPI') === '1') {
-            ?>
-            <div id='mailgun-warning' class='notice notice-warning fade'>
-                <p>
-                    <strong>
-                        <?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
-                    </strong>
-                    <?php printf(__('Mailgun now supports multiple regions! By default, we will use the US region, but we now have an EU region generally available. You can change regions <a href="%1$s">here</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?>
-                </p>
-            </div>
-<?php
-        }
+        endif;
     }
 
     /**

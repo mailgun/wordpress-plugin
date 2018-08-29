@@ -1,6 +1,8 @@
 Changelog
 =========
 
+1.5.13.2 (2018-08-23)
+- Add admin notification to alert users to update wp-config with Region constant
 
 1.5.13.1 (2018-08-15)
 - Fix line breaks in Test Configuration email
