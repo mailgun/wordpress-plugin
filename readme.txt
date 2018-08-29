@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.9.8
-Stable tag: 1.5.13.1
+Stable tag: 1.6
 License: GPLv2 or later
 
 
@@ -128,8 +128,11 @@ MAILGUN_FROM_ADDRESS Type: string
 
 == Changelog ==
 
-= 1.5.13.2 (2018-08-23): =
-- Add admin notification to alert users to update wp-config with Region constant
+= 1.6 (2018-08-29): =
+- Refactor admin notifications to handle multisite installs
+- Enable settings page for WordPress install types
+- Enable Test Configuration for all WordPress install types
+- Test plugin up to WordPress 4.9.8
 
 = 1.5.13.1 (2018-08-15): =
 - Fix line breaks in Test Configuration email
