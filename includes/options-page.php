@@ -22,39 +22,33 @@
 ?>
         <div class="wrap">
             <div id="icon-options-general" class="icon32"><br /></div>
-            <span class="alignright"><a target="_blank" href="http://www.mailgun.com/"><img src="https://assets.mailgun.com/img/mailgun.svg" alt="Mailgun" style="width: 10em;"/></a></span>
+            <span class="alignright">
+				<a target="_blank" href="http://www.mailgun.com/">
+					<img src="https://assets.mailgun.com/img/mailgun.svg" alt="Mailgun" style="width:10em;"/>
+				</a>
+			</span>
             <h2><?php _e('Mailgun', 'mailgun'); ?></h2>
-            <p>A <a target="_blank" href="http://www.mailgun.com/">Mailgun</a> account is required to use this plugin and the Mailgun service.</p>
-            <p>If you need to register for an account, you can do so at <a target="_blank" href="http://www.mailgun.com/">http://www.mailgun.com/</a>.</p>
+			<p><?php _e('A <a target="_blank" href="http://www.mailgun.com/">Mailgun</a> account is required to use this plugin and the Mailgun service.', 'mailgun'); ?></p>
+			<p><?php _e('If you need to register for an account, you can do so at <a target="_blank" href="http://www.mailgun.com/">http://www.mailgun.com/</a>.', 'mailgun'); ?></p>
+
+			<h3><?php _e('Configuration', 'mailgun'); ?></h3>
+			<?php
+				$isMultisite = defined('WP_ALLOW_MULTISITE');
+				if( !$isMultisite ):
+			?>
             <form id="mailgun-form" action="options.php" method="post">
                 <?php settings_fields('mailgun'); ?>
-                <h3><?php _e('Configuration', 'mailgun'); ?></h3>
                 <table class="form-table">
 					<tr valign="top">
 						<th scope="row">
-			                <?php
-				                $config_region = (defined('MAILGUN_REGION') && MAILGUN_REGION);
-				                if ($config_region):
-					                _e('Your Region is', 'mailgun');
-				                else:
-					                _e('Select Your Region', 'mailgun');
-				                endif;
-			                ?>
+			                <?php _e('Select Your Region', 'mailgun'); ?>
 						</th>
 						<td>
-			                <?php
-				                if ($config_region):
-					                $region = (MAILGUN_REGION === 'us') ? __('U.S./North America', 'mailgun') : __('Europe', 'mailgun');
-					                ?>
-									<input readonly="readonly" id="mailgun-region" type="text" name="mailgun[region]" value="<?php echo $region ?>">
-									<p class="description"><?php _e('You have set the region in your wp-config.php file. Email will be sent from this region, and your customer data will be stored in this region.', 'mailgun') ?></p>
-				                <?php else: ?>
-									<select id="mailgun-region" name="mailgun[region]">
-										<option value="us"<?php selected('us', $this->get_option('region')); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
-										<option value="eu"<?php selected('eu', $this->get_option('region')); ?>><?php _e('Europe', 'mailgun') ?></option>
-									</select>
-									<p class="description"><?php _e('Choose a region - U.S./North America or Europe - from which to send email, and to store your customer data. Please note that your sending domain must be set up in whichever region you choose.', 'mailgun') ?></p>
-				                <?php endif; ?>
+							<select id="mailgun-region" name="mailgun[region]">
+								<option value="us"<?php selected('us', $this->get_option('region')); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
+								<option value="eu"<?php selected('eu', $this->get_option('region')); ?>><?php _e('Europe', 'mailgun') ?></option>
+							</select>
+							<p class="description"><?php _e('Choose a region - U.S./North America or Europe - from which to send email, and to store your customer data. Please note that your sending domain must be set up in whichever region you choose.', 'mailgun') ?></p>
 						</td>
 					</tr>
                     <tr valign="top">
@@ -194,7 +188,26 @@
                         </td>
                     </tr>
                 </table>
-                <h3><?php _e('Lists', 'mailgun'); ?></h3>
+
+			<?php else: ?>
+				<p><?php _e('Once you have configured the plugin settings in your wp-config.php, you can test it here.', 'mailgun'); ?></p>
+				<p><?php _e('The definitions are as follows:', 'mailgun'); ?></p>
+				<p><pre>
+MAILGUN_REGION       Choices: 'us' or 'eu'
+    ex. define('MAILGUN_REGION', 'us');
+MAILGUN_USEAPI
+MAILGUN_APIKEY
+MAILGUN_DOMAIN
+MAILGUN_USERNAME
+MAILGUN_PASSWORD
+MAILGUN_SECURE
+MAILGUN_SECTYPE       Choices: 'ssl' or 'tls'
+MAILGUN_FROM_NAME
+MAILGUN_FROM_ADDRESS
+				</pre></p>
+			<?php endif; ?>
+
+				<h3><?php _e('Lists', 'mailgun'); ?></h3>
                 <table class="form-table">
                     <tr valign="top">
                         <th scope="row">
@@ -202,7 +215,7 @@
                         </th>
                         <td>
                             <div>
-                                <strong>[mailgun id="<em>{mailgun list id}</em>" collect_name="true"]</strong>
+								<code>[mailgun id="<em>{mailgun list id}</em>" collect_name="true"]</code>
                             </div>
                             <div>
                                 <p class="description"><?php _e('Use the shortcode above to associate a widget instance with a mailgun list', 'mailgun'); ?></p>
@@ -214,15 +227,21 @@
                             <?php _e('Lists', 'mailgun'); ?>
                         </th>
                         <td>
-                            <a href="?page=mailgun-lists">View available lists</a>
+                            <?php _e('<a href="?page=mailgun-lists">View available lists</a>', 'mailgun'); ?>
                         </td>
                     </tr>
                 </table>
 
+            <?php if( !$isMultisite ): ?>
                 <p><?php _e('Before attempting to test the configuration, please click "Save Changes".', 'mailgun'); ?></p>
                 <p class="submit">
                     <input type="submit" class="button-primary" value="<?php _e('Save Changes', 'mailgun'); ?>" />
                     <input type="button" id="mailgun-test" class="button-secondary" value="<?php _e('Test Configuration', 'mailgun'); ?>" />
                 </p>
+			<?php else: ?>
+				<p class="submit">
+					<input type="button" id="mailgun-test" class="button-secondary" value="<?php _e('Test Configuration', 'mailgun'); ?>" />
+				</p>
+			<?php endif; ?>
             </form>
         </div>

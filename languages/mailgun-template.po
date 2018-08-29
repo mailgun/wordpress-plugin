@@ -61,10 +61,6 @@ msgstr ""
 msgid "Mailgun is almost ready. "
 msgstr ""
 
-#: includes/admin.php:301
-msgid "You must <a href=\"%1$s\">configure Mailgun</a> for it to work."
-msgstr ""
-
 #: includes/admin.php:309
 msgid ""
 "\"Override From\" option requires that \"From Name\" and \"From Address\" be "
