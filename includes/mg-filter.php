@@ -295,15 +295,30 @@ function mg_dump_headers($headers = null)
  *
  * @since	1.5.12
  */
-function mg_detect_region($getRegion)
+function mg_api_get_region($getRegion)
 {
-	if ($getRegion === 'us') {
-		return 'https://api.mailgun.net/v3/';
-	}
+    switch ($getRegion) {
+        case 'us': return 'https://api.mailgun.net/v3/';
+        case 'eu': return 'https://api.eu.mailgun.net/v3/';
+        default: return false;
+    }
+}
 
-	if ($getRegion === 'eu') {
-		return 'https://api.eu.mailgun.net/v3/';
-	}
-
-	return false;
+/**
+ * Set the SMTP endpoint based on the region selected.
+ * Value can be "0" if not selected, "us" or "eu"
+ *
+ * @param	string	$getRegion	Region value set either in config or Mailgun plugin settings.
+ *
+ * @return	bool|string
+ *
+ * @since	1.5.12
+ */
+function mg_smtp_get_region($getRegion)
+{
+    switch ($getRegion) {
+        case 'us': return 'smtp.mailgun.org';
+        case 'eu': return 'smtp.eu.mailgun.org'; 
+        default: return false;
+    }
 }

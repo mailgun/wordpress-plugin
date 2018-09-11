@@ -362,9 +362,9 @@ class MailgunAdmin extends Mailgun
             <div id='mailgun-warning' class='notice notice-warning fade'>
                 <p>
                     <strong>
-                        <?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
+                        <?php _e('Mailgun now supports multiple regions! ', 'mailgun'); ?>
                     </strong>
-                    <?php printf(__('Mailgun now supports multiple regions! By default, we will use the US region, but we now have an EU region generally available. You can change regions <a href="%1$s">here</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?>
+                    <?php printf(__('By default, we will use the US region, but we now have an EU region generally available. You can change regions <a href="%1$s">here</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?>
                 </p>
             </div>
 <?php
@@ -433,9 +433,9 @@ class MailgunAdmin extends Mailgun
         if ((bool) $useAPI) {
             $method = __('HTTP API', 'mailgun');
         } else {
-            $method = ((bool) $secure) ? __('Secure SMTP', 'mailgun') : __('SMTP', 'mailgun');
+            $method = ((bool) $secure) ? __('Secure SMTP', 'mailgun') : __('Insecure SMTP', 'mailgun');
             if ((bool) $secure) {
-                $method = $method . sprintf(__(' via %s', $sectype));
+                $method = $method . sprintf(__(' via %s', 'mailgun'), $sectype);
             }
         }
 

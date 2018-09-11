@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.5.14 (2018-09-11):
+- Force SSL-secured SMTP connections to use port 465 (SMTPS) to connect, 587 for plain and TLS
+- Support region endpoint switching for SMTP
 
 1.5.13.1 (2018-08-15)
 - Fix line breaks in Test Configuration email

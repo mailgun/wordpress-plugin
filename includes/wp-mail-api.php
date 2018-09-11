@@ -364,7 +364,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         ),
     );
 
-    $endpoint = mg_detect_region($region);
+    $endpoint = mg_api_get_region($region);
     $endpoint = ($endpoint) ? $endpoint : 'https://api.mailgun.net/v3/';
     $url = $endpoint."{$domain}/messages";
 
