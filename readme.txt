@@ -132,7 +132,7 @@ MAILGUN_FROM_ADDRESS Type: string
 - Force SSL-secured SMTP connections to use port 465 (SMTPS) to connect, 587 for plain and TLS
 - Support region endpoint switching for SMTP
 
-= 1.5.13.1 (2018-08-15)
+= 1.5.13.1 (2018-08-15): =
 - Fix line breaks in Test Configuration email
 
 = 1.5.13 (2018-08-14): =
