@@ -4,7 +4,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.5.13.1
+ * Version:      1.5.14
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -115,18 +115,31 @@ class Mailgun
         $secure = (defined('MAILGUN_SECURE') && MAILGUN_SECURE) ? MAILGUN_SECURE : $this->get_option('secure');
         $sectype = (defined('MAILGUN_SECTYPE') && MAILGUN_SECTYPE) ? MAILGUN_SECTYPE : $this->get_option('sectype');
         $password = (defined('MAILGUN_PASSWORD') && MAILGUN_PASSWORD) ? MAILGUN_PASSWORD : $this->get_option('password');
+        $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
+
+        $smtp_endpoint = mg_smtp_get_region($region);
+        $smtp_endpoint = (bool) $smtp_endpoint ? $smtp_endpoint : 'smtp.mailgun.org';
 
         $phpmailer->Mailer = 'smtp';
-        $phpmailer->Host = 'smtp.mailgun.org';
-        $phpmailer->Port = (bool) $secure ? 465 : 587;
+        $phpmailer->Host = $smtp_endpoint;
+        if ( 'ssl' === $sectype ) {
+            // For SSL-only connections, use 465
+            $phpmailer->Port = 465;
+        } else {
+            // Otherwise, use 587.
+            $phpmailer->Port = 587;
+        }
         $phpmailer->SMTPAuth = true;
         $phpmailer->Username = $username;
         $phpmailer->Password = $password;
 
-        $phpmailer->SMTPSecure = (bool) $secure ? $sectype : 'none';
+        $phpmailer->SMTPSecure = (bool) $secure ? $sectype : '';
         // Without this line... wp_mail for SMTP-only will always return false. But why? :(
         $phpmailer->Debugoutput = 'mg_smtp_debug_output';
         $phpmailer->SMTPDebug = 2;
+
+        // Emit some logging for SMTP connection
+        mg_smtp_debug_output(sprintf("PHPMailer configured to send via %s:%s", $phpmailer->Host, $phpmailer->Port), 'DEBUG');
     }
 
     /**
@@ -168,7 +181,7 @@ class Mailgun
         $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $options['apiKey'];
         $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $options['domain'];
 
-        $region = mg_detect_region($getRegion);
+        $region = mg_api_get_region($getRegion);
         $this->api_endpoint = ($region) ? $region : 'https://api.mailgun.net/v3/';
 
         $time = time();
