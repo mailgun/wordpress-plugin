@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.9.8
-Stable tag: 1.5.13.1
+Stable tag: 1.5.14
 License: GPLv2 or later
 
 
