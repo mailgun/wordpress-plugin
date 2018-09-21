@@ -1,7 +1,13 @@
 Changelog
 =========
 
-1.5.14 (2018-09-11):
+1.6 (2018-9-21)
+- Refactor admin notifications
+- Enable Settings page for all WordPress install types
+- Enable Test Configuration for all WordPress install types
+- Test plugin up to WordPress 4.9.8.
+
+1.5.14 (2018-09-11)
 - Force SSL-secured SMTP connections to use port 465 (SMTPS) to connect, 587 for plain and TLS
 - Support region endpoint switching for SMTP
 

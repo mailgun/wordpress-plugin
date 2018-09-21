@@ -43,13 +43,11 @@ class MailgunAdmin extends Mailgun
         // Activation hook
         register_activation_hook($this->plugin_file, array(&$this, 'init'));
 
-        if (!defined('MAILGUN_USEAPI') || !MAILGUN_USEAPI) {
-            // Hook into admin_init and register settings and potentially register an admin_notice
-            add_action('admin_init', array(&$this, 'admin_init'));
+		// Hook into admin_init and register settings and potentially register an admin_notice
+		add_action('admin_init', array(&$this, 'admin_init'));
 
-            // Activate the options page
-            add_action('admin_menu', array(&$this, 'admin_menu'));
-        }
+		// Activate the options page
+		add_action('admin_menu', array(&$this, 'admin_menu'));
 
         // Register an AJAX action for testing mail sending capabilities
         add_action('wp_ajax_mailgun-test', array(&$this, 'ajax_send_test'));
@@ -65,10 +63,12 @@ class MailgunAdmin extends Mailgun
     public function init()
     {
         $sitename = strtolower($_SERVER['SERVER_NAME']);
-        if (substr($sitename, 0, 4) == 'www.') {
+        if (substr($sitename, 0, 4) == 'www.'):
             $sitename = substr($sitename, 4);
-        }
-        $regionDefault = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
+        endif;
+
+        $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
+		$regionDefault = $region ?: 'us';
 
         $this->defaults = array(
 			'region'			=> $regionDefault,
@@ -85,10 +85,10 @@ class MailgunAdmin extends Mailgun
             'override-from'     => '0',
             'tag'               => $sitename,
         );
-        if (!$this->options) {
+        if (!$this->options):
             $this->options = $this->defaults;
             add_option('mailgun', $this->options);
-        }
+        endif;
     }
 
     /**
@@ -100,13 +100,13 @@ class MailgunAdmin extends Mailgun
      */
     public function admin_menu()
     {
-        if (current_user_can('manage_options')) {
+        if (current_user_can('manage_options')):
             $this->hook_suffix = add_options_page(__('Mailgun', 'mailgun'), __('Mailgun', 'mailgun'), 'manage_options', 'mailgun', array(&$this, 'options_page'));
             add_options_page(__('Mailgun Lists', 'mailgun'), __('Mailgun Lists', 'mailgun'), 'manage_options', 'mailgun-lists', array(&$this, 'lists_page'));
             add_action("admin_print_scripts-{$this->hook_suffix}", array(&$this, 'admin_js'));
             add_filter("plugin_action_links_{$this->plugin_basename}", array(&$this, 'filter_plugin_actions'));
             add_action("admin_footer-{$this->hook_suffix}", array(&$this, 'admin_footer_js'));
-        }
+        endif;
     }
 
     /**
@@ -196,9 +196,9 @@ class MailgunAdmin extends Mailgun
      */
     public function options_page()
     {
-        if (!@include 'options-page.php') {
+        if (!@include 'options-page.php'):
             printf(__('<div id="message" class="updated fade"><p>The options page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>', 'mailgun'), dirname(__FILE__).'/options-page.php');
-        }
+        endif;
     }
 
     /**
@@ -210,12 +210,10 @@ class MailgunAdmin extends Mailgun
      */
     public function lists_page()
     {
-        if (!@include 'lists-page.php') {
+        if (!@include 'lists-page.php'):
             printf(__('<div id="message" class="updated fade"><p>The lists page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>', 'mailgun'), dirname(__FILE__).'/lists-page.php');
-        }
+        endif;
     }
-
-    // /options-general.php?page=mailgun-lists
 
     /**
      * Wrapper function hooked into admin_init to register settings
@@ -262,46 +260,40 @@ class MailgunAdmin extends Mailgun
     {
         $apiKey = trim($options['apiKey']);
         $username = trim($options['username']);
-        if (!empty($apiKey)) {
+        if (!empty($apiKey)):
             $pos = strpos($apiKey, 'api:');
-            if ($pos !== false && $pos == 0) {
+            if ($pos !== false && $pos == 0):
                 $apiKey = substr($apiKey, 4);
-            }
+            endif;
 
-            if (1 === preg_match('(\w{32}-\w{8}-\w{8})', $apiKey)) {
+            if (1 === preg_match('(\w{32}-\w{8}-\w{8})', $apiKey)):
                 $options['apiKey'] = $apiKey;
-            } else {
+            else:
                 $pos = strpos($apiKey, 'key-');
-                if ($pos === false || $pos > 4) {
+                if ($pos === false || $pos > 4):
                     $apiKey = "key-{$apiKey}";
-                }
+                endif;
 
                 $options['apiKey'] = $apiKey;
-            }
-        }
+            endif;
+        endif;
 
-        if (!empty($username)) {
+        if (!empty($username)):
             $username = preg_replace('/@.+$/', '', $username);
             $options['username'] = $username;
-        }
+        endif;
 
         foreach ($options as $key => $value) {
             $options[$key] = trim($value);
         }
 
-        if (empty($options['override-from'])) {
+        if (empty($options['override-from'])):
             $options['override-from'] = $this->defaults['override-from'];
-        }
+        endif;
 
-        if (empty($options['sectype'])) {
+        if (empty($options['sectype'])):
             $options['sectype'] = $this->defaults['sectype'];
-        }
-        // alternatively:
-        // foreach ($defaults as $key => $value) {
-        //   if (empty($options[$key])) {
-        //     $options[$key] = $value;
-        //   }
-        // }
+        endif;
 
         $this->options = $options;
 
@@ -309,8 +301,8 @@ class MailgunAdmin extends Mailgun
     }
 
     /**
-     * Function to output an admin notice when the plugin has not
-     * been configured yet.
+     * Function to output an admin notice
+     * when plugin settings or constants need to be configured
      *
      * @return	void
      *
@@ -319,56 +311,51 @@ class MailgunAdmin extends Mailgun
     public function admin_notices()
     {
         $screen = get_current_screen();
-        if (!current_user_can('manage_options') || $screen->id == $this->hook_suffix
-        ) {
+        if (!current_user_can('manage_options') || $screen->id == $this->hook_suffix):
             return;
-        }
+        endif;
 
-        if ((!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
+        if (defined('WP_ALLOW_MULTISITE') && !defined('MAILGUN_REGION')
+			|| (!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
             || (!$this->get_option('password') && $this->get_option('useAPI') === '0')
-        ) {
-            ?>
-            <div id='mailgun-warning' class='notice notice-warning fade'>
+			|| (!$this->get_option('region') && $this->get_option('useAPI') === '1')
+        ):
+?>
+			<div id='mailgun-warning' class='notice notice-warning is-dismissible'>
                 <p>
                     <strong>
                         <?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
                     </strong>
-                    <?php printf(__('You must <a href="%1$s">configure Mailgun</a> for it to work.', 'mailgun'), menu_page_url('mailgun', false)); ?>
+	                <?php
+						printf(
+	                		__('With the latest update, Mailgun now supports multiple regions! By default, we will use the U.S. region, but we now have an EU region available. You can configure your Mailgun settings <a href="%1$s">here</a> or in your wp-config.php.', 'mailgun'),
+							menu_page_url('mailgun', false)
+	                	);
+	                ?>
                 </p>
             </div>
 <?php
+		endif;
 
-        }
-
-        if ($this->get_option('override-from') === '1'
-            && (!$this->get_option('from-name')
-            || !$this->get_option('from-address'))
-        ) {
-            ?>
-            <div id='mailgun-warning' class='notice notice-warning fade'>
+        if ($this->get_option('override-from') === '1' &&
+			(!$this->get_option('from-name') || !$this->get_option('from-address'))
+        ):
+?>
+			<div id='mailgun-warning' class='notice notice-warning is-dismissible'>
                 <p>
                     <strong>
                         <?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
                     </strong>
-                    <?php printf(__('"Override From" option requires that "From Name" and "From Address" be set to work properly! <a href="%1$s">Configure Mailgun now</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?>
+                    <?php
+						printf(
+								__('"Override From" option requires that "From Name" and "From Address" be set to work properly! <a href="%1$s">Configure Mailgun now</a>.', 'mailgun'),
+								menu_page_url('mailgun', false)
+						);
+					?>
                 </p>
             </div>
 <?php
-
-        }
-
-        if (!$this->get_option('region') && $this->get_option('useAPI') === '1') {
-            ?>
-            <div id='mailgun-warning' class='notice notice-warning fade'>
-                <p>
-                    <strong>
-                        <?php _e('Mailgun now supports multiple regions! ', 'mailgun'); ?>
-                    </strong>
-                    <?php printf(__('By default, we will use the US region, but we now have an EU region generally available. You can change regions <a href="%1$s">here</a>.', 'mailgun'), menu_page_url('mailgun', false)); ?>
-                </p>
-            </div>
-<?php
-        }
+		endif;
     }
 
     /**
@@ -400,7 +387,7 @@ class MailgunAdmin extends Mailgun
         nocache_headers();
         header('Content-Type: application/json');
 
-        if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['_wpnonce'])) {
+        if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['_wpnonce'])):
             die(
                 json_encode(
                     array(
@@ -410,34 +397,34 @@ class MailgunAdmin extends Mailgun
                     )
                 )
             );
-        }
+        endif;
 
 		$getRegion = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
         $useAPI = (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI) ? MAILGUN_USEAPI : $this->get_option('useAPI');
         $secure = (defined('MAILGUN_SECURE') && MAILGUN_SECURE) ? MAILGUN_SECURE : $this->get_option('secure');
         $sectype = (defined('MAILGUN_SECTYPE') && MAILGUN_SECTYPE) ? MAILGUN_SECTYPE : $this->get_option('sectype');
 
-        if ((bool) !$getRegion) {
+        if ((bool) !$getRegion):
 			mg_api_last_error(__("Region has not been selected", "mailgun"));
-		} else {
+		else:
 
-			if ($getRegion === 'us') {
+			if ($getRegion === 'us'):
 				$region = __("U.S./North America", "mailgun");
-			}
+			endif;
 
-			if ($getRegion === "eu") {
+			if ($getRegion === "eu"):
 				$region = __("Europe", "mailgun");
-			}
-		}
+			endif;
+		endif;
 
-        if ((bool) $useAPI) {
+        if ((bool) $useAPI):
             $method = __('HTTP API', 'mailgun');
-        } else {
+        else:
             $method = ((bool) $secure) ? __('Secure SMTP', 'mailgun') : __('Insecure SMTP', 'mailgun');
-            if ((bool) $secure) {
+            if ((bool) $secure):
                 $method = $method . sprintf(__(' via %s', 'mailgun'), $sectype);
-            }
-        }
+            endif;
+        endif;
 
         $admin_email = get_option('admin_email');
         $result = wp_mail(
@@ -447,25 +434,25 @@ class MailgunAdmin extends Mailgun
             array('Content-Type: text/plain')
         );
 
-        if ((bool) $useAPI) {
-            if (!function_exists('mg_api_last_error')) {
-                if (!include dirname(__FILE__).'/wp-mail-api.php') {
+        if ((bool) $useAPI):
+            if (!function_exists('mg_api_last_error')):
+                if (!include dirname(__FILE__).'/wp-mail-api.php'):
                     self::deactivate_and_die(dirname(__FILE__).'/wp-mail-api.php');
-                }
-            }
+                endif;
+            endif;
 
             $error_msg = mg_api_last_error();
-        } else {
-            if (!function_exists('mg_smtp_last_error')) {
-                if (!include dirname(__FILE__).'/wp-mail-smtp.php') {
+        else:
+            if (!function_exists('mg_smtp_last_error')):
+                if (!include dirname(__FILE__).'/wp-mail-smtp.php'):
                     self::deactivate_and_die(dirname(__FILE__).'/wp-mail-smtp.php');
-                }
-            }
+                endif;
+            endif;
 
             $error_msg = mg_smtp_last_error();
-        }
+        endif;
 
-        if ($result) {
+        if ($result):
             die(
                 json_encode(
                     array(
@@ -475,7 +462,7 @@ class MailgunAdmin extends Mailgun
                     )
                 )
             );
-        } else {
+        else:
             die(
                 json_encode(
                     array(
@@ -485,6 +472,6 @@ class MailgunAdmin extends Mailgun
                     )
                 )
             );
-        }
+        endif;
     }
 }

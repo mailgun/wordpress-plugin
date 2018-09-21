@@ -4,7 +4,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.5.14
+ * Version:      1.6
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -55,23 +55,23 @@ class Mailgun
         // Mailgun SMTP servers
         // When using SMTP, we also need to inject a `wp_mail` filter to make "from" settings
         // work properly. Fixes issues with 1.5.7+
-        if ($this->get_option('useAPI') || (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI)) {
-            if (!function_exists('wp_mail')) {
-                if (!include dirname(__FILE__).'/includes/wp-mail-api.php') {
+        if ($this->get_option('useAPI') || (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI)):
+            if (!function_exists('wp_mail')):
+                if (!include dirname(__FILE__).'/includes/wp-mail-api.php'):
                     self::deactivate_and_die(dirname(__FILE__).'/includes/wp-mail-api.php');
-                }
-            }
-        } else {
+                endif;
+            endif;
+        else:
             // Using SMTP, include the SMTP filter
-            if (!function_exists('mg_smtp_mail_filter')) {
-                if (!include dirname(__FILE__).'/includes/wp-mail-smtp.php') {
+            if (!function_exists('mg_smtp_mail_filter')):
+                if (!include dirname(__FILE__).'/includes/wp-mail-smtp.php'):
                     self::deactivate_and_die(dirname(__FILE__).'/includes/wp-mail-smtp.php');
-                }
-            }
+                endif;
+            endif;
             add_filter('wp_mail', 'mg_smtp_mail_filter');
             add_action('phpmailer_init', array(&$this, 'phpmailer_init'));
             add_action('wp_mail_failed', 'wp_mail_failed');
-        }
+        endif;
     }
 
     /**
@@ -87,14 +87,14 @@ class Mailgun
      */
     public function get_option($option, $options = null, $default = false)
     {
-        if (is_null($options)) {
+        if (is_null($options)):
             $options = &$this->options;
-        }
-        if (isset($options[$option])) {
+        endif;
+        if (isset($options[$option])):
             return $options[$option];
-        } else {
+        else:
             return $default;
-        }
+        endif;
     }
 
     /**
@@ -122,13 +122,15 @@ class Mailgun
 
         $phpmailer->Mailer = 'smtp';
         $phpmailer->Host = $smtp_endpoint;
-        if ( 'ssl' === $sectype ) {
+
+        if ( 'ssl' === $sectype ):
             // For SSL-only connections, use 465
             $phpmailer->Port = 465;
-        } else {
+        else:
             // Otherwise, use 587.
             $phpmailer->Port = 587;
-        }
+        endif;
+
         $phpmailer->SMTPAuth = true;
         $phpmailer->Username = $username;
         $phpmailer->Password = $password;
@@ -156,9 +158,9 @@ class Mailgun
     {
         load_plugin_textdomain('mailgun', false, 'mailgun/languages');
         $message = sprintf(__('Mailgun has been automatically deactivated because the file <strong>%s</strong> is missing. Please reinstall the plugin and reactivate.'), $file);
-        if (!function_exists('deactivate_plugins')) {
+        if (!function_exists('deactivate_plugins')):
             include ABSPATH.'wp-admin/includes/plugin.php';
-        }
+        endif;
         deactivate_plugins(__FILE__);
         wp_die($message);
     }
@@ -216,11 +218,11 @@ class Mailgun
 
         // make the remote request
         $result = wp_remote_request($url, $args);
-        if (!is_wp_error($result)) {
+        if (!is_wp_error($result)):
             return $result['body'];
-        } else {
+        else:
             return $result->get_error_message();
-        }
+        endif;
     }
 
     /**
@@ -236,9 +238,9 @@ class Mailgun
 
         $lists_json = $this->api_call('lists', array(), 'GET');
         $lists_arr = json_decode($lists_json, true);
-        if (isset($lists_arr['items']) && !empty($lists_arr['items'])) {
+        if (isset($lists_arr['items']) && !empty($lists_arr['items'])):
             $results = $lists_arr['items'];
-        }
+        endif;
 
         return $results;
     }
@@ -259,8 +261,8 @@ class Mailgun
 
         $list_addresses = $_POST['addresses'];
 
-        if (!empty($list_addresses)) {
-            foreach ($list_addresses as $address => $val) {
+        if (!empty($list_addresses)):
+            foreach ($list_addresses as $address => $val):
                 $response[] = $this->api_call(
                     "lists/{$address}/members",
                     array(
@@ -268,12 +270,12 @@ class Mailgun
                         'name'    => $name,
                     )
                 );
-            }
+            endforeach;
 
             echo json_encode(array('status' => 200, 'message' => 'Thank you!'));
-        } else {
+        else:
             echo json_encode(array('status' => 500, 'message' => 'Uh oh. We weren\'t able to add you to the list'.count($list_addresses) ? 's.' : '. Please try again.'));
-        }
+        endif;
 
         wp_die();
     }
@@ -296,25 +298,26 @@ class Mailgun
         $list_addresses = array_map('trim', explode(',', $list_address));
 
         // All list info from the API; used for list info when more than one list is available to subscribe to
-        $all_list_addresses = $this->get_lists(); ?>
+        $all_list_addresses = $this->get_lists();
+?>
         <div class="mailgun-list-widget-front <?php echo $widget_class_id; ?> widget">
             <form class="list-form <?php echo $form_class_id; ?>">
                 <div class="mailgun-list-widget-inputs">
-                    <?php if (isset($args['list_title'])) : ?>
+                    <?php if (isset($args['list_title'])): ?>
                         <div class="mailgun-list-title">
                             <h4 class="widget-title">
                                 <span><?php echo $args['list_title']; ?></span>
                             </h4>
                         </div>
                     <?php endif; ?>
-                    <?php if (isset($args['list_description'])) : ?>
+                    <?php if (isset($args['list_description'])): ?>
                         <div class="mailgun-list-description">
                             <p class="widget-description">
                                 <span><?php echo $args['list_description']; ?></span>
                             </p>
                         </div>
                     <?php endif; ?>
-                    <?php if (isset($args['collect_name']) && intval($args['collect_name']) === 1) : ?>
+                    <?php if (isset($args['collect_name']) && intval($args['collect_name']) === 1): ?>
                         <p class="mailgun-list-widget-name">
                             <strong>Name:</strong>
                             <input type="text" name="name" />
@@ -326,18 +329,20 @@ class Mailgun
                     </p>
                 </div>
 
-                <?php if (count($list_addresses) > 1) : ?>
+                <?php if (count($list_addresses) > '1'): ?>
                     <ul class="mailgun-lists" style="list-style: none;">
-                        <?php foreach ($all_list_addresses as $la) : ?>
-                            <?php if (!in_array($la['address'], $list_addresses)) {
-            continue;
-        } ?>
+                        <?php
+							foreach ($all_list_addresses as $la):
+                            	if (!in_array($la['address'], $list_addresses)):
+            						continue;
+                            	endif;
+                        ?>
                             <li>
                                 <input type="checkbox" class="mailgun-list-name" name="addresses[<?php echo $la['address']; ?>]" /> <?php echo $la['name']; ?>
                             </li>
                         <?php endforeach; ?>
                     </ul>
-                <?php else : ?>
+                <?php else: ?>
                     <input type="hidden" name="addresses[<?php echo $list_addresses[0]; ?>]" value="on" />
                 <?php endif; ?>
 
@@ -351,7 +356,6 @@ class Mailgun
         </div>
 
         <script>
-
         jQuery(document).ready(function(){
 
             jQuery('.mailgun-list-submit-button').on('click', function() {
@@ -400,11 +404,9 @@ class Mailgun
                 });
             });
         });
-
         </script>
 
-        <?php
-
+<?php
     }
 
     /**
@@ -418,20 +420,20 @@ class Mailgun
      */
     public function build_list_form($atts)
     {
-        if (isset($atts['id']) && $atts['id'] != '') {
+        if (isset($atts['id']) && $atts['id'] != ''):
             $args['widget_id'] = md5(rand(10000, 99999) + $atts['id']);
 
-            if (isset($atts['collect_name'])) {
+            if (isset($atts['collect_name'])):
                 $args['collect_name'] = true;
-            }
+            endif;
 
-            if (isset($atts['title'])) {
+            if (isset($atts['title'])):
                 $args['list_title'] = $atts['title'];
-            }
+            endif;
 
-            if (isset($atts['description'])) {
+            if (isset($atts['description'])):
                 $args['list_description'] = $atts['description'];
-            }
+            endif;
 
             ob_start();
             $this->list_form($atts['id'], $args);
@@ -439,14 +441,13 @@ class Mailgun
             ob_end_clean();
 
             return $output_string;
-        } else {
-            ?>
+        else:
+?>
             <span>Mailgun list ID needed to render form!</span>
             <br />
             <strong>Example :</strong> [mailgun id="[your list id]"]
-            <?php
-
-        }
+<?php
+		endif;
     }
 
     /**
@@ -463,16 +464,16 @@ class Mailgun
 
 $mailgun = new Mailgun();
 
-if (@include dirname(__FILE__).'/includes/widget.php') {
+if (@include dirname(__FILE__).'/includes/widget.php'):
     add_action('widgets_init', array(&$mailgun, 'load_list_widget'));
     add_action('wp_ajax_nopriv_add_list', array(&$mailgun, 'add_list'));
     add_action('wp_ajax_add_list', array(&$mailgun, 'add_list'));
-}
+endif;
 
-if (is_admin()) {
-    if (@include dirname(__FILE__).'/includes/admin.php') {
+if (is_admin()):
+    if (@include dirname(__FILE__).'/includes/admin.php'):
         $mailgunAdmin = new MailgunAdmin();
-    } else {
+    else:
         Mailgun::deactivate_and_die(dirname(__FILE__).'/includes/admin.php');
-    }
-}
+    endif;
+endif;

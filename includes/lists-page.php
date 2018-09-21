@@ -23,15 +23,15 @@ global $mailgun;
 
 // check mailgun domain & api key
 $missing_error = '';
-$api_key = $this->get_option('apiKey');
-$mailgun_domain = $this->get_option('domain');
-if ($api_key != '') {
-    if ($mailgun_domain == '') {
+$api_key = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $this->get_option('apiKey');
+$mailgun_domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $this->get_option('domain');
+if ($api_key != ''):
+    if ($mailgun_domain == ''):
         $missing_error = '<strong style="color:red;">Missing or invalid Mailgun Domain</strong>. ';
-    }
-} else {
+    endif;
+else:
     $missing_error = '<strong style="color:red;">Missing or invalid API Key</strong>. ';
-}
+endif;
 
 // import available lists
 $lists_arr = $mailgun->get_lists();
@@ -85,8 +85,8 @@ $lists_arr = $mailgun->get_lists();
             <h3>Multi-list subscription</h3>
             <p>
                 <?php _e('To allow users to subscribe to multiple lists on a single form, comma-separate the Mailgun list ids.', 'mailgun'); ?></p>
-            <p class="description">
-                <?php _e('<strong>Example:</strong> [mailgun id="list1@mydomain.com,list2@mydomain.com"]'); ?>
+            <p>
+                <?php _e('<strong>Example:</strong> <code>[mailgun id="list1@mydomain.com,list2@mydomain.com"]</code>'); ?>
             </p>
 
         <?php endif; ?>
