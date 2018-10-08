@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.6.1 (2018-10-08)
+- Restore Settings page form for all install types.
+
 1.6 (2018-9-21)
 - Refactor admin notifications
 - Enable Settings page for all WordPress install types
