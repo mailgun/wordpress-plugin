@@ -62,11 +62,6 @@
 	</p>
 
 	<h3><?php _e('Configuration', 'mailgun'); ?></h3>
-
-	<?php
-		$isMultisite = defined('WP_ALLOW_MULTISITE');
-		if (!$isMultisite):
-	?>
 	<form id="mailgun-form" action="options.php" method="post">
 		<?php settings_fields('mailgun'); ?>
 
@@ -325,7 +320,7 @@
 							$url2 = 'https://documentation.mailgun.com/user_manual.html#tagging';
 							$link = sprintf(
 								wp_kses(
-									__('<a href="%1$s" target="%3$s">Tracking</a> and <a href="%2$s">Tagging</a>', 'mailgun'),
+									__('<a href="%1$s" target="%3$s">Tracking</a> and <a href="%2$s" target="%3$s">Tagging</a>', 'mailgun'),
 									array('a' => array(
 										'href' => array(),
 										'target' => array()
@@ -339,29 +334,6 @@
 				</td>
 			</tr>
 		</table>
-		<?php else: ?>
-			<p>
-				<?php
-					_e('Once you have configured the plugin settings in your wp-config.php, you can test it here.', 'mailgun');
-				?>
-			</p>
-			<p><?php _e('The definitions are as follows:', 'mailgun'); ?></p>
-			<p>
-			<pre>
-MAILGUN_REGION		Choices: 'us' or 'eu'
-	ex. define('MAILGUN_REGION', 'us');
-MAILGUN_USEAPI		Choices: '0' or '1' (0 = false/no)
-MAILGUN_APIKEY
-MAILGUN_DOMAIN
-MAILGUN_USERNAME
-MAILGUN_PASSWORD
-MAILGUN_SECURE
-MAILGUN_SECTYPE		Choices: 'ssl' or 'tls'
-MAILGUN_FROM_NAME
-MAILGUN_FROM_ADDRESS
-			</pre>
-			</p>
-		<?php endif; ?>
 		<h3><?php _e('Lists', 'mailgun'); ?></h3>
 		<table class="form-table">
 			<tr valign="top">
@@ -394,42 +366,30 @@ MAILGUN_FROM_ADDRESS
 								__('<a href="%1$s" target="%2$s">View available lists</a>.', 'mailgun'),
 								array('a' => array(
 									'href' => array(),
-									'target' => array()
 									)
 								)
-							), esc_url($url), '_blank'
+							), esc_url($url)
 						);
 						echo $link;
 					?>
 				</td>
 			</tr>
 		</table>
-
-		<?php if (!$isMultisite): ?>
-			<p>
-				<?php
-					_e('Before attempting to test the configuration, please click "Save Changes".', 'mailgun');
-				?>
-			</p>
-			<p class="submit">
-				<input type="submit"
-					   class="button-primary"
-					   value="<?php _e('Save Changes', 'mailgun'); ?>"
-				/>
-				<input type="button"
-					   id="mailgun-test"
-					   class="button-secondary"
-					   value="<?php _e('Test Configuration', 'mailgun'); ?>"
-				/>
-			</p>
-		<?php else: ?>
-			<p class="submit">
-				<input type="button"
-					   id="mailgun-test"
-					   class="button-secondary"
-					   value="<?php _e('Test Configuration', 'mailgun'); ?>"
-				/>
-			</p>
-		<?php endif; ?>
+		<p>
+			<?php
+				_e('Before attempting to test the configuration, please click "Save Changes".', 'mailgun');
+			?>
+		</p>
+		<p class="submit">
+			<input type="submit"
+				   class="button-primary"
+				   value="<?php _e('Save Changes', 'mailgun'); ?>"
+			/>
+			<input type="button"
+				   id="mailgun-test"
+				   class="button-secondary"
+				   value="<?php _e('Test Configuration', 'mailgun'); ?>"
+			/>
+		</p>
 	</form>
 </div>

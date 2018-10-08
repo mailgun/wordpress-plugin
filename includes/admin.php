@@ -320,8 +320,7 @@
 				return;
 			endif;
 
-			if ((defined('WP_ALLOW_MULTISITE') && !defined('MAILGUN_REGION'))
-				|| (!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
+			if ((!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
 				|| (!$this->get_option('password') && $this->get_option('useAPI') === '0')
 				|| (!$this->get_option('region') && $this->get_option('useAPI') === '1')
 			):

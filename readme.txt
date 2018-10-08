@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.9.8
-Stable tag: 1.6
+Stable tag: 1.6.1
 License: GPLv2 or later
 
 
@@ -60,7 +60,7 @@ MAILGUN_APIKEY       Type: string
 MAILGUN_DOMAIN       Type: string
 MAILGUN_USERNAME     Type: string
 MAILGUN_PASSWORD     Type: string
-MAILGUN_SECURE       Type: boolean
+MAILGUN_SECURE       Type: boolean  Choices: '0' or '1' (0 = false/no)
 MAILGUN_SECTYPE      Type: string   Choices: 'ssl' or 'tls'
 MAILGUN_FROM_NAME    Type: string
 MAILGUN_FROM_ADDRESS Type: string
@@ -128,6 +128,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.6. (2018-10-08): =
+- Restore Settings page form for all install types.
 
 = 1.6 (2018-9-21): =
 - Refactor admin notifications
