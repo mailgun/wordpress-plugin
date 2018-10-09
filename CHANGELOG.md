@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.6.2 (2018-10-09)
+- Add constant check for admin notifications.
+
 1.6.1 (2018-10-08)
 - Restore Settings page form for all install types.
 

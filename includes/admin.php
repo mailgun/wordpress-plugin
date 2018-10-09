@@ -320,11 +320,13 @@
 				return;
 			endif;
 
-			if ((!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
-				|| (!$this->get_option('password') && $this->get_option('useAPI') === '0')
-				|| (!$this->get_option('region') && $this->get_option('useAPI') === '1')
+			if ((!$this->get_option('password') && $this->get_option('useAPI') === '0')
+				|| (($this->get_option('useAPI') === '1')
+					&& (!$this->get_option('region') || (!$this->get_option('apiKey')
+							&& (!defined('MAILGUN_REGION') && !MAILGUN_REGION) ))
+					)
 			):
-				?>
+		?>
 				<div id='mailgun-warning' class='notice notice-warning is-dismissible'>
 					<p>
 						<strong>
@@ -339,7 +341,7 @@
 						?>
 					</p>
 				</div>
-			<?php
+		<?php
 			endif;
 
 			if ($this->get_option('override-from') === '1' &&
@@ -357,10 +359,10 @@
 									'mailgun'),
 								menu_page_url('mailgun', false)
 							);
-						?>
+		?>
 					</p>
 				</div>
-			<?php
+		<?php
 			endif;
 		}
 

@@ -5,7 +5,7 @@ Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 4.9.8
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv2 or later
 
 
@@ -128,6 +128,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.6.2 (2018-10-09): =
+- Add constant check for admin notifications.
 
 = 1.6.1 (2018-10-08): =
 - Restore Settings page form for all install types.
