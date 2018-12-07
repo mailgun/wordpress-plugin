@@ -320,9 +320,9 @@
 				return;
 			endif;
 
-			if ((!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
-				|| (!$this->get_option('password') && $this->get_option('useAPI') === '0')
-				|| (!$this->get_option('region') && $this->get_option('useAPI') === '1')
+			if ((((!$this->get_option('apiKey') && $this->get_option('useAPI')) || (!defined('MAILGUN_APIKEY') && defined('MAILGUN_USEAPI')))  === '1')
+				|| (((!$this->get_option('password') && $this->get_option('useAPI')) || (!defined('MAILGUN_PASSWORD') && defined('MAILGUN_USEAPI')))  === '0')
+				|| (((!$this->get_option('region') && $this->get_option('useAPI')) || (!defined('MAILGUN_REGION') && defined('MAILGUN_USEAPI'))) === '1')
 			):
 				?>
 				<div id='mailgun-warning' class='notice notice-warning is-dismissible'>
