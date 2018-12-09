@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mailgun 1.5.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mailgun\n"
-"POT-Creation-Date: 2018-12-09 12:34-0200\n"
-"PO-Revision-Date: 2018-12-09 13:04-0200\n"
+"POT-Creation-Date: 2018-12-09 13:19-0200\n"
+"PO-Revision-Date: 2018-12-09 13:19-0200\n"
 "Last-Translator: Emerson Broga <emerson.broga@gmail.com>\n"
 "Language-Team: Mailgun <support@mailgun.com>\n"
 "Language: pt_BR\n"
@@ -164,6 +164,10 @@ msgstr "Sucesso"
 #: includes/lists-page.php:55
 msgid "Available Mailing Lists"
 msgstr "Listas de Mailing Disponíveis"
+
+#: includes/lists-page.php:55
+msgid "Back to settings"
+msgstr "Voltar à configurações"
 
 #: includes/lists-page.php:87
 msgid ""
