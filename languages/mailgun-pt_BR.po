@@ -4,31 +4,29 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mailgun 1.5.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mailgun\n"
-"POT-Creation-Date: 2016-12-27 21:02:24+00:00\n"
+"POT-Creation-Date: 2018-12-09 12:34-0200\n"
+"PO-Revision-Date: 2018-12-09 13:04-0200\n"
+"Last-Translator: Emerson Broga <emerson.broga@gmail.com>\n"
+"Language-Team: Mailgun <support@mailgun.com>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-06-08 00:56-0400\n"
-"Language-Team: Mailgun <support@mailgun.com>\n"
-"X-Generator: Poedit 2.0.2\n"
-"Last-Translator: \n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Language: pt_BR\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __;_e;__\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#. Plugin Name of the plugin/theme
-#. Author of the plugin/theme
-#: includes/admin.php:96 includes/options-page.php:26
+#: includes/admin.php:104 includes/options-page.php:30
 msgid "Mailgun"
-msgstr ""
+msgstr "Mailgun"
 
-#: includes/admin.php:97 includes/lists-page.php:51
+#: includes/admin.php:106 includes/lists-page.php:51
 msgid "Mailgun Lists"
 msgstr "Listas do Mailgun"
 
-#: includes/admin.php:145
+#: includes/admin.php:155
 msgid ""
 "The Mailgun plugin configuration has changed since you last saved. Do you "
 "wish to test anyway?\\n\\nClick \"Cancel\" and then \"Save Changes\" if you "
@@ -38,19 +36,20 @@ msgstr ""
 "você salvou. Deseja testar assim mesmo?\\n\\nClique “Cancelar” e depois "
 "“Salvar Alterações” caso você deseje salvar suas alterações."
 
-#: includes/admin.php:150
+#: includes/admin.php:161
 msgid "Testing..."
 msgstr "Testando…"
 
-#: includes/admin.php:160 includes/options-page.php:186
+#: includes/admin.php:171 includes/options-page.php:391
 msgid "Test Configuration"
 msgstr "Testar Configuração"
 
-#: includes/admin.php:169 includes/admin.php:385
+#: includes/admin.php:180 includes/admin.php:475
 msgid "Failure"
 msgstr "Falha"
 
-#: includes/admin.php:192
+#: includes/admin.php:203
+#, php-format
 msgid ""
 "<div id=\"message\" class=\"updated fade\"><p>The options page for the "
 "<strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</"
@@ -60,7 +59,8 @@ msgstr ""
 "do <strong>Mailgun</strong> não pôde ser exibida. O arquivo <strong>%s</"
 "strong> não foi encontrado.  Por favor reinstale o plugin.</p></div>"
 
-#: includes/admin.php:206
+#: includes/admin.php:218
+#, php-format
 msgid ""
 "<div id=\"message\" class=\"updated fade\"><p>The lists page for the "
 "<strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</"
@@ -70,50 +70,82 @@ msgstr ""
 "<strong>Mailgun</strong> não pôde ser exibida. O arquivo <strong>%s</strong> "
 "não foi encontrado.  Por favor reinstale o plugin.</p></div>"
 
-#: includes/admin.php:301 includes/admin.php:309
+#: includes/admin.php:331 includes/admin.php:352
 msgid "Mailgun is almost ready. "
-msgstr "Mailgun está quase pronto."
+msgstr "Mailgun está quase pronto. "
 
-#: includes/admin.php:301
-msgid "You must <a href=\"%1$s\">configure Mailgun</a> for it to work."
+#: includes/admin.php:335
+#, php-format
+msgid ""
+"With the latest update, Mailgun now supports multiple regions! By default, "
+"we will use the U.S. region, but we now have an EU region available. You can "
+"configure your Mailgun settings <a href=\"%1$s\">here</a> or in your wp-"
+"config.php."
 msgstr ""
-"Você deve <a href=“%1$s”>configurar o Mailgun</a> para que ele funcione."
+"Com a ultima atualização do Mailgun, agora tem suporte a múltiplas regiões! "
+"Por padrão, nós vamos usar a região Estados Unidos, mas agora nos temos a "
+"região Europa disponível também. Você pode configurar  <a href=“%1$s”>here</"
+"a> ou no seu wp-config.php."
 
-#: includes/admin.php:309
+#: includes/admin.php:356
+#, php-format
 msgid ""
 "\"Override From\" option requires that \"From Name\" and \"From Address\" be "
 "set to work properly! <a href=\"%1$s\">Configure Mailgun now</a>."
 msgstr ""
+"“Sobrescrever remetente” requer que  “Nome do remetente” and “Email do "
+"remetente” estejam atribuídos para funcionar corretamente! <a "
+"href=“%1$s”>Configure o Mailgun agora</a>."
 
-#: includes/admin.php:326
+#: includes/admin.php:378
 msgid "Settings"
 msgstr "Opções"
 
-#: includes/admin.php:348
+#: includes/admin.php:400 includes/admin.php:402
 msgid "Unauthorized"
-msgstr "Não autorizado."
+msgstr "Não autorizado"
 
-#: includes/admin.php:358
+#: includes/admin.php:414
+msgid "Region has not been selected"
+msgstr "Região não foi selecionada"
+
+#: includes/admin.php:417 includes/options-page.php:75
+msgid "U.S./North America"
+msgstr "Estados Unidos/America do Norte"
+
+#: includes/admin.php:421 includes/options-page.php:76
+msgid "Europe"
+msgstr "Europa"
+
+#: includes/admin.php:426
 msgid "HTTP API"
-msgstr ""
+msgstr "HTTP API"
 
-#: includes/admin.php:360
+#: includes/admin.php:428
 msgid "Secure SMTP"
-msgstr ""
+msgstr "SMPT Seguro"
 
-#: includes/admin.php:360
-msgid "SMTP"
-msgstr ""
+#: includes/admin.php:428
+msgid "Insecure SMTP"
+msgstr "Usar SMPT Seguro"
 
-#: includes/admin.php:366
+#: includes/admin.php:430
+#, php-format
+msgid " via %s"
+msgstr " via %s"
+
+#: includes/admin.php:437
 msgid "Mailgun WordPress Plugin Test"
 msgstr "Teste do Plugin Mailgun para WordPress"
 
-#: includes/admin.php:367
+#: includes/admin.php:438
+#, php-format
 msgid ""
 "This is a test email generated by the Mailgun WordPress plugin.\n"
 "\n"
 "If you have received this message, the requested test has succeeded.\n"
+"\n"
+"The sending region is set to %s.\n"
 "\n"
 "The method used to send this email was: %s."
 msgstr ""
@@ -121,9 +153,11 @@ msgstr ""
 "\n"
 "Se você recebeu esta mensagem, a requisição foi bem sucedida.\n"
 "\n"
+"A região de envio está definida para %s.\n"
+"\n"
 "O método usado para enviar esse email foi: %s."
 
-#: includes/admin.php:375 includes/admin.php:377
+#: includes/admin.php:465 includes/admin.php:467
 msgid "Success"
 msgstr "Sucesso"
 
@@ -141,33 +175,65 @@ msgstr ""
 
 #: includes/lists-page.php:89
 msgid ""
-"<strong>Example:</strong> [mailgun id=\"list1@mydomain.com,list2@mydomain.com"
-"\"]"
+"<strong>Example:</strong> <code>[mailgun id=\"list1@mydomain.com,"
+"list2@mydomain.com\"]</code>"
 msgstr ""
-"<strong>Exemplo:</strong> [mailgun id=“list1@mydomain.com,list2@mydomain."
-"com”]"
+"<strong>Exemplo:</strong> <code>[mailgun id=“list1@mydomain.com,"
+"list2@mydomain.com”]</code>"
 
-#: includes/options-page.php:31
+#: includes/options-page.php:36
+#, php-format
+msgid ""
+"A <a href=\"%1$s\" target=\"%2$s\">Mailgun</a> account is required to use "
+"this plugin and the Mailgun service."
+msgstr ""
+"A <a href=“%1$s” target=“%2$s”>Conta do Mailgun</a> é requerida para o uso "
+"desse plugin e do serviço do Mailgun."
+
+#: includes/options-page.php:52
+#, php-format
+msgid ""
+"If you need to register for an account, you can do so at <a href=\"%1$s\" "
+"target=\"%2$s\">Mailgun.com</a>."
+msgstr ""
+"Se você precisa de criar uma conta, você pode fazer isso no  <a href=“%1$s” "
+"target=“%2$s”>Mailgun.com</a>."
+
+#: includes/options-page.php:64
 msgid "Configuration"
 msgstr "Configuração"
 
-#: includes/options-page.php:35
+#: includes/options-page.php:71
+msgid "Select Your Region"
+msgstr "Selecione sua região"
+
+#: includes/options-page.php:80
+msgid ""
+"Choose a region - U.S./North America or Europe - from which to send email, "
+"and to store your customer data. Please note that your sending domain must "
+"be set up in whichever region you choose."
+msgstr ""
+"Selecione a região - Estados Unidos/America do Norte ou Europa - de onde "
+"enviar o email, e lavar os dados do usuário. Tenha em mente que a o domínio "
+"de envio deve estar configurado na região que você escolher."
+
+#: includes/options-page.php:87
 msgid "Use HTTP API"
 msgstr "Usar API HTTP"
 
-#: includes/options-page.php:39 includes/options-page.php:87
-#: includes/options-page.php:99 includes/options-page.php:112
-#: includes/options-page.php:142
+#: includes/options-page.php:91 includes/options-page.php:172
+#: includes/options-page.php:205 includes/options-page.php:232
+#: includes/options-page.php:294
 msgid "Yes"
 msgstr "Sim"
 
-#: includes/options-page.php:40 includes/options-page.php:88
-#: includes/options-page.php:101 includes/options-page.php:113
-#: includes/options-page.php:143
+#: includes/options-page.php:92 includes/options-page.php:173
+#: includes/options-page.php:206 includes/options-page.php:233
+#: includes/options-page.php:295
 msgid "No"
 msgstr "Não"
 
-#: includes/options-page.php:42
+#: includes/options-page.php:96
 msgid ""
 "Set this to \"No\" if your server cannot make outbound HTTP connections or "
 "if emails are not being delivered. \"No\" will cause this plugin to use "
@@ -177,189 +243,281 @@ msgstr ""
 "se os emails não estão sendo entregues.  “Não” vai fazer o plugin usar  "
 "SMTP. Padão “Sim”."
 
-#: includes/options-page.php:47
+#: includes/options-page.php:103
 msgid "Mailgun Domain Name"
 msgstr "Domínio Mailgun"
 
-#: includes/options-page.php:51
+#: includes/options-page.php:112
 msgid "Your Mailgun Domain Name."
 msgstr "Seu Domínio Mailgun."
 
-#: includes/options-page.php:56
+#: includes/options-page.php:118
 msgid "API Key"
-msgstr ""
+msgstr "Chave de API"
 
-#: includes/options-page.php:60
-msgid ""
-"Your Mailgun API key, that starts with and includes \"key-\". Only valid for "
-"use with the API."
+#: includes/options-page.php:127
+msgid "Your Mailgun API key. Only valid for use with the API."
 msgstr ""
+"Seu nome de usuário do SMPT do Mailgun. Válido somente para uso com SMTP."
 
-#: includes/options-page.php:65
+#: includes/options-page.php:134
 msgid "Username"
-msgstr ""
+msgstr "Nome de usuário"
 
-#: includes/options-page.php:69
+#: includes/options-page.php:144
 msgid "Your Mailgun SMTP username. Only valid for use with SMTP."
 msgstr ""
+"Seu nome de usuário do SMPT do Mailgun. Válido somente para uso com SMTP."
 
-#: includes/options-page.php:74
+#: includes/options-page.php:151
 msgid "Password"
-msgstr ""
+msgstr "Senha"
 
-#: includes/options-page.php:78
+#: includes/options-page.php:161
 msgid ""
 "Your Mailgun SMTP password that goes with the above username. Only valid for "
 "use with SMTP."
 msgstr ""
+"Sua senha de SMTP do Mailgun que é usada em conjunto com o nome de usuário "
+"acima. Válido somente para uso com SMTP."
 
-#: includes/options-page.php:83
+#: includes/options-page.php:168
 msgid "Use Secure SMTP"
-msgstr ""
+msgstr "Usar SMTP Seguro"
 
-#: includes/options-page.php:90
+#: includes/options-page.php:177
 msgid ""
 "Set this to \"No\" if your server cannot establish SSL SMTP connections or "
 "if emails are not being delivered. If you set this to \"No\" your password "
 "will be sent in plain text. Only valid for use with SMTP. Default \"Yes\"."
 msgstr ""
+"Coloque “Não” se o seu servidor não puder fazer requisições HTTP de saída ou "
+"se os emails não estão sendo entregues.  “Não” vai fazer o plugin usar  "
+"SMTP. Padão “Sim”."
 
-#: includes/options-page.php:95
-msgid "Click Tracking"
-msgstr ""
+#: includes/options-page.php:184
+msgid "Security Type"
+msgstr "Tipo de segurança"
 
-#: includes/options-page.php:100
-msgid "HTML Only"
-msgstr ""
-
-#: includes/options-page.php:103
-msgid "If enabled, Mailgun will  and track links."
-msgstr ""
-
-#: includes/options-page.php:108
-msgid "Open Tracking"
-msgstr ""
-
-#: includes/options-page.php:115
-msgid "If enabled, HTML messages will include an open tracking beacon."
-msgstr ""
-
-#: includes/options-page.php:120
-msgid "From Address"
-msgstr ""
-
-#: includes/options-page.php:124
+#: includes/options-page.php:193
 msgid ""
-"The <address@mydomain.com> part of the sender information (<code>\"Excited "
-"User &lt;user@samples.mailgun.org&gt;\"</code>). This address will appear as "
-"the `From` address on sent mail. <strong>It is recommended that the "
-"@mydomain portion matches your Mailgun sending domain.</strong>"
+"Leave this at \"TLS\" unless mail sending fails. This option only matters "
+"for Secure SMTP. Default \"TLS\"."
 msgstr ""
+"Deixe como  “TLS” a não ser que o envio de emails esteja falhando. Está "
+"opção somente é importante para SMTP Seguro. Padrão “TLS”."
 
-#: includes/options-page.php:129
+#: includes/options-page.php:200
+msgid "Click Tracking"
+msgstr "Rastrear Cliques"
+
+#: includes/options-page.php:204
+msgid "HTML Only"
+msgstr "Somente HTML"
+
+#: includes/options-page.php:213
+#, php-format
+msgid ""
+"If enabled, Mailgun will and track links. <a href=\"%1$s\" target=\"%2$s"
+"\">Open Tracking Documentation</a>."
+msgstr ""
+"Se habilitado, Mailgun vai ratear links. <a href=“%1$s” target=“%2$s”>Ver "
+"documentação de rastreamento</a>."
+
+#: includes/options-page.php:228
+msgid "Open Tracking"
+msgstr "Abrir rastreamento"
+
+#: includes/options-page.php:240
+#, php-format
+msgid ""
+"If enabled, HTML messages will include an open tracking beacon. <a href="
+"\"%1$s\" target=\"%2$s\">Open Tracking Documentation</a>."
+msgstr ""
+"Se habilitado, mensagens HTML vão incluir o beacon de rastreamento. <a "
+"href=“%1$s” target=“%2$s”>Abrir documentação de rastreamento.</a>."
+
+#: includes/options-page.php:255
+msgid "From Address"
+msgstr "Email do remetente"
+
+#: includes/options-page.php:266
+msgid ""
+"The &lt;address@mydomain.com&gt; part of the sender information (<code>"
+"\"Excited User &lt;user@samples.mailgun.org&gt;\"</code>). This address will "
+"appear as the `From` address on sent mail. <strong>It is recommended that "
+"the @mydomain portion matches your Mailgun sending domain.</strong>"
+msgstr ""
+"O &lt;address@mydomain.com&gt; é parte da informação do rementente "
+"(<code>”Usuário &lt;user@samples.mailgun.org&gt;”</code>). Esse endereço de "
+"email vai aparecer como o “Email do remetente” nos emails enviados.<strong>É "
+"recomendado que a parte @mydomain seja a mesma que o domínio de envio do "
+"Mailgun.</strong>"
+
+#: includes/options-page.php:273
 msgid "From Name"
-msgstr ""
+msgstr "Nome do remetente"
 
-#: includes/options-page.php:133
+#: includes/options-page.php:283
 msgid ""
 "The \"User Name\" part of the sender information (<code>\"Excited User &lt;"
 "user@samples.mailgun.org&gt;\"</code>)."
 msgstr ""
+"O “Nome de usuário” é parte da informação do remetente. (<code>”Usuário &lt;"
+"user@samples.mailgun.org&gt;”</code>)."
 
-#: includes/options-page.php:138
+#: includes/options-page.php:290
 msgid "Override \"From\" Details"
-msgstr ""
+msgstr "Sobrescrever detalhes do “Remetente”"
 
-#: includes/options-page.php:145
+#: includes/options-page.php:299
 msgid ""
 "If enabled, all emails will be sent with the above \"From Name\" and \"From "
 "Address\", regardless of values set by other plugins. Useful for cases where "
 "other plugins don't play nice with our \"From Name\" / \"From Address\" "
 "setting."
 msgstr ""
+"Se habilitado, todos os emails serão enviados com o “Nome de Remetente” e o "
+"“Email de Remetente” acima, independente dos valores atribuídos por outros "
+"plugins. Útil para os casos onde os outros plugins não funcionam muito bem "
+"com as configurações de Nome e Email do Remetente."
 
-#: includes/options-page.php:150
+#: includes/options-page.php:306
 msgid "Tag"
-msgstr ""
+msgstr "Marcar (Tag)"
 
-#: includes/options-page.php:154
+#: includes/options-page.php:316
 msgid ""
 "If added, this tag will exist on every outbound message. Statistics will be "
-"populated in the Mailgun Control Panel. Use a comma to define multiple tags."
+"populated in the Mailgun Control Panel. Use a comma to define multiple tags. "
 msgstr ""
+"Se habilitado, essa marcação (tag) vai existir em todos os email de saída. "
+"Estatísticas eram populadas no Painel de Controle do Mailgun. Use vírgula "
+"para definir marcações (tags) múltiplas. "
 
-#: includes/options-page.php:154
+#: includes/options-page.php:317
 msgid "Learn more about"
-msgstr ""
+msgstr "Saiba mais a respeito"
 
-#: includes/options-page.php:154
-msgid "and"
+#: includes/options-page.php:323
+#, php-format
+msgid ""
+"<a href=\"%1$s\" target=\"%3$s\">Tracking</a> and <a href=\"%2$s\" target="
+"\"%3$s\">Tagging</a>"
 msgstr ""
+"<a href=“%1$s” target=“%3$s”>Rastrear (Tracking)</a> e <a href=“%2$s” "
+"target=“%3$s”>Marcar (tagging)</a>"
 
-#: includes/options-page.php:158 includes/options-page.php:175
+#: includes/options-page.php:337 includes/options-page.php:358
 msgid "Lists"
-msgstr ""
+msgstr "Listas"
 
-#: includes/options-page.php:162
+#: includes/options-page.php:341
 msgid "Shortcode"
-msgstr ""
+msgstr "Shortcode"
 
-#: includes/options-page.php:169
+#: includes/options-page.php:350
 msgid ""
 "Use the shortcode above to associate a widget instance with a mailgun list"
-msgstr ""
+msgstr "Use o shortcode acima para associar o widget com a lista do mailgun"
 
-#: includes/options-page.php:183
+#: includes/options-page.php:366
+#, php-format
+msgid "<a href=\"%1$s\" target=\"%2$s\">View available lists</a>."
+msgstr "<a href=“%1$s” target=“%2$s”>Ver listas disponíveis</a>."
+
+#: includes/options-page.php:380
 msgid ""
 "Before attempting to test the configuration, please click \"Save Changes\"."
 msgstr ""
+"Antes de tentar testar a configuração, por favor clique em “Salvar "
+"Alterações”."
 
-#: includes/options-page.php:185
+#: includes/options-page.php:386
 msgid "Save Changes"
-msgstr ""
+msgstr "Salvar Alterações"
 
 #: includes/widget.php:30
 msgid "Mailgun List Widget"
-msgstr ""
+msgstr "Widget de Lista do Mailgun"
 
 #: includes/widget.php:32
 msgid "Mailgun list widget"
-msgstr ""
+msgstr "Widget de lista do Mailgun"
 
 #: includes/widget.php:68
 msgid "New list_address"
-msgstr ""
+msgstr "Novo endereço de lista"
 
 #: includes/widget.php:84
 msgid "Title (optional):"
-msgstr ""
+msgstr "Título (opcional):"
 
 #: includes/widget.php:88
 msgid "Description (optional):"
-msgstr ""
+msgstr "Descrição (opcional):"
 
 #: includes/widget.php:92
 msgid "List addresses (required):"
-msgstr ""
+msgstr "Endereço da lista (obrigatório):"
 
 #: includes/widget.php:96
 msgid "Collect name:"
-msgstr ""
+msgstr "Coletar nome:"
 
-#: mailgun.php:123
+#: mailgun.php:161
+#, php-format
 msgid ""
 "Mailgun has been automatically deactivated because the file <strong>%s</"
 "strong> is missing. Please reinstall the plugin and reactivate."
 msgstr ""
+"Mailgun foi desativado automaticamente porque está faltando o arquivo "
+"<strong>%s</strong>. Por favor re-instale o plugin e ative novamente."
 
-#. Plugin URI of the plugin/theme
-msgid "http://wordpress.org/extend/plugins/mailgun/"
-msgstr ""
+#: mailgun.php:356
+msgid "Subscribe"
+msgstr "Inscreva-se"
 
-#. Description of the plugin/theme
-msgid "Mailgun integration for WordPress"
-msgstr ""
+#: mailgun.php:361
+msgid "Thank you for subscribing!"
+msgstr "Obrigado por se inscrever!"
 
-#. Author URI of the plugin/theme
-msgid "http://www.mailgun.com/"
-msgstr ""
+#: mailgun.php:371
+msgid "Please select a list to subscribe to."
+msgstr "Por favor selecione uma lista para se inscrever."
+
+#: mailgun.php:372
+msgid "Please enter your subscription name."
+msgstr "Por favor preencha o seu nome."
+
+#: mailgun.php:373
+msgid "Please enter your subscription email."
+msgstr "Por favor preencha o email."
+
+#: mailgun.php:459
+msgid "Mailgun list ID needed to render form!"
+msgstr "ID da lista do Mailgun é necessária para renderizar o formulário!"
+
+#: mailgun.php:461
+msgid "Example: "
+msgstr "Exemplo: "
+
+#~ msgid "You must <a href=\"%1$s\">configure Mailgun</a> for it to work."
+#~ msgstr ""
+#~ "Você deve <a href=“%1$s”>configurar o Mailgun</a> para que ele funcione."
+
+#~ msgid ""
+#~ "Your Mailgun API key, that starts with and includes \"key-\". Only valid "
+#~ "for use with the API."
+#~ msgstr ""
+#~ "Sua chave de api do Mailgun que começa e com “key-”. Válido somente para "
+#~ "uso com a API."
+
+#~ msgid "If enabled, Mailgun will  and track links."
+#~ msgstr "Se ativado, Mailgun vai rastrear links."
+
+#~ msgid "and"
+#~ msgstr "e"
+
+#~ msgid "Mailgun integration for WordPress"
+#~ msgstr "Integração do Mailgun para Wordpress"

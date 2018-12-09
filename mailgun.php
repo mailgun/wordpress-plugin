@@ -353,34 +353,40 @@
 					<?php endif; ?>
 
 					<input class="mailgun-list-submit-button" data-form-id="<?php echo $form_class_id; ?>" type="button"
-						   value="Subscribe"/>
+						   value="<?php _e('Subscribe'); ?>"/>
 					<input type="hidden" name="mailgun-submission" value="1"/>
 
 				</form>
 				<div class="widget-list-panel result-panel" style="display:none;">
-					<span>Thank you for subscribing!</span>
+					<span><?php _e('Thank you for subscribing!', 'mailgun'); ?></span>
 				</div>
 			</div>
-
+			
 			<script>
               jQuery(document).ready(function () {
 
-                jQuery('.mailgun-list-submit-button').on('click', function () {
+              	jQuery('.mailgun-list-submit-button').on('click', function () {
+
+              	  var errorMessages = {
+              	  	selectList: '<?php _e('Please select a list to subscribe to.', 'mailgun'); ?>',
+              	  	enterName: '<?php _e('Please enter your subscription name.', 'mailgun'); ?>',
+              	  	enterEmail: '<?php _e('Please enter your subscription email.', 'mailgun'); ?>',
+              	  }
 
                   var form_id = jQuery(this).data('form-id')
 
                   if (jQuery('.mailgun-list-name').length > 0 && jQuery('.' + form_id + ' .mailgun-list-name:checked').length < 1) {
-                    alert('Please select a list to subscribe to.')
+                    alert(errorMessages.selectList)
                     return
                   }
 
                   if (jQuery('.' + form_id + ' .mailgun-list-widget-name input') && jQuery('.' + form_id + ' .mailgun-list-widget-name input').val() === '') {
-                    alert('Please enter your subscription name.')
+                    alert(errorMessages.enterName)
                     return
                   }
 
                   if (jQuery('.' + form_id + ' .mailgun-list-widget-email input').val() === '') {
-                    alert('Please enter your subscription email.')
+                    alert(errorMessages.enterEmail)
                     return
                   }
 
@@ -450,9 +456,9 @@
 				return $output_string;
 			else:
 				?>
-				<span>Mailgun list ID needed to render form!</span>
+				<span><?php _e('Mailgun list ID needed to render form!', 'mailgun'); ?></span>
 				<br/>
-				<strong>Example :</strong> [mailgun id="[your list id]"]
+				<strong><?php _e('Example: ', 'mailgun'); ?></strong> [mailgun id="[your list id]"]
 			<?php
 			endif;
 		}
