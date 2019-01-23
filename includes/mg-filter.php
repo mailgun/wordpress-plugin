@@ -19,6 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+
 /**
  * Tries several methods to get the MIME Content-Type of a file.
  *

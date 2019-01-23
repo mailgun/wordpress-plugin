@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.7 (2019-01-21)
+- Remove settings page for multisites.
+- Simplify admin notifications.
+- Test plugin with PHP 7.2.
+- Test plugin up to WordPress 5.0.3.
+
 1.6.1 (2018-10-08)
 - Restore Settings page form for all install types.
 

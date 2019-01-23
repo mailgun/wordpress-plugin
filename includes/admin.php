@@ -43,14 +43,16 @@
 			// Activation hook
 			register_activation_hook($this->plugin_file, array(&$this, 'init'));
 
-			// Hook into admin_init and register settings and potentially register an admin_notice
-			add_action('admin_init', array(&$this, 'admin_init'));
+			if( (!defined('MULTISITE') || !MULTISITE) && (!defined('MAILGUN_USEAPI') || !MAILGUN_USEAPI) ):
+				// Hook into admin_init and register settings and potentially register an admin_notice
+				add_action('admin_init', array(&$this, 'admin_init'));
 
-			// Activate the options page
-			add_action('admin_menu', array(&$this, 'admin_menu'));
+				// Activate the options page
+				add_action('admin_menu', array(&$this, 'admin_menu'));
 
-			// Register an AJAX action for testing mail sending capabilities
-			add_action('wp_ajax_mailgun-test', array(&$this, 'ajax_send_test'));
+				// Register an AJAX action for testing mail sending capabilities
+				add_action('wp_ajax_mailgun-test', array(&$this, 'ajax_send_test'));
+			endif;
 		}
 
 		/**
@@ -130,7 +132,7 @@
 		 */
 		public function admin_footer_js()
 		{
-			?>
+?>
 			<script type="text/javascript">
               /* <![CDATA[ */
               var mailgunApiOrNot = function () {
@@ -186,8 +188,7 @@
               })
               /* ]]> */
 			</script>
-			<?php
-
+<?php
 		}
 
 		/**
@@ -320,26 +321,38 @@
 				return;
 			endif;
 
-			if ((!$this->get_option('apiKey') && $this->get_option('useAPI') === '1')
-				|| (!$this->get_option('password') && $this->get_option('useAPI') === '0')
-				|| (!$this->get_option('region') && $this->get_option('useAPI') === '1')
-			):
-				?>
+			$smtpPasswordUndefined = ( !$this->get_option('password') && ( !defined('MAILGUN_PASSWORD') || !MAILGUN_PASSWORD ) );
+			$smtpActiveNotConfigured = ( $this->get_option('useAPI') === '0' && $smtpPasswordUndefined );
+			$apiRegionUndefined = ( !$this->get_option('region') && ( !defined('MAILGUN_REGION') || !MAILGUN_REGION ) );
+			$apiKeyUndefined = ( !$this->get_option('apiKey') && ( !defined('MAILGUN_APIKEY') || !MAILGUN_APIKEY ));
+			$apiActiveNotConfigured = ( $this->get_option('useAPI') === '1' && ( $apiRegionUndefined || $apiKeyUndefined ) );
+
+			if ( $apiActiveNotConfigured || $smtpActiveNotConfigured ):
+?>
 				<div id='mailgun-warning' class='notice notice-warning is-dismissible'>
 					<p>
-						<strong>
-							<?php _e('Mailgun is almost ready. ', 'mailgun'); ?>
-						</strong>
 						<?php
 							printf(
-								__('With the latest update, Mailgun now supports multiple regions! By default, we will use the U.S. region, but we now have an EU region available. You can configure your Mailgun settings <a href="%1$s">here</a> or in your wp-config.php.',
-									'mailgun'),
-								menu_page_url('mailgun', false)
+								_e('Mailgun now supports multiple regions! The U.S. region will be used by default, but you can choose the EU region.',
+									'mailgun')
 							);
+
+							if ( (defined('MULTISITE') || MULTISITE) && (!defined('MAILGUN_REGION') || !MAILGUN_REGION) ):
+								printf(
+									__('You can configure your Mailgun settings in your wp-config.php.', 'mailgun')
+								);
+							endif;
+
+							if( (!defined('MULTISITE') || !MULTISITE) && !$this->get_option('domain')):
+								printf(
+									__('You can configure your Mailgun settings in <a href="%1$s">here</a>', 'mailgun'),
+									menu_page_url('mailgun', false)
+								);
+							endif;
 						?>
 					</p>
 				</div>
-			<?php
+<?php
 			endif;
 
 			if ($this->get_option('override-from') === '1' &&
@@ -357,10 +370,10 @@
 									'mailgun'),
 								menu_page_url('mailgun', false)
 							);
-						?>
+?>
 					</p>
 				</div>
-			<?php
+<?php
 			endif;
 		}
 

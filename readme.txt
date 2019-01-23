@@ -4,8 +4,8 @@ Mailgun for WordPress
 Contributors: Mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
-Tested up to: 4.9.8
-Stable tag: 1.6.1
+Tested up to: 5.0.2
+Stable tag: 1.7
 License: GPLv2 or later
 
 
@@ -128,6 +128,12 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.7 (2019-01-21): =
+- Remove settings page for multisites.
+- Simplify admin notifications.
+- Test plugin with PHP 7.2.
+- Test plugin up to WordPress 5.0.3.
 
 = 1.6.1 (2018-10-08): =
 - Restore Settings page form for all install types.
