@@ -43,7 +43,7 @@
 			// Activation hook
 			register_activation_hook($this->plugin_file, array(&$this, 'init'));
 
-			if( (!defined('MULTISITE') || !MULTISITE) && (!defined('MAILGUN_USEAPI') || !MAILGUN_USEAPI) ):
+			if( !defined('MAILGUN_USEAPI') || !MAILGUN_USEAPI ):
 				// Hook into admin_init and register settings and potentially register an admin_notice
 				add_action('admin_init', array(&$this, 'admin_init'));
 
@@ -327,28 +327,16 @@
 			$apiKeyUndefined = ( !$this->get_option('apiKey') && ( !defined('MAILGUN_APIKEY') || !MAILGUN_APIKEY ));
 			$apiActiveNotConfigured = ( $this->get_option('useAPI') === '1' && ( $apiRegionUndefined || $apiKeyUndefined ) );
 
-			if ( $apiActiveNotConfigured || $smtpActiveNotConfigured ):
+			if ($apiActiveNotConfigured || $smtpActiveNotConfigured):
 ?>
 				<div id='mailgun-warning' class='notice notice-warning is-dismissible'>
 					<p>
 						<?php
 							printf(
-								_e('Mailgun now supports multiple regions! The U.S. region will be used by default, but you can choose the EU region.',
-									'mailgun')
+								__('Mailgun now supports multiple regions! The U.S. region will be used by default, but you can choose the EU region. You can configure your Mailgun settings in your wp-config.php file or <a href="%1$s">here</a>',
+									'mailgun'),
+								menu_page_url('mailgun', false)
 							);
-
-							if ( (defined('MULTISITE') || MULTISITE) && (!defined('MAILGUN_REGION') || !MAILGUN_REGION) ):
-								printf(
-									__('You can configure your Mailgun settings in your wp-config.php.', 'mailgun')
-								);
-							endif;
-
-							if( (!defined('MULTISITE') || !MULTISITE) && !$this->get_option('domain')):
-								printf(
-									__('You can configure your Mailgun settings in <a href="%1$s">here</a>', 'mailgun'),
-									menu_page_url('mailgun', false)
-								);
-							endif;
 						?>
 					</p>
 				</div>

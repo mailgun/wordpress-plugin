@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.7.1 (2019-02-07)
+- Reinstall settings page for multisites.
+
 1.7 (2019-01-21)
 - Remove settings page for multisites.
 - Simplify admin notifications.
