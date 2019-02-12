@@ -28,6 +28,7 @@
 				</a>
 			</span>
 	<h2><?php _e('Mailgun', 'mailgun'); ?></h2>
+
 	<p>
 		<?php
 			$url = 'https://www.mailgun.com';
@@ -44,6 +45,7 @@
 			echo $link;
 		?>
 	</p>
+
 	<p>
 		<?php
 			$url = 'https://signup.mailgun.com/new/signup';
