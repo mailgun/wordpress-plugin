@@ -212,7 +212,7 @@
 							$url = 'http://documentation.mailgun.com/user_manual.html#tracking-clicks';
 							$link = sprintf(
 								wp_kses(
-									__('If enabled, Mailgun will and track links. <a href="%1$s" target="%2$s">Open Tracking Documentation</a>.', 'mailgun'),
+									__('If enabled, Mailgun will track links. <a href="%1$s" target="%2$s">Open Tracking Documentation</a>.', 'mailgun'),
 									array('a' => array(
 										'href' => array(),
 										'target' => array()
