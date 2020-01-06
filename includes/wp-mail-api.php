@@ -254,6 +254,22 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         }
     }
 
+    /**
+     * Filter tags.
+     *
+     * @param array  $tags        Mailgun tags.
+     * @param string $to          To address.
+     * @param string $subject     Sbuject line.
+     * @param string $message     Message content.
+     * @param array  $headers     Headers array.
+     * @param array  $attachments Attachments array.
+     * @param string $region      Mailgun region.
+     * @param string $domain      Mailgun domain.
+     *
+     * @return array              Mailgun tags.
+     */
+    $body['o:tag'] = apply_filters( 'mailgun_tags', $body['o:tag'], $to, $subject, $message, $headers, $attachments, $region, $domain );
+
     if (!empty($cc) && is_array($cc)) {
         $body['cc'] = implode(', ', $cc);
     }
