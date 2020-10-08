@@ -43,16 +43,14 @@
 			// Activation hook
 			register_activation_hook($this->plugin_file, array(&$this, 'init'));
 
-			if( !defined('MAILGUN_USEAPI') || !MAILGUN_USEAPI ):
-				// Hook into admin_init and register settings and potentially register an admin_notice
-				add_action('admin_init', array(&$this, 'admin_init'));
+			// Hook into admin_init and register settings and potentially register an admin_notice
+			add_action('admin_init', array(&$this, 'admin_init'));
 
-				// Activate the options page
-				add_action('admin_menu', array(&$this, 'admin_menu'));
+			// Activate the options page
+			add_action('admin_menu', array(&$this, 'admin_menu'));
 
-				// Register an AJAX action for testing mail sending capabilities
-				add_action('wp_ajax_mailgun-test', array(&$this, 'ajax_send_test'));
-			endif;
+			// Register an AJAX action for testing mail sending capabilities
+			add_action('wp_ajax_mailgun-test', array(&$this, 'ajax_send_test'));
 		}
 
 		/**

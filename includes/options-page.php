@@ -19,6 +19,37 @@
 	 * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 	 */
 
+$mailgun_domain_const = ((defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : null);
+$mailgun_domain = $mailgun_domain_const ? $mailgun_domain_const : $this->get_option('domain');
+
+$mailgun_region_const = ((defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : null);
+$mailgun_region = $mailgun_region_const ? $mailgun_region_const : $this->get_option('region');
+
+$mailgun_api_key_const = ((defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : null);
+$mailgun_api_key = $mailgun_api_key_const ? $mailgun_api_key_const : $this->get_option('apiKey');
+
+$mailgun_username_const = ((defined('MAILGUN_USERNAME') && MAILGUN_USERNAME) ? MAILGUN_USERNAME : null);
+$mailgun_username = $mailgun_username_const ? $mailgun_username_const : $this->get_option('username');
+
+$mailgun_password_const = ((defined('MAILGUN_PASSWORD') && MAILGUN_PASSWORD) ? MAILGUN_PASSWORD : null);
+$mailgun_password = $mailgun_password_const ? $mailgun_password_const : $this->get_option('password');
+
+$mailgun_sectype_const = ((defined('MAILGUN_SECTYPE') && MAILGUN_SECTYPE) ? MAILGUN_SECTYPE : null);
+$mailgun_sectype = $mailgun_sectype_const ? $mailgun_sectype_const : $this->get_option('sectype');
+
+$mailgun_from_name_const = ((defined('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) ? MAILGUN_FROM_NAME : null);
+$mailgun_from_name = $mailgun_from_name_const ? $mailgun_from_name_const : $this->get_option('from-name');
+
+$mailgun_from_address_const = ((defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) ? MAILGUN_FROM_ADDRESS : null);
+$mailgun_from_address = $mailgun_from_address_const ? $mailgun_from_address_const : $this->get_option('from-address');
+
+$mailgun_secure_const = (defined('MAILGUN_SECURE') ? MAILGUN_SECURE : null);
+$mailgun_secure = !is_null($mailgun_secure_const) ? ((string)(1 * $mailgun_secure_const)) : $this->get_option('secure');
+
+$mailgun_use_api_const = (defined('MAILGUN_USEAPI') ? MAILGUN_USEAPI : null);
+$mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use_api_const)) : $this->get_option('useAPI');
+
+
 ?>
 <div class="wrap">
 	<div id="icon-options-general" class="icon32"><br/></div>
@@ -73,9 +104,13 @@
 					<?php _e('Select Your Region', 'mailgun'); ?>
 				</th>
 				<td>
-					<select id="mailgun-region" name="mailgun[region]">
-						<option value="us"<?php selected('us', $this->get_option('region')); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
-						<option value="eu"<?php selected('eu', $this->get_option('region')); ?>><?php _e('Europe', 'mailgun') ?></option>
+					<?php if ($mailgun_region_const): ?>
+						<input type="hidden" name="mailgun[region]" value="<?php echo $mailgun_region ?>">
+					<?php endif ?>
+
+					<select id="mailgun-region" name="mailgun[region]" <?php echo $mailgun_region_const ? 'disabled="disabled"' : '' ?>>
+						<option value="us"<?php selected('us', $mailgun_region); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
+						<option value="eu"<?php selected('eu', $mailgun_region); ?>><?php _e('Europe', 'mailgun') ?></option>
 					</select>
 					<p class="description">
 						<?php
@@ -89,9 +124,13 @@
 					<?php _e('Use HTTP API', 'mailgun'); ?>
 				</th>
 				<td>
-					<select id="mailgun-api" name="mailgun[useAPI]">
-						<option value="1"<?php selected('1', $this->get_option('useAPI')); ?>><?php _e('Yes', 'mailgun'); ?></option>
-						<option value="0"<?php selected('0', $this->get_option('useAPI')); ?>><?php _e('No', 'mailgun'); ?></option>
+					<?php if (!is_null($mailgun_use_api_const)): ?>
+						<input type="hidden" name="mailgun[useAPI]" value="<?php echo $mailgun_use_api ?>">
+					<?php endif ?>
+
+					<select id="mailgun-api" name="mailgun[useAPI]" <?php echo !is_null($mailgun_use_api_const) ? 'disabled="disabled"' : '' ?>>
+						<option value="1"<?php selected('1', $mailgun_use_api); ?>><?php _e('Yes', 'mailgun'); ?></option>
+						<option value="0"<?php selected('0', $mailgun_use_api); ?>><?php _e('No', 'mailgun'); ?></option>
 					</select>
 					<p class="description">
 						<?php
@@ -107,8 +146,9 @@
 				<td>
 					<input type="text" class="regular-text"
 						   name="mailgun[domain]"
-						   value="<?php esc_attr_e($this->get_option('domain')); ?>"
+						   value="<?php esc_attr_e($mailgun_domain); ?>"
 						   placeholder="samples.mailgun.org"
+						   <?php echo $mailgun_domain_const ? 'readonly="readonly"' : '' ?>
 					/>
 					<p class="description">
 						<?php _e('Your Mailgun Domain Name.', 'mailgun'); ?>
@@ -121,8 +161,9 @@
 				</th>
 				<td>
 					<input type="text" class="regular-text" name="mailgun[apiKey]"
-						   value="<?php esc_attr_e($this->get_option('apiKey')); ?>"
+						   value="<?php esc_attr_e($mailgun_api_key); ?>"
 						   placeholder="key-3ax6xnjp29jd6fds4gc373sgvjxteol0"
+						   <?php echo $mailgun_api_key_const ? 'readonly="readonly"' : '' ?>
 					/>
 					<p class="description">
 						<?php
@@ -138,8 +179,9 @@
 				<td>
 					<input type="text" class="regular-text"
 						   name="mailgun[username]"
-						   value="<?php esc_attr_e($this->get_option('username')); ?>"
+						   value="<?php esc_attr_e($mailgun_username); ?>"
 						   placeholder="postmaster"
+						   <?php echo $mailgun_username_const ? 'readonly="readonly"' : '' ?>
 					/>
 					<p class="description">
 						<?php
@@ -155,8 +197,9 @@
 				<td>
 					<input type="text" class="regular-text"
 						   name="mailgun[password]"
-						   value="<?php esc_attr_e($this->get_option('password')); ?>"
+						   value="<?php esc_attr_e($mailgun_password); ?>"
 						   placeholder="my-password"
+						   <?php echo $mailgun_password_const ? 'readonly="readonly"' : '' ?>
 					/>
 					<p class="description">
 						<?php
@@ -170,9 +213,13 @@
 					<?php _e('Use Secure SMTP', 'mailgun'); ?>
 				</th>
 				<td>
-					<select name="mailgun[secure]">
-						<option value="1"<?php selected('1', $this->get_option('secure')); ?>><?php _e('Yes', 'mailgun'); ?></option>
-						<option value="0"<?php selected('0', $this->get_option('secure')); ?>><?php _e('No', 'mailgun'); ?></option>
+					<?php if (!is_null($mailgun_secure_const)): ?>
+						<input type="hidden" name="mailgun[secure]" value="<?php echo $mailgun_secure ?>">
+					<?php endif ?>
+
+					<select name="mailgun[secure]" <?php echo !is_null($mailgun_secure_const) ? 'disabled="disabled"' : '' ?>>
+						<option value="1"<?php selected('1', $mailgun_secure); ?>><?php _e('Yes', 'mailgun'); ?></option>
+						<option value="0"<?php selected('0', $mailgun_secure); ?>><?php _e('No', 'mailgun'); ?></option>
 					</select>
 					<p class="description">
 						<?php
@@ -186,9 +233,13 @@
 					<?php _e('Security Type', 'mailgun'); ?>
 				</th>
 				<td>
-					<select name="mailgun[sectype]">
-						<option value="ssl"<?php selected('ssl', $this->get_option('sectype')); ?>>SSL</option>
-						<option value="tls"<?php selected('tls', $this->get_option('sectype')); ?>>TLS</option>
+					<?php if ($mailgun_sectype_const): ?>
+						<input type="hidden" name="mailgun[sectype]" value="<?php echo $mailgun_sectype ?>">
+					<?php endif ?>
+
+					<select name="mailgun[sectype]" <?php echo $mailgun_sectype_const ? 'disabled="disabled"' : '' ?>>
+						<option value="ssl"<?php selected('ssl', $mailgun_sectype); ?>>SSL</option>
+						<option value="tls"<?php selected('tls', $mailgun_sectype); ?>>TLS</option>
 					</select>
 					<p class="description">
 						<?php
@@ -260,8 +311,9 @@
 					<input type="text"
 						   class="regular-text"
 						   name="mailgun[from-address]"
-						   value="<?php esc_attr_e($this->get_option('from-address')); ?>"
+						   value="<?php esc_attr_e($mailgun_from_address); ?>"
 						   placeholder="wordpress@mydomain.com"
+						   <?php echo $mailgun_from_address_const ? 'readonly="readonly"' : '' ?>
 					/>
 					<p class="description">
 						<?php
@@ -277,8 +329,9 @@
 				<td>
 					<input type="text" class="regular-text"
 						   name="mailgun[from-name]"
-						   value="<?php esc_attr_e($this->get_option('from-name')); ?>"
+						   value="<?php esc_attr_e($mailgun_from_name); ?>"
 						   placeholder="WordPress"
+						   <?php echo $mailgun_from_name_const ? 'readonly="readonly"' : '' ?>
 					/>
 					<p class="description">
 						<?php
