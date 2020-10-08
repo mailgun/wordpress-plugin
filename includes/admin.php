@@ -459,6 +459,14 @@
 				$error_msg = mg_smtp_last_error();
 			endif;
 
+			// Admin Email is used as 'to' parameter, but in case of 'Test Configuration' this message is not clear for the user, so replaced with more appropriate one
+			if (false !== strpos($error_msg, "'to'") && false !== strpos($error_msg, 'is not a valid')):
+				$error_msg = sprintf(
+					"Administration Email Address (%s) is not valid and can't be used for test, you can change it at General Setting page",
+					$admin_email
+				);
+			endif;
+
 			if ($result):
 				die(
 				json_encode(
