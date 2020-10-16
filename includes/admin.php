@@ -470,6 +470,9 @@
 				)
 				);
 			else:
+				// Error message will always be returned if case of failure, if not - connection wasn't successful
+				$error_msg = $error_msg ? $error_msg : "Can't connect to Mailgun";
+
 				die(
 				json_encode(
 					array(
