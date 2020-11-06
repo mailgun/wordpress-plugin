@@ -384,7 +384,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     // Mailgun API should *always* return a `message` field, even when
     // $response_code != 200, so a lack of `message` indicates something
     // is broken.
-    if ((int) $response_code != 200 && !isset($response_body->message)) {
+    if ((int) $response_code != 200 || !isset($response_body->message)) {
         // Store response code and HTTP response message in last error.
         $response_message = wp_remote_retrieve_response_message($response);
         $errmsg = "$response_code - $response_message";
