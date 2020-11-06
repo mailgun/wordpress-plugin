@@ -106,6 +106,8 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs)
  *
  * @return	bool	Whether the email contents were sent successfully.
  *
+ * @global PHPMailer\PHPMailer\PHPMailer $phpmailer
+ *
  * @since	0.1
  */
 function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
@@ -294,6 +296,39 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         error_log('[mailgun] Got unknown Content-Type: ' . $content_type);
         $body['text'] = $message;
         $body['html'] = $message;
+    }
+
+    // Some plugins, such as WooCommerce (@see WC_Email::handle_multipart()), to handle multipart/alternative with html
+    // and plaintext messages hooks into phpmailer_init action to override AltBody property directly in $phpmailer,
+    // so we should allow them to do this, and then get overridden plain text body from $phpmailer.
+    // Partly, this logic is taken from original wp_mail function.
+    if (false !== stripos($content_type, 'multipart')) {
+        global $phpmailer;
+
+        // (Re)create it, if it's gone missing.
+        if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
+            require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+            require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+            require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+            $phpmailer = new PHPMailer\PHPMailer\PHPMailer(true);
+
+            $phpmailer::$validator = static function ($email) {
+                return (bool)is_email($email);
+            };
+        }
+
+        /**
+         * Fires after PHPMailer is initialized.
+         *
+         * @param PHPMailer $phpmailer The PHPMailer instance (passed by reference).
+         */
+        do_action_ref_array('phpmailer_init', array(&$phpmailer));
+
+        $plainTextMessage = $phpmailer->AltBody;
+
+        if ($plainTextMessage) {
+            $body['text'] = $plainTextMessage;
+        }
     }
 
     // If we don't have a charset from the input headers
