@@ -110,6 +110,7 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs)
  *
  * @since	0.1
  */
+if (!function_exists('wp_mail')) {
 function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 {
     // Compact the input, apply the filters, and extract them back out
@@ -436,6 +437,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     }
 
     return true;
+}
 }
 
 function mg_build_payload_from_body($body, $boundary) {
