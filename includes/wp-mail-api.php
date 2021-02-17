@@ -365,7 +365,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     $payload = '';
 
     // First, generate a boundary for the multipart message.
-    $boundary = base_convert(uniqid('boundary', true), 10, 36);
+    $boundary = sha1(uniqid('', true));
 
     // Allow other plugins to apply body changes before creating the payload.
     $body = apply_filters('mg_mutate_message_body', $body);
