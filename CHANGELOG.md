@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.7.3 (2021-02-19)
+- Update plugin version
+
+1.7.2 (2020-10-07)
+- Test plugin with PHP 7.4.
+- Test plugin up to WordPress 5.5.1.
+
 1.7.1 (2019-02-07)
 - Reinstall settings page for multisites.
 
