@@ -260,7 +260,7 @@ $mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use
 					</select>
 					<p class="description">
 						<?php
-							$url = 'http://documentation.mailgun.com/user_manual.html#tracking-clicks';
+							$url = 'https://documentation.mailgun.com/en/latest/user_manual.html#tracking-clicks';
 							$link = sprintf(
 								wp_kses(
 									__('If enabled, Mailgun will track links. <a href="%1$s" target="%2$s">Open Tracking Documentation</a>.', 'mailgun'),
@@ -371,8 +371,8 @@ $mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use
 							_e('If added, this tag will exist on every outbound message. Statistics will be populated in the Mailgun Control Panel. Use a comma to define multiple tags. ', 'mailgun');
 							_e('Learn more about', 'mailgun');
 
-							$url1 = 'https://documentation.mailgun.com/user_manual.html#tracking-messages';
-							$url2 = 'https://documentation.mailgun.com/user_manual.html#tagging';
+							$url1 = 'https://documentation.mailgun.com/en/latest/user_manual.html#tracking-messages';
+							$url2 = 'https://documentation.mailgun.com/en/latest/user_manual.html#tagging';
 							$link = sprintf(
 								wp_kses(
 									__('<a href="%1$s" target="%3$s">Tracking</a> and <a href="%2$s" target="%3$s">Tagging</a>', 'mailgun'),
