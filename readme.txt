@@ -95,7 +95,7 @@ MAILGUN_FROM_ADDRESS Type: string
 
 `mg_use_recipient_vars_syntax`
   Mutates messages to use recipient variables syntax - see
-  https://documentation.mailgun.com/user_manual.html#batch-sending for more info.
+  https://documentation.mailgun.com/en/latest/user_manual.html#batch-sending for more info.
 
   Should accept a list of `To` addresses.
 
