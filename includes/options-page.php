@@ -287,7 +287,7 @@ $mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use
 					</select>
 					<p class="description">
 						<?php
-							$url = 'http://documentation.mailgun.com/user_manual.html#tracking-opens';
+							$url = 'https://documentation.mailgun.com/en/latest/user_manual.html#tracking-opens';
 							$link = sprintf(
 								wp_kses(
 									__('If enabled, HTML messages will include an open tracking beacon. <a href="%1$s" target="%2$s">Open Tracking Documentation</a>.', 'mailgun'),
