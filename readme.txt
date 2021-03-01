@@ -129,6 +129,12 @@ MAILGUN_FROM_ADDRESS Type: string
 
 == Changelog ==
 
+= 1.7.6 (2021-02-19)
+- Sync versions across plugin files
+
+= 1.7.3 (2021-02-19)
+- Update plugin version
+
 = 1.7.2 (2020-10-07): =
 - Test plugin with PHP 7.4.
 - Test plugin up to WordPress 5.5.1.
