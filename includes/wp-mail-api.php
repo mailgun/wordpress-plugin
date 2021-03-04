@@ -269,7 +269,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     // write the message body to a file and try to determine the mimetype
     // using get_mime_content_type.
     if (!isset($content_type)) {
-        $tmppath = tempnam(sys_get_temp_dir(), 'mg');
+        $tmppath = tempnam(get_temp_dir(), 'mg');
         $tmp = fopen($tmppath, 'w+');
 
         fwrite($tmp, $message);
