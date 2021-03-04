@@ -447,8 +447,8 @@ $mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use
 			/>
 		</p>
 
-        <p>
-            <?php _e("The configuration test email will be sent to your site's administrative email address:", 'mailgun'); ?> <?php echo esc_html(get_option('admin_email'));?>
-        </p>
+		<p>
+			<?php _e("The configuration test email will be sent to your site's administrative email address:", 'mailgun'); ?> <?php echo esc_html(get_option('admin_email'));?>
+		</p>
 	</form>
 </div>
