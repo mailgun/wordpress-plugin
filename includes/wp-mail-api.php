@@ -259,7 +259,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
      *
      * @param array  $tags        Mailgun tags.
      * @param string $to          To address.
-     * @param string $subject     Sbuject line.
+     * @param string $subject     Subject line.
      * @param string $message     Message content.
      * @param array  $headers     Headers array.
      * @param array  $attachments Attachments array.
