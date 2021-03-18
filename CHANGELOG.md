@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.7.7 (2021-03-16)
+- Updated assets, tested WP 5.7
+
 1.7.6 (2021-02-19)
 - Sync versions across plugin files
 
