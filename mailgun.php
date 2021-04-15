@@ -344,7 +344,7 @@ class Mailgun
                         ?>
                                 <li>
                                     <input type="checkbox" class="mailgun-list-name"
-                                           name="addresses[<?php echo $la[ 'address' ]; ?>]"/> <?php echo $la[ 'name' ]; ?>
+                                           name="addresses[<?php echo $la[ 'address' ]; ?>]"/> <?php echo ($la[ 'name' ] ?: $la[ 'address' ]); ?>
                                 </li>
                         <?php endforeach; ?>
                     </ul>
@@ -428,7 +428,7 @@ class Mailgun
     public function build_list_form($atts)
     {
         if (isset($atts[ 'id' ]) && $atts[ 'id' ] != ''):
-            $args[ 'widget_id' ] = md5(rand(10000, 99999) + $atts[ 'id' ]);
+            $args[ 'widget_id' ] = md5(rand(10000, 99999) . $atts[ 'id' ]);
 
             if (isset($atts[ 'collect_name' ])):
                 $args[ 'collect_name' ] = true;
