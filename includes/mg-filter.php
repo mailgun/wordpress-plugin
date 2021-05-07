@@ -177,6 +177,35 @@ function mg_detect_from_address($from_addr_header = null)
 }
 
 /**
+ * Override WP VIP GO filter that set default email address to `donotreply@wordpress.com`
+ */
+if ( ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) || ( defined( 'VIP_GO_ENV' ) && VIP_GO_ENV ) ) {
+
+	global $mg_from_mail;
+
+	function mg_wp_mail_from_0( $from_mail ) {
+		global $mg_from_mail;
+
+		$mg_from_mail = $from_mail;
+
+		return $from_mail;
+	}
+	add_filter( 'wp_mail_from', 'mg_wp_mail_from_0', 0 );
+
+	function mg_wp_mail_from_2( $from_mail ) {
+		global $mg_from_mail;
+
+		if ( ! empty( $mg_from_mail ) && is_email( $mg_from_mail ) ) {
+			return $mg_from_mail;
+		}
+
+		return $from_mail;
+	}
+
+	add_filter( 'wp_mail_from', 'mg_wp_mail_from_2', 2 );
+}
+
+/**
  * Parses mail headers into an array of arrays so they can be easily modified.
  * We have to deal with headers that may have boundaries or parts, so a single
  * header like:
