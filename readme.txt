@@ -4,8 +4,8 @@ Mailgun for WordPress
 Contributors: mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
-Tested up to: 5.7.0
-Stable tag: 1.7.7
+Tested up to: 5.7.1
+Stable tag: 1.7.8
 License: GPLv2 or later
 
 
@@ -128,6 +128,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.7.8 (2021-05-13): =
+- Tested WP 5.7.1
 
 = 1.7.7 (2021-03-16): =
 - Updated assets, tested WP 5.7
