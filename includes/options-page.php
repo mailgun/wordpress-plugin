@@ -167,7 +167,7 @@ $mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use
 					/>
 					<p class="description">
 						<?php
-							_e('Your Mailgun API key. Only valid for use with the API.', 'mailgun');
+							_e('Your Mailgun Private API key.  For more information on where to find your Private API key, see <a target="_blank" href="https://help.mailgun.com/hc/en-us/articles/203380100-Where-Can-I-Find-My-API-Key-and-SMTP-Credentials-">here</a>', 'mailgun');
 						?>
 					</p>
 				</td>
