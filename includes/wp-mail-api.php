@@ -323,11 +323,24 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         global $phpmailer;
 
         // (Re)create it, if it's gone missing.
-        if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
-            require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-            require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-            require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-            $phpmailer = new PHPMailer\PHPMailer\PHPMailer(true);
+        if (!$phpmailer) {
+
+            global $wp_version;
+
+            if ( version_compare($wp_version,'5.0') >= 0)
+            {
+                require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+                require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+                require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+                $phpmailer = new PHPMailer\PHPMailer\PHPMailer(true);
+            }
+            else
+            {
+                // Add support for WP < 5.x.x
+                require_once ABSPATH . WPINC . '/class-phpmailer.php';
+                require_once ABSPATH . WPINC . '/class-smtp.php';
+                $phpmailer = new PHPMailer( true );
+            }
 
             $phpmailer::$validator = static function ($email) {
                 return (bool)is_email($email);
