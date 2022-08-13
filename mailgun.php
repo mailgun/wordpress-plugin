@@ -41,6 +41,21 @@
 class Mailgun
 {
     /**
+     * @var false|mixed|null
+     */
+    private $options;
+
+    /**
+     * @var string
+     */
+    protected $plugin_file;
+
+    /**
+     * @var string
+     */
+    private $plugin_basename;
+
+    /**
      * Setup shared functionality for Admin and Front End.
      *
      * @since    0.1
@@ -54,18 +69,18 @@ class Mailgun
         // Either override the wp_mail function or configure PHPMailer to use the
         // Mailgun SMTP servers
         // When using SMTP, we also need to inject a `wp_mail` filter to make "from" settings
-        // work properly. Fixes issues with 1.5.7+
+        // work properly. Fixed issues with 1.5.7+
         if ($this->get_option('useAPI') || (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI)):
             if (!function_exists('wp_mail')):
-                if (!include dirname(__FILE__) . '/includes/wp-mail-api.php'):
-                    self::deactivate_and_die(dirname(__FILE__) . '/includes/wp-mail-api.php');
+                if (!include __DIR__ . '/includes/wp-mail-api.php'):
+                    $this->deactivate_and_die(__DIR__ . '/includes/wp-mail-api.php');
                 endif;
             endif;
         else:
             // Using SMTP, include the SMTP filter
             if (!function_exists('mg_smtp_mail_filter')):
-                if (!include dirname(__FILE__) . '/includes/wp-mail-smtp.php'):
-                    self::deactivate_and_die(dirname(__FILE__) . '/includes/wp-mail-smtp.php');
+                if (!include __DIR__ . '/includes/wp-mail-smtp.php'):
+                    $this->deactivate_and_die(__DIR__ . '/includes/wp-mail-smtp.php');
                 endif;
             endif;
             add_filter('wp_mail', 'mg_smtp_mail_filter');
@@ -87,14 +102,15 @@ class Mailgun
      */
     public function get_option($option, $options = null, $default = false)
     {
-        if (is_null($options)):
+        if (is_null($options)) {
             $options = &$this->options;
-        endif;
-        if (isset($options[ $option ])):
-            return $options[ $option ];
-        else:
-            return $default;
-        endif;
+        }
+
+        if (isset($options[$option])) {
+            return $options[$option];
+        }
+
+        return $default;
     }
 
     /**
