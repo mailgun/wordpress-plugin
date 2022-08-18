@@ -19,6 +19,8 @@
 	 * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 	 */
 
+global $mailgun;
+
 $mailgun_domain_const = ((defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : null);
 $mailgun_domain = $mailgun_domain_const ? $mailgun_domain_const : $this->get_option('domain');
 
@@ -48,14 +50,14 @@ $mailgun_secure = !is_null($mailgun_secure_const) ? ((string)(1 * $mailgun_secur
 
 $mailgun_use_api_const = (defined('MAILGUN_USEAPI') ? MAILGUN_USEAPI : null);
 $mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use_api_const)) : $this->get_option('useAPI');
-
+$icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
 ?>
 <div class="wrap">
 	<div id="icon-options-general" class="icon32"><br/></div>
 	<span class="alignright">
 				<a target="_blank" href="http://www.mailgun.com/">
-					<img src="https://assets.mailgun.com/img/mailgun.svg" alt="Mailgun" style="width:10em;"/>
+					<img src="<?php echo $icon?>" alt="Mailgun" style="width:50px;"/>
 				</a>
 			</span>
 	<h2><?php _e('Mailgun', 'mailgun'); ?></h2>
