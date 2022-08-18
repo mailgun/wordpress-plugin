@@ -4,7 +4,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.7.9
+ * Version:      1.8.0
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -41,6 +41,26 @@
 class Mailgun
 {
     /**
+     * @var false|mixed|null
+     */
+    private $options;
+
+    /**
+     * @var string
+     */
+    protected $plugin_file;
+
+    /**
+     * @var string
+     */
+    protected $plugin_basename;
+
+    /**
+     * @var string
+     */
+    protected $assetsDir;
+
+    /**
      * Setup shared functionality for Admin and Front End.
      *
      * @since    0.1
@@ -50,51 +70,53 @@ class Mailgun
         $this->options = get_option('mailgun');
         $this->plugin_file = __FILE__;
         $this->plugin_basename = plugin_basename($this->plugin_file);
+        $this->assetsDir = plugin_dir_url($this->plugin_file) . 'assets/';
 
         // Either override the wp_mail function or configure PHPMailer to use the
         // Mailgun SMTP servers
         // When using SMTP, we also need to inject a `wp_mail` filter to make "from" settings
-        // work properly. Fixes issues with 1.5.7+
-        if ($this->get_option('useAPI') || (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI)):
-            if (!function_exists('wp_mail')):
-                if (!include dirname(__FILE__) . '/includes/wp-mail-api.php'):
-                    self::deactivate_and_die(dirname(__FILE__) . '/includes/wp-mail-api.php');
-                endif;
-            endif;
-        else:
+        // work properly. Fixed issues with 1.5.7+
+        if ($this->get_option('useAPI') || (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI)) {
+            if (!function_exists('wp_mail')) {
+                if (!include __DIR__ . '/includes/wp-mail-api.php') {
+                    $this->deactivate_and_die(__DIR__ . '/includes/wp-mail-api.php');
+                }
+            }
+        } else {
             // Using SMTP, include the SMTP filter
-            if (!function_exists('mg_smtp_mail_filter')):
-                if (!include dirname(__FILE__) . '/includes/wp-mail-smtp.php'):
-                    self::deactivate_and_die(dirname(__FILE__) . '/includes/wp-mail-smtp.php');
-                endif;
-            endif;
+            if (!function_exists('mg_smtp_mail_filter')) {
+                if (!include __DIR__ . '/includes/wp-mail-smtp.php') {
+                    $this->deactivate_and_die(__DIR__ . '/includes/wp-mail-smtp.php');
+                }
+            }
             add_filter('wp_mail', 'mg_smtp_mail_filter');
-            add_action('phpmailer_init', array(&$this, 'phpmailer_init'));
+            add_action('phpmailer_init', [&$this, 'phpmailer_init']);
             add_action('wp_mail_failed', 'wp_mail_failed');
-        endif;
+        }
     }
 
     /**
      * Get specific option from the options table.
      *
-     * @param    string $option  Name of option to be used as array key for retrieving the specific value
-     * @param    array  $options Array to iterate over for specific values
-     * @param    bool   $default False if no options are set
+     * @param string     $option  Name of option to be used as array key for retrieving the specific value
+     * @param array|null $options Array to iterate over for specific values
+     * @param bool       $default False if no options are set
      *
      * @return    mixed
      *
      * @since    0.1
      */
-    public function get_option($option, $options = null, $default = false)
+    public function get_option(string $option, ?array $options = null, bool $default = false)
     {
-        if (is_null($options)):
+        if (is_null($options)) {
             $options = &$this->options;
-        endif;
-        if (isset($options[ $option ])):
-            return $options[ $option ];
-        else:
-            return $default;
-        endif;
+        }
+
+        if (isset($options[$option])) {
+            return $options[$option];
+        }
+
+        return $default;
     }
 
     /**
@@ -123,13 +145,13 @@ class Mailgun
         $phpmailer->Mailer = 'smtp';
         $phpmailer->Host = $smtp_endpoint;
 
-        if ('ssl' === $sectype):
+        if ('ssl' === $sectype) {
             // For SSL-only connections, use 465
             $phpmailer->Port = 465;
-        else:
+        } else {
             // Otherwise, use 587.
             $phpmailer->Port = 587;
-        endif;
+        }
 
         $phpmailer->SMTPAuth = true;
         $phpmailer->Username = $username;
@@ -160,9 +182,9 @@ class Mailgun
         load_plugin_textdomain('mailgun', false, 'mailgun/languages');
         $message = sprintf(__('Mailgun has been automatically deactivated because the file <strong>%s</strong> is missing. Please reinstall the plugin and reactivate.'),
             $file);
-        if (!function_exists('deactivate_plugins')):
+        if (!function_exists('deactivate_plugins')) {
             include ABSPATH . 'wp-admin/includes/plugin.php';
-        endif;
+        }
         deactivate_plugins(__FILE__);
         wp_die($message);
     }
@@ -174,11 +196,11 @@ class Mailgun
      * @param    array  $params Array of parameters passed to the API
      * @param    string $method The form request type
      *
-     * @return    array
+     * @return    string
      *
      * @since    0.1
      */
-    public function api_call($uri, $params = array(), $method = 'POST')
+    public function api_call($uri, $params = [], $method = 'POST'): string
     {
         $options = get_option('mailgun');
         $getRegion = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $options[ 'region' ];
@@ -190,9 +212,9 @@ class Mailgun
 
         $time = time();
         $url = $this->api_endpoint . $uri;
-        $headers = array(
+        $headers = [
             'Authorization' => 'Basic ' . base64_encode("api:{$apiKey}"),
-        );
+        ];
 
         switch ($method) {
             case 'GET':
@@ -211,20 +233,31 @@ class Mailgun
         }
 
         // make the request
-        $args = array(
+        $args = [
             'method' => $method,
             'body' => $params,
             'headers' => $headers,
             'sslverify' => true,
-        );
+        ];
 
         // make the remote request
         $result = wp_remote_request($url, $args);
-        if (!is_wp_error($result)):
-            return $result[ 'body' ];
-        else:
+        if (!is_wp_error($result)) {
+            return $result['body'];
+        }
+
+        if (is_callable($result)) {
             return $result->get_error_message();
-        endif;
+        }
+
+        if (is_array($result)) {
+            if (isset($result['response'])) {
+                return $result['response']['message'] ?? '';
+            }
+        }
+
+        return '';
+
     }
 
     /**
@@ -232,17 +265,19 @@ class Mailgun
      *
      * @return    array
      *
+     * @throws JsonException
      * @since    0.1
      */
-    public function get_lists()
+    public function get_lists(): array
     {
-        $results = array();
+        $results = [];
 
-        $lists_json = $this->api_call('lists', array(), 'GET');
-        $lists_arr = json_decode($lists_json, true);
-        if (isset($lists_arr[ 'items' ]) && !empty($lists_arr[ 'items' ])):
-            $results = $lists_arr[ 'items' ];
-        endif;
+        $lists_json = $this->api_call('lists', [], 'GET');
+
+        $lists_arr = json_decode($lists_json, true, 512, JSON_THROW_ON_ERROR);
+        if (isset($lists_arr[ 'items' ]) && !empty($lists_arr[ 'items' ])) {
+            $results = $lists_arr['items'];
+        }
 
         return $results;
     }
@@ -252,49 +287,47 @@ class Mailgun
      *
      * @return    string    json
      *
+     * @throws JsonException
      * @since    0.1
      */
     public function add_list()
     {
-        $response = array();
-
-        $name = isset($_POST[ 'name' ]) ? $_POST[ 'name' ] : null;
-        $email = isset($_POST[ 'email' ]) ? $_POST[ 'email' ] : null;
+        $name = $_POST['name'] ?? null;
+        $email = $_POST['email'] ?? null;
 
         $list_addresses = $_POST[ 'addresses' ];
 
-        if (!empty($list_addresses)):
-            foreach ($list_addresses as $address => $val):
-                $response[] = $this->api_call(
+        if (!empty($list_addresses)) {
+            foreach ($list_addresses as $address => $val) {
+                $this->api_call(
                     "lists/{$address}/members",
-                    array(
+                    [
                         'address' => $email,
                         'name' => $name,
-                    )
+                    ]
                 );
-            endforeach;
-
-            echo json_encode(array('status' => 200, 'message' => 'Thank you!'));
-        else:
-            echo json_encode(array(
+            }
+            echo json_encode(['status' => 200, 'message' => 'Thank you!'], JSON_THROW_ON_ERROR);
+        } else {
+            echo json_encode([
                 'status' => 500,
                 'message' => 'Uh oh. We weren\'t able to add you to the list' . count($list_addresses) ? 's.' : '. Please try again.'
-            ));
-        endif;
-
+            ], JSON_THROW_ON_ERROR);
+        }
         wp_die();
     }
 
     /**
      * Frontend List Form.
      *
-     * @param    string $list_address Mailgun address list id
-     * @param    array  $args         widget arguments
-     * @param    array  $instance     widget instance params
+     * @param string $list_address Mailgun address list id
+     * @param array  $args         widget arguments
+     * @param array  $instance     widget instance params
      *
+     * @throws JsonException
      * @since    0.1
      */
-    public function list_form($list_address, $args = array(), $instance = array())
+    public function list_form(string $list_address, array $args = [], array $instance = []): void
     {
         $widget_class_id = "mailgun-list-widget-{$args['widget_id']}";
         $form_class_id = "list-form-{$args['widget_id']}";
@@ -419,42 +452,38 @@ class Mailgun
     /**
      * Initialize List Form.
      *
-     * @param    array $atts Form attributes
+     * @param array $atts Form attributes
      *
      * @return    string
      *
+     * @throws JsonException
      * @since    0.1
      */
-    public function build_list_form($atts)
+    public function build_list_form(array $atts): string
     {
-        if (isset($atts[ 'id' ]) && $atts[ 'id' ] != ''):
-            $args[ 'widget_id' ] = md5(rand(10000, 99999) . $atts[ 'id' ]);
+        if (isset($atts['id']) && $atts['id'] != '') {
+            $args['widget_id'] = md5(rand(10000, 99999) . $atts['id']);
 
-            if (isset($atts[ 'collect_name' ])):
-                $args[ 'collect_name' ] = true;
-            endif;
+            if (isset($atts['collect_name'])) {
+                $args['collect_name'] = true;
+            }
 
-            if (isset($atts[ 'title' ])):
-                $args[ 'list_title' ] = $atts[ 'title' ];
-            endif;
+            if (isset($atts['title'])) {
+                $args['list_title'] = $atts['title'];
+            }
 
-            if (isset($atts[ 'description' ])):
-                $args[ 'list_description' ] = $atts[ 'description' ];
-            endif;
+            if (isset($atts['description'])) {
+                $args['list_description'] = $atts['description'];
+            }
 
             ob_start();
-            $this->list_form($atts[ 'id' ], $args);
-            $output_string = ob_get_contents();
-            ob_end_clean();
+            $this->list_form($atts['id'], $args);
+            return ob_get_clean();
+        }
 
-            return $output_string;
-        else:
-            ?>
-            <span>Mailgun list ID needed to render form!</span>
-            <br/>
-            <strong>Example :</strong> [mailgun id="[your list id]"]
-        <?php
-        endif;
+        return '<span>Mailgun list ID needed to render form!</span>
+        <br/>
+        <strong>Example :</strong> [mailgun id="[your list id]"]';
     }
 
     /**
@@ -462,25 +491,33 @@ class Mailgun
      *
      * @since    0.1
      */
-    public function load_list_widget()
+    public function load_list_widget(): void
     {
         register_widget('list_widget');
-        add_shortcode('mailgun', array(&$this, 'build_list_form'));
+        add_shortcode('mailgun', [&$this, 'build_list_form']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssetsPath(): string
+    {
+        return $this->assetsDir;
     }
 }
 
 $mailgun = new Mailgun();
 
-if (@include dirname(__FILE__) . '/includes/widget.php'):
-    add_action('widgets_init', array(&$mailgun, 'load_list_widget'));
-    add_action('wp_ajax_nopriv_add_list', array(&$mailgun, 'add_list'));
-    add_action('wp_ajax_add_list', array(&$mailgun, 'add_list'));
-endif;
+if (@include __DIR__ . '/includes/widget.php') {
+    add_action('widgets_init', [&$mailgun, 'load_list_widget']);
+    add_action('wp_ajax_nopriv_add_list', [&$mailgun, 'add_list']);
+    add_action('wp_ajax_add_list', [&$mailgun, 'add_list']);
+}
 
-if (is_admin()):
-    if (@include dirname(__FILE__) . '/includes/admin.php'):
+if (is_admin()) {
+    if (@include __DIR__ . '/includes/admin.php') {
         $mailgunAdmin = new MailgunAdmin();
-    else:
-        Mailgun::deactivate_and_die(dirname(__FILE__) . '/includes/admin.php');
-    endif;
-endif;
+    } else {
+        $mailgun->deactivate_and_die(__DIR__ . '/includes/admin.php');
+    }
+}

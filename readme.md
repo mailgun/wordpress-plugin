@@ -12,7 +12,7 @@ License: GPLv2 or later
 Easily send email from your WordPress site through Mailgun using the HTTP API or SMTP.
 
 
-== Description ==
+## Description
 
 [Mailgun](http://www.mailgun.com/) is the email automation engine trusted by over 10,000 website and application developers for sending, receiving and tracking emails. By taking advantage of Mailgun's powerful email APIs, developers can spend more time building awesome websites and less time fighting with email servers. Mailgun supports all of the most popular languages including PHP, Ruby, Python, C# and Java.
 
@@ -23,7 +23,7 @@ The latest version of this plugin now supports regions. Select either U.S./North
 The current version of this plugin only handles sending emails, tracking and tagging and list subscription. 
 
 
-== Installation ==
+## Installation
 
 1. Upload the `mailgun` folder to the `/wp-content/plugins/` directory or install directly through the plugin installer
 2. Activate the plugin through the 'Plugins' menu in WordPress or by using the link provided by the plugin installer
@@ -52,7 +52,10 @@ define( 'MG_DEBUG_SMTP', true );
 
 Yes, using the following constants that can be placed in wp-config.php:
 
-`
+### Important note
+Constant `MAILGUN_USEAPI` IS REQUIRED
+
+```
 MAILGUN_REGION       Type: string   Choices: 'us' or 'eu'
      ex. define('MAILGUN_REGION', 'us');
 MAILGUN_USEAPI       Type: boolean  Choices: '0' or '1' (0 = false/no)
@@ -64,7 +67,7 @@ MAILGUN_SECURE       Type: boolean  Choices: '0' or '1' (0 = false/no)
 MAILGUN_SECTYPE      Type: string   Choices: 'ssl' or 'tls'
 MAILGUN_FROM_NAME    Type: string
 MAILGUN_FROM_ADDRESS Type: string
-`
+```
 
 - What hooks are available for use with other plugins?
 

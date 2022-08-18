@@ -25,16 +25,18 @@ global $mailgun;
 $missing_error = '';
 $api_key = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $this->get_option('apiKey');
 $mailgun_domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $this->get_option('domain');
-if ($api_key != ''):
-    if ($mailgun_domain == ''):
+
+if ($api_key != '') {
+    if ($mailgun_domain == '') {
         $missing_error = '<strong style="color:red;">Missing or invalid Mailgun Domain</strong>. ';
-    endif;
-else:
+    }
+} else {
     $missing_error = '<strong style="color:red;">Missing or invalid API Key</strong>. ';
-endif;
+}
 
 // import available lists
 $lists_arr = $mailgun->get_lists();
+$icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
 ?>
 
@@ -44,7 +46,7 @@ $lists_arr = $mailgun->get_lists();
 
     <span class="alignright">
         <a target="_blank" href="http://www.mailgun.com/">
-            <img src="https://assets.mailgun.com/img/mailgun.svg" alt="Mailgun" style="width: 10em;"/>
+            <img src="<?php echo $icon?>" alt="Mailgun" style="width: 50px;"/>
         </a>
     </span>
 
