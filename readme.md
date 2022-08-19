@@ -5,7 +5,7 @@ Contributors: mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 6.0.1
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv2 or later
 
 
@@ -131,6 +131,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+= 1.8.1 (2022-08-19): =
+- backward compatibility with php7.0
+
 = 1.8.0 (2022-08-18): =
 - Plugin refactoring. Using new languages constructions. Extended readme. Update version
 
