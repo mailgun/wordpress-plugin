@@ -4,7 +4,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.8.0
+ * Version:      1.8.1
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -327,7 +327,7 @@ class Mailgun
      * @throws JsonException
      * @since    0.1
      */
-    public function list_form(string $list_address, array $args = [], array $instance = []): void
+    public function list_form(string $list_address, array $args = [], array $instance = [])
     {
         $widget_class_id = "mailgun-list-widget-{$args['widget_id']}";
         $form_class_id = "list-form-{$args['widget_id']}";
@@ -491,7 +491,7 @@ class Mailgun
      *
      * @since    0.1
      */
-    public function load_list_widget(): void
+    public function load_list_widget()
     {
         register_widget('list_widget');
         add_shortcode('mailgun', [&$this, 'build_list_form']);
