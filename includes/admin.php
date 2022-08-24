@@ -27,6 +27,13 @@ class MailgunAdmin extends Mailgun
     private $defaults;
 
     /**
+     * @var array
+     */
+    protected $options = [];
+
+    protected $hook_suffix;
+
+    /**
      * Setup backend functionality in WordPress.
      *
      * @return    void
@@ -63,9 +70,9 @@ class MailgunAdmin extends Mailgun
     public function init()
     {
         $sitename = strtolower($_SERVER['SERVER_NAME']);
-        if (substr($sitename, 0, 4) == 'www.'):
+        if (substr($sitename, 0, 4) === 'www.') {
             $sitename = substr($sitename, 4);
-        endif;
+        }
 
         $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $this->get_option('region');
         $regionDefault = $region ?: 'us';
@@ -85,10 +92,10 @@ class MailgunAdmin extends Mailgun
             'override-from' => '0',
             'tag' => $sitename,
         );
-        if (!$this->options):
+        if (!$this->options) {
             $this->options = $this->defaults;
             add_option('mailgun', $this->options);
-        endif;
+        }
     }
 
     /**
@@ -100,7 +107,7 @@ class MailgunAdmin extends Mailgun
      */
     public function admin_menu()
     {
-        if (current_user_can('manage_options')):
+        if (current_user_can('manage_options')) {
             $this->hook_suffix = add_options_page(__('Mailgun', 'mailgun'), __('Mailgun', 'mailgun'),
                 'manage_options', 'mailgun', array(&$this, 'options_page'));
             add_options_page(__('Mailgun Lists', 'mailgun'), __('Mailgun Lists', 'mailgun'), 'manage_options',
@@ -108,7 +115,7 @@ class MailgunAdmin extends Mailgun
             add_action("admin_print_scripts-{$this->hook_suffix}", array(&$this, 'admin_js'));
             add_filter("plugin_action_links_{$this->plugin_basename}", array(&$this, 'filter_plugin_actions'));
             add_action("admin_footer-{$this->hook_suffix}", array(&$this, 'admin_footer_js'));
-        endif;
+        }
     }
 
     /**
@@ -198,10 +205,10 @@ class MailgunAdmin extends Mailgun
      */
     public function options_page()
     {
-        if (!@include 'options-page.php'):
+        if (!@include 'options-page.php') {
             printf(__('<div id="message" class="updated fade"><p>The options page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>',
-                'mailgun'), dirname(__FILE__) . '/options-page.php');
-        endif;
+                'mailgun'), __DIR__ . '/options-page.php');
+        }
     }
 
     /**
@@ -213,10 +220,10 @@ class MailgunAdmin extends Mailgun
      */
     public function lists_page()
     {
-        if (!@include 'lists-page.php'):
+        if (!@include 'lists-page.php') {
             printf(__('<div id="message" class="updated fade"><p>The lists page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>',
-                'mailgun'), dirname(__FILE__) . '/lists-page.php');
-        endif;
+                'mailgun'), __DIR__ . '/lists-page.php');
+        }
     }
 
     /**
@@ -260,7 +267,7 @@ class MailgunAdmin extends Mailgun
      *
      * @since    0.1
      */
-    public function validation($options)
+    public function validation(array $options)
     {
         $apiKey = trim($options['apiKey']);
         $username = trim($options['username']);
@@ -384,6 +391,7 @@ class MailgunAdmin extends Mailgun
      *
      * @return    string
      *
+     * @throws JsonException
      * @since    0.1
      */
     public function ajax_send_test()
@@ -406,26 +414,25 @@ class MailgunAdmin extends Mailgun
         $secure = (defined('MAILGUN_SECURE') && MAILGUN_SECURE) ? MAILGUN_SECURE : $this->get_option('secure');
         $sectype = (defined('MAILGUN_SECTYPE') && MAILGUN_SECTYPE) ? MAILGUN_SECTYPE : $this->get_option('sectype');
 
-        if ((bool)!$getRegion):
+        if (!$getRegion) {
             mg_api_last_error(__("Region has not been selected", "mailgun"));
-        else:
-            if ($getRegion === 'us'):
+        } else {
+            if ($getRegion === 'us') {
                 $region = __("U.S./North America", "mailgun");
-            endif;
-
-            if ($getRegion === "eu"):
+            }
+            if ($getRegion === "eu") {
                 $region = __("Europe", "mailgun");
-            endif;
-        endif;
+            }
+        }
 
-        if ((bool)$useAPI):
+        if ($useAPI) {
             $method = __('HTTP API', 'mailgun');
-        else:
-            $method = ((bool)$secure) ? __('Secure SMTP', 'mailgun') : __('Insecure SMTP', 'mailgun');
-            if ((bool)$secure):
-                $method = $method . sprintf(__(' via %s', 'mailgun'), $sectype);
-            endif;
-        endif;
+        } else {
+            $method = ($secure) ? __('Secure SMTP', 'mailgun') : __('Insecure SMTP', 'mailgun');
+            if ($secure) {
+                $method .= sprintf(__(' via %s', 'mailgun'), $sectype);
+            }
+        }
 
         $admin_email = get_option('admin_email');
         $result = wp_mail(
@@ -433,54 +440,51 @@ class MailgunAdmin extends Mailgun
             __('Mailgun WordPress Plugin Test', 'mailgun'),
             sprintf(__("This is a test email generated by the Mailgun WordPress plugin.\n\nIf you have received this message, the requested test has succeeded.\n\nThe sending region is set to %s.\n\nThe method used to send this email was: %s.",
                 'mailgun'), $region, $method),
-            array('Content-Type: text/plain')
+            ['Content-Type: text/plain']
         );
 
-        if ((bool)$useAPI):
-            if (!function_exists('mg_api_last_error')):
-                if (!include __DIR__ . '/wp-mail-api.php'):
+        if ($useAPI) {
+            if (!function_exists('mg_api_last_error')) {
+                if (!include __DIR__ . '/wp-mail-api.php') {
                     $this->deactivate_and_die(__DIR__ . '/wp-mail-api.php');
-                endif;
-            endif;
-
+                }
+            }
             $error_msg = mg_api_last_error();
-        else:
-            if (!function_exists('mg_smtp_last_error')):
-                if (!include __DIR__ . '/wp-mail-smtp.php'):
+        } else {
+            if (!function_exists('mg_smtp_last_error')) {
+                if (!include __DIR__ . '/wp-mail-smtp.php') {
                     $this->deactivate_and_die(__DIR__ . '/wp-mail-smtp.php');
-                endif;
-            endif;
-
+                }
+            }
             $error_msg = mg_smtp_last_error();
-        endif;
+        }
 
         // Admin Email is used as 'to' parameter, but in case of 'Test Configuration' this message is not clear for the user, so replaced with more appropriate one
-        if (false !== strpos($error_msg, "'to'") && false !== strpos($error_msg, 'is not a valid')):
+        if (false !== strpos($error_msg, "'to'") && false !== strpos($error_msg, 'is not a valid')) {
             $error_msg = sprintf(
                 "Administration Email Address (%s) is not valid and can't be used for test, you can change it at General Setting page",
                 $admin_email
             );
-        endif;
+        }
 
-        if ($result):
+        if ($result) {
             die(
-            json_encode(array(
-                'message' => __('Success', 'mailgun'),
-                'method' => $method,
-                'error' => __('Success', 'mailgun'),
-            ), JSON_THROW_ON_ERROR)
+                json_encode(array(
+                    'message' => __('Success', 'mailgun'),
+                    'method' => $method,
+                    'error' => __('Success', 'mailgun'),
+                ), JSON_THROW_ON_ERROR)
             );
-        else:
-            // Error message will always be returned in case of failure, if not - connection wasn't successful
-            $error_msg = $error_msg ? $error_msg : "Can't connect to Mailgun";
+        }
 
-            die(
+        // Error message will always be returned in case of failure, if not - connection wasn't successful
+        $error_msg = $error_msg ? $error_msg : "Can't connect to Mailgun";
+        die(
             json_encode(array(
                 'message' => __('Failure', 'mailgun'),
                 'method' => $method,
                 'error' => $error_msg,
             ), JSON_THROW_ON_ERROR)
-            );
-        endif;
+        );
     }
 }
