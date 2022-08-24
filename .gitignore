@@ -1,3 +1,4 @@
 svn/
 .idea/
 docker-compose.yaml
+.git

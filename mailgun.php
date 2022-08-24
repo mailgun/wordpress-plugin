@@ -4,7 +4,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.8.1
+ * Version:      1.8.2
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
