@@ -23,26 +23,28 @@
 /**
  * Tries several methods to get the MIME Content-Type of a file.
  *
- * @param	string	$filepath
- * @param	string	$default_type	If all methods fail, fallback to $default_type
+ * @param string $filepath
+ * @param string $default_type If all methods fail, fallback to $default_type
  *
- * @return	string	Content-Type
+ * @return    string    Content-Type
  *
- * @since	1.5.4
+ * @since    1.5.4
  */
-function get_mime_content_type($filepath, $default_type = 'text/plain')
+function get_mime_content_type(string $filepath, string $default_type = 'text/plain'): string
 {
     if (function_exists('mime_content_type')) {
         return mime_content_type($filepath);
-    } elseif (function_exists('finfo_file')) {
+    }
+
+    if (function_exists('finfo_file')) {
         $fi = finfo_open(FILEINFO_MIME_TYPE);
         $ret = finfo_file($fi, $filepath);
         finfo_close($fi);
 
         return $ret;
-    } else {
-        return $default_type;
     }
+
+    return $default_type;
 }
 
 /**
@@ -59,16 +61,16 @@ function get_mime_content_type($filepath, $default_type = 'text/plain')
  * `$from_addr` before being returned. The filtered result is null-tested
  * before being returned.
  *
- * @return	string
+ * @return    string
  *
- * @since	1.5.8
+ * @since    1.5.8
  */
 function mg_detect_from_name($from_name_header = null)
 {
     // Get options to avoid strict mode problems
     $mg_opts = get_option('mailgun');
-    $mg_override_from = (isset($mg_opts['override-from'])) ? $mg_opts['override-from'] : null;
-    $mg_from_name = (isset($mg_opts['from-name'])) ? $mg_opts['from-name'] : null;
+    $mg_override_from = $mg_opts['override-from'] ?? null;
+    $mg_from_name = $mg_opts['from-name'] ?? null;
 
     $from_name = null;
 
@@ -79,7 +81,7 @@ function mg_detect_from_name($from_name_header = null)
     } elseif (defined('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) {
         $from_name = MAILGUN_FROM_NAME;
     } else {
-        if (is_null($mg_from_name) || empty($mg_from_name)) {
+        if (empty($mg_from_name)) {
             if (function_exists('get_current_site')) {
                 $from_name = get_current_site()->site_name;
             } else {
@@ -96,7 +98,7 @@ function mg_detect_from_name($from_name_header = null)
             'wp_mail_from_name',
             $from_name
         );
-        if (!is_null($filter_from_name) && !empty($filter_from_name)) {
+        if (!empty($filter_from_name)) {
             $from_name = $filter_from_name;
         }
     }
@@ -124,18 +126,18 @@ function mg_detect_from_name($from_name_header = null)
  * might appear to be another option but some hosts may refuse to
  * relay mail from an unknown domain.
  *
- * @link	http://trac.wordpress.org/ticket/5007.
+ * @link     http://trac.wordpress.org/ticket/5007.
  *
- * @return	string
+ * @return    string
  *
- * @since	1.5.8
+ * @since    1.5.8
  */
-function mg_detect_from_address($from_addr_header = null)
+function mg_detect_from_address($from_addr_header = null): string
 {
     // Get options to avoid strict mode problems
     $mg_opts = get_option('mailgun');
-    $mg_override_from = (isset($mg_opts['override-from'])) ? $mg_opts['override-from'] : null;
-    $mg_from_addr = (isset($mg_opts['from-address'])) ? $mg_opts['from-address'] : null;
+    $mg_override_from = $mg_opts['override-from'] ?? null;
+    $mg_from_addr = $mg_opts['from-address'] ?? null;
 
     $from_addr = null;
 
@@ -146,7 +148,7 @@ function mg_detect_from_address($from_addr_header = null)
     } elseif (defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) {
         $from_addr = MAILGUN_FROM_ADDRESS;
     } else {
-        if (is_null($mg_from_addr) || empty($mg_from_addr)) {
+        if (empty($mg_from_addr)) {
             if (function_exists('get_current_site')) {
                 $sitedomain = get_current_site()->domain;
             } else {
@@ -156,7 +158,7 @@ function mg_detect_from_address($from_addr_header = null)
                 }
             }
 
-            $from_addr = 'wordpress@'.$sitedomain;
+            $from_addr = 'wordpress@' . $sitedomain;
         } else {
             $from_addr = $mg_from_addr;
         }
@@ -193,19 +195,18 @@ function mg_detect_from_address($from_addr_header = null)
  *      )
  *  )
  *
- * @param	string|array	$headers
+ * @param string|array $headers
  *
- * @return	array
+ * @return    array
  *
- * @since	1.5.8
+ * @since    1.5.8
  */
-function mg_parse_headers($headers = array())
+function mg_parse_headers($headers = []): array
 {
     if (empty($headers)) {
-        return array();
+        return [];
     }
 
-    $tmp = array();
     if (!is_array($headers)) {
         $tmp = explode("\n", str_replace("\r\n", "\n", $headers));
     } else {
@@ -219,7 +220,7 @@ function mg_parse_headers($headers = array())
         $boundary = null;
         $parts = null;
 
-        foreach ((array) $tmp as $header) {
+        foreach ((array)$tmp as $header) {
             // If this header does not contain a ':', is it a fold?
             if (false === strpos($header, ':')) {
                 // Does this header have a boundary?
@@ -239,15 +240,15 @@ function mg_parse_headers($headers = array())
             $name = trim($name);
             $value = trim($value);
 
-            if ( !isset($new_headers[$name]) ) {
+            if (!isset($new_headers[$name])) {
                 $new_headers[$name] = array();
             }
 
-            array_push($new_headers[$name], array(
-                'value'     => $value,
-                'boundary'  => $boundary,
-                'parts'     => $parts,
-            ));
+            $new_headers[$name][] = array(
+                'value' => $value,
+                'boundary' => $boundary,
+                'parts' => $parts,
+            );
         }
     }
 
@@ -258,13 +259,13 @@ function mg_parse_headers($headers = array())
  * Takes a header array in the format produced by mg_parse_headers and
  * dumps them down in to a submittable header format.
  *
- * @param	array	$headers	Headers to dump
+ * @param array $headers Headers to dump
  *
- * @return	string	String of \r\n separated headers
+ * @return    string    String of \r\n separated headers
  *
- * @since	1.5.8
+ * @since    1.5.8
  */
-function mg_dump_headers($headers = null)
+function mg_dump_headers($headers = null): string
 {
     if (is_null($headers) || !is_array($headers)) {
         return '';
@@ -277,7 +278,7 @@ function mg_dump_headers($headers = null)
 
         foreach ($values as $content) {
             // XXX - Is it actually okay to discard `parts` and `boundary`?
-            array_push($header_values, $content['value']);
+            $header_values[] = $content['value'];
         }
 
         $header_string .= sprintf("%s\r\n", implode(", ", $header_values));
@@ -290,18 +291,21 @@ function mg_dump_headers($headers = null)
  * Set the API endpoint based on the region selected.
  * Value can be "0" if not selected, "us" or "eu"
  *
- * @param	string	$getRegion	Region value set either in config or Mailgun plugin settings.
+ * @param string $getRegion Region value set either in config or Mailgun plugin settings.
  *
- * @return	bool|string
+ * @return    bool|string
  *
- * @since	1.5.12
+ * @since    1.5.12
  */
 function mg_api_get_region($getRegion)
 {
     switch ($getRegion) {
-        case 'us': return 'https://api.mailgun.net/v3/';
-        case 'eu': return 'https://api.eu.mailgun.net/v3/';
-        default: return false;
+        case 'us':
+            return 'https://api.mailgun.net/v3/';
+        case 'eu':
+            return 'https://api.eu.mailgun.net/v3/';
+        default:
+            return false;
     }
 }
 
@@ -309,17 +313,20 @@ function mg_api_get_region($getRegion)
  * Set the SMTP endpoint based on the region selected.
  * Value can be "0" if not selected, "us" or "eu"
  *
- * @param	string	$getRegion	Region value set either in config or Mailgun plugin settings.
+ * @param string $getRegion Region value set either in config or Mailgun plugin settings.
  *
- * @return	bool|string
+ * @return    bool|string
  *
- * @since	1.5.12
+ * @since    1.5.12
  */
 function mg_smtp_get_region($getRegion)
 {
     switch ($getRegion) {
-        case 'us': return 'smtp.mailgun.org';
-        case 'eu': return 'smtp.eu.mailgun.org'; 
-        default: return false;
+        case 'us':
+            return 'smtp.mailgun.org';
+        case 'eu':
+            return 'smtp.eu.mailgun.org';
+        default:
+            return false;
     }
 }

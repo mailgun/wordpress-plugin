@@ -19,7 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-class list_widget extends WP_Widget
+class list_widget extends \WP_Widget
 {
     public function __construct()
     {
@@ -39,6 +39,9 @@ class list_widget extends WP_Widget
     {
         global $mailgun;
 
+        if (!isset($instance['list_address']) || !$instance['list_address']) {
+            return;
+        }
         // vars
         $list_address = apply_filters('list_address', $instance['list_address']);
 
