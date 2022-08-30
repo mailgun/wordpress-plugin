@@ -131,6 +131,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+= 1.8.3 (2022-08-30): =
+- Plugin refactoring. Widget fixes for working with Legacy Widget Block. PHP8.0 support check
+
 = 1.8.2 (2022-08-24): =
 - Plugin refactoring. Small fixes
 

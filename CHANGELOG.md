@@ -1,5 +1,7 @@
 Changelog
 =========
+= 1.8.3 (2022-08-30): =
+- Plugin refactoring. Widget fixes for working with Legacy Widget Block. PHP8.0 support check
 
 1.7.9 (2021-05-24)
 - API Key description

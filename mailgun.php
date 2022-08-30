@@ -1,10 +1,9 @@
 <?php
-
 /**
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.8.2
+ * Version:      1.8.3
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -36,7 +35,7 @@
  * either API or SMTP.
  *
  * Registers handlers for later actions and sets up config variables with
- * Wordpress.
+ * WordPress.
  */
 class Mailgun
 {
@@ -63,7 +62,6 @@ class Mailgun
     /**
      * Setup shared functionality for Admin and Front End.
      *
-     * @since    0.1
      */
     public function __construct()
     {
@@ -104,7 +102,6 @@ class Mailgun
      *
      * @return    mixed
      *
-     * @since    0.1
      */
     public function get_option(string $option, ?array $options = null, bool $default = false)
     {
@@ -127,7 +124,6 @@ class Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function phpmailer_init(&$phpmailer)
     {
@@ -174,8 +170,6 @@ class Mailgun
      * @param    $file    Files critical to plugin functionality
      *
      * @return    void
-     *
-     * @since    0.1
      */
     public function deactivate_and_die($file)
     {
@@ -198,7 +192,6 @@ class Mailgun
      *
      * @return    string
      *
-     * @since    0.1
      */
     public function api_call($uri, $params = [], $method = 'POST'): string
     {
@@ -208,7 +201,7 @@ class Mailgun
         $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $options[ 'domain' ];
 
         $region = mg_api_get_region($getRegion);
-        $this->api_endpoint = ($region) ? $region : 'https://api.mailgun.net/v3/';
+        $this->api_endpoint = ($region) ?: 'https://api.mailgun.net/v3/';
 
         $time = time();
         $url = $this->api_endpoint . $uri;
@@ -266,7 +259,6 @@ class Mailgun
      * @return    array
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function get_lists(): array
     {
@@ -285,21 +277,21 @@ class Mailgun
     /**
      * Handle add list ajax post.
      *
-     * @return    string    json
+     * @return    void    json
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function add_list()
     {
         $name = $_POST['name'] ?? null;
         $email = $_POST['email'] ?? null;
 
-        $list_addresses = $_POST[ 'addresses' ];
+        $list_addresses = $_POST['addresses'];
 
         if (!empty($list_addresses)) {
+            $result = [];
             foreach ($list_addresses as $address => $val) {
-                $this->api_call(
+                $result[] = $this->api_call(
                     "lists/{$address}/members",
                     [
                         'address' => $email,
@@ -307,7 +299,19 @@ class Mailgun
                     ]
                 );
             }
-            echo json_encode(['status' => 200, 'message' => 'Thank you!'], JSON_THROW_ON_ERROR);
+            $message = 'Thank you!';
+            if ($result) {
+                $message = 'Something went wrong';
+                $response = json_decode($result[0], true);
+                if (is_array($response) && isset($response['message'])) {
+                    $message = $response['message'];
+                }
+
+            }
+            echo json_encode([
+                'status' => 200,
+                'message' => $message
+            ], JSON_THROW_ON_ERROR);
         } else {
             echo json_encode([
                 'status' => 500,
@@ -325,12 +329,12 @@ class Mailgun
      * @param array  $instance     widget instance params
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function list_form(string $list_address, array $args = [], array $instance = [])
     {
-        $widget_class_id = "mailgun-list-widget-{$args['widget_id']}";
-        $form_class_id = "list-form-{$args['widget_id']}";
+        $widgetId = $args['widget_id'] ?? 0;
+        $widget_class_id = "mailgun-list-widget-{$widgetId}";
+        $form_class_id = "list-form-{$widgetId}";
 
         // List addresses from the plugin config
         $list_addresses = array_map('trim', explode(',', $list_address));
@@ -355,7 +359,7 @@ class Mailgun
                             </p>
                         </div>
                     <?php endif; ?>
-                    <?php if (isset($args[ 'collect_name' ]) && intval($args[ 'collect_name' ]) === 1): ?>
+                    <?php if (isset($args[ 'collect_name' ]) && (int)$args['collect_name'] === 1): ?>
                         <p class="mailgun-list-widget-name">
                             <strong>Name:</strong>
                             <input type="text" name="name"/>
@@ -424,7 +428,6 @@ class Mailgun
                 dataType: 'json',
                 data: jQuery('.' + form_id + '').serialize(),
                 success: function (data) {
-
                   data_msg = data.message
                   already_exists = false
                   if (data_msg !== undefined) {
@@ -457,7 +460,6 @@ class Mailgun
      * @return    string
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function build_list_form(array $atts): string
     {
@@ -488,8 +490,6 @@ class Mailgun
 
     /**
      * Initialize List Widget.
-     *
-     * @since    0.1
      */
     public function load_list_widget()
     {

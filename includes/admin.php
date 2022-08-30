@@ -38,7 +38,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function __construct()
     {
@@ -65,7 +64,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function init()
     {
@@ -103,7 +101,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function admin_menu()
     {
@@ -123,7 +120,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function admin_js()
     {
@@ -133,7 +129,6 @@ class MailgunAdmin extends Mailgun
     /**
      * Output JS to footer for enhanced admin page functionality.
      *
-     * @since    0.1
      */
     public function admin_footer_js()
     {
@@ -201,7 +196,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function options_page()
     {
@@ -216,7 +210,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function lists_page()
     {
@@ -233,7 +226,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function admin_init()
     {
@@ -251,7 +243,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function register_settings()
     {
@@ -265,7 +256,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    array
      *
-     * @since    0.1
      */
     public function validation(array $options)
     {
@@ -316,7 +306,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function admin_notices()
     {
@@ -376,7 +365,6 @@ class MailgunAdmin extends Mailgun
      *
      * @return    array
      *
-     * @since    0.1
      */
     public function filter_plugin_actions($links)
     {
@@ -392,7 +380,6 @@ class MailgunAdmin extends Mailgun
      * @return    string
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function ajax_send_test()
     {

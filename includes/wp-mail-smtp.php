@@ -20,8 +20,8 @@
  */
 
 // Include MG filter functions
-if (!include dirname(__FILE__).'/mg-filter.php') {
-    Mailgun::deactivate_and_die(dirname(__FILE__).'/mg-filter.php');
+if (!include __DIR__ .'/mg-filter.php') {
+    (new Mailgun)->deactivate_and_die(__DIR__ .'/mg-filter.php');
 }
 
 /**
@@ -40,12 +40,12 @@ function mg_smtp_last_error($error = null)
 
     if (null === $error) {
         return $last_error;
-    } else {
-        $tmp = $last_error;
-        $last_error = $error;
-
-        return $tmp;
     }
+
+    $tmp = $last_error;
+    $last_error = $error;
+
+    return $tmp;
 }
 
 /**
@@ -54,11 +54,11 @@ function mg_smtp_last_error($error = null)
  * @param string $str   Log message
  * @param string $level Logging level
  *
- * @return none
+ * @return void
  *
  * @since 1.5.7
  */
-function mg_smtp_debug_output($str, $level)
+function mg_smtp_debug_output(string $str, $level)
 {
     if (defined('MG_DEBUG_SMTP') && MG_DEBUG_SMTP) {
         error_log("PHPMailer [$level] $str");
@@ -69,9 +69,9 @@ function mg_smtp_debug_output($str, $level)
  * Capture and store the failure message from PHPmailer so the user will
  * actually know what is wrong.
  *
- * @param WP_Error $error Error raised by Wordpress/PHPmailer
+ * @param WP_Error $error Error raised by WordPress/PHPmailer
  *
- * @return none
+ * @return void
  *
  * @since 1.5.7
  */
@@ -86,7 +86,7 @@ function wp_mail_failed($error)
 
 /**
  * Provides a `wp_mail` compatible filter for SMTP sends through the
- * Wordpress PHPmailer transport.
+ * WordPress PHPmailer transport.
  *
  * @param array $args Compacted array of arguments.
  *
@@ -97,7 +97,7 @@ function wp_mail_failed($error)
 function mg_smtp_mail_filter(array $args)
 {
     // Extract the arguments from array to ($to, $subject, $message, $headers, $attachments)
-    extract($args);
+    extract($args, EXTR_OVERWRITE);
 
     // $headers and $attachments are optional - make sure they exist
     $headers = (!isset($headers)) ? '' : $headers;
@@ -109,7 +109,7 @@ function mg_smtp_mail_filter(array $args)
     // Filter the `From:` header
     $from_header = (isset($mg_headers['From'])) ? $mg_headers['From'][0] : null;
 
-    list($from_name, $from_addr) = array(null, null);
+    list($from_name, $from_addr) = [null, null];
     if (!is_null($from_header)) {
         $content = $from_header['value'];
         $boundary = $from_header['boundary'];

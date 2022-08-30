@@ -108,13 +108,16 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs)
  *
  * @global PHPMailer\PHPMailer\PHPMailer $phpmailer
  *
- * @since    0.1
  */
 if (!function_exists('wp_mail')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
         // Compact the input, apply the filters, and extract them back out
-        extract(apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments')));
+        $extractData = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
+        if (!is_array($extractData)) {
+            $extractData = (array)$extractData;
+        }
+        extract($extractData, EXTR_OVERWRITE);
 
         $mailgun = get_option('mailgun');
         $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $mailgun['region'];
