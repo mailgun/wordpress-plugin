@@ -1,11 +1,9 @@
 <?php
-ini_set('display_errors', 'on');
-error_reporting(E_ALL);
 /**
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.8.2
+ * Version:      1.8.3
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -64,7 +62,6 @@ class Mailgun
     /**
      * Setup shared functionality for Admin and Front End.
      *
-     * @since    0.1
      */
     public function __construct()
     {
@@ -105,7 +102,6 @@ class Mailgun
      *
      * @return    mixed
      *
-     * @since    0.1
      */
     public function get_option(string $option, ?array $options = null, bool $default = false)
     {
@@ -128,7 +124,6 @@ class Mailgun
      *
      * @return    void
      *
-     * @since    0.1
      */
     public function phpmailer_init(&$phpmailer)
     {
@@ -175,8 +170,6 @@ class Mailgun
      * @param    $file    Files critical to plugin functionality
      *
      * @return    void
-     *
-     * @since    0.1
      */
     public function deactivate_and_die($file)
     {
@@ -199,7 +192,6 @@ class Mailgun
      *
      * @return    string
      *
-     * @since    0.1
      */
     public function api_call($uri, $params = [], $method = 'POST'): string
     {
@@ -267,7 +259,6 @@ class Mailgun
      * @return    array
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function get_lists(): array
     {
@@ -289,7 +280,6 @@ class Mailgun
      * @return    void    json
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function add_list()
     {
@@ -339,7 +329,6 @@ class Mailgun
      * @param array  $instance     widget instance params
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function list_form(string $list_address, array $args = [], array $instance = []): void
     {
@@ -471,7 +460,6 @@ class Mailgun
      * @return    string
      *
      * @throws JsonException
-     * @since    0.1
      */
     public function build_list_form(array $atts): string
     {
@@ -502,8 +490,6 @@ class Mailgun
 
     /**
      * Initialize List Widget.
-     *
-     * @since    0.1
      */
     public function load_list_widget()
     {

@@ -108,7 +108,6 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs)
  *
  * @global PHPMailer\PHPMailer\PHPMailer $phpmailer
  *
- * @since    0.1
  */
 if (!function_exists('wp_mail')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
