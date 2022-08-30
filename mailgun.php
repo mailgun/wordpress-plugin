@@ -330,7 +330,7 @@ class Mailgun
      *
      * @throws JsonException
      */
-    public function list_form(string $list_address, array $args = [], array $instance = []): void
+    public function list_form(string $list_address, array $args = [], array $instance = [])
     {
         $widgetId = $args['widget_id'] ?? 0;
         $widget_class_id = "mailgun-list-widget-{$widgetId}";
