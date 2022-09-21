@@ -3,7 +3,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.8.4
+ * Version:      1.8.5
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -39,6 +39,11 @@
  */
 class Mailgun
 {
+    /**
+     * @var Mailgun $instance
+     */
+    private static $instance;
+
     /**
      * @var false|mixed|null
      */
@@ -91,6 +96,18 @@ class Mailgun
             add_action('phpmailer_init', [&$this, 'phpmailer_init']);
             add_action('wp_mail_failed', 'wp_mail_failed');
         }
+    }
+
+    /**
+     * @return static
+     */
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -506,7 +523,7 @@ class Mailgun
     }
 }
 
-$mailgun = new Mailgun();
+$mailgun = Mailgun::getInstance();
 
 if (@include __DIR__ . '/includes/widget.php') {
     add_action('widgets_init', [&$mailgun, 'load_list_widget']);

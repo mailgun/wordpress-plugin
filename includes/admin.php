@@ -465,7 +465,7 @@ class MailgunAdmin extends Mailgun
         }
 
         // Error message will always be returned in case of failure, if not - connection wasn't successful
-        $error_msg = $error_msg ? $error_msg : "Can't connect to Mailgun";
+        $error_msg = $error_msg ?: "Can't connect to Mailgun";
         die(
             json_encode(array(
                 'message' => __('Failure', 'mailgun'),

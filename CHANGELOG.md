@@ -1,5 +1,8 @@
 Changelog
 =========
+1.8.5 (2022-09-21)
+- Make code changes to have more optimized way to use Mailgun object in the code
+
 1.8.3 (2022-08-30)
 - Plugin refactoring. Widget fixes for working with Legacy Widget Block. PHP8.0 support check
 

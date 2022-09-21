@@ -37,7 +37,7 @@ class list_widget extends \WP_Widget
     // This is where the action happens
     public function widget($args, $instance)
     {
-        global $mailgun;
+        $mailgun = Mailgun::getInstance();
 
         if (!isset($instance['list_address']) || !$instance['list_address']) {
             return;
@@ -63,8 +63,6 @@ class list_widget extends \WP_Widget
     // Widget Backend
     public function form($instance)
     {
-        global $mailgun;
-
         if (isset($instance['list_address'])) {
             $list_address = $instance['list_address'];
         } else {
@@ -77,8 +75,8 @@ class list_widget extends \WP_Widget
             $collect_name = '';
         }
 
-        $list_title = isset($instance['list_title']) ? $instance['list_title'] : null;
-        $list_description = isset($instance['list_description']) ? $instance['list_description'] : null;
+        $list_title = $instance['list_title'] ?? null;
+        $list_description = $instance['list_description'] ?? null;
 
         // Widget admin form
         ?>
