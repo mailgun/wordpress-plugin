@@ -506,6 +506,7 @@ class Mailgun
     }
 }
 
+global $mailgun;
 $mailgun = new Mailgun();
 
 if (@include __DIR__ . '/includes/widget.php') {
