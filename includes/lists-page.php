@@ -19,7 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-global $mailgun;
+$mailgun = Mailgun::getInstance();
 
 // check mailgun domain & api key
 $missing_error = '';
