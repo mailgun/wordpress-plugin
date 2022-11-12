@@ -5,7 +5,7 @@ Contributors: mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 6.1
-Stable tag: 1.8.5
+Stable tag: 1.8.7
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -130,6 +130,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+= 1.8.7 (2022-11-12): =
+- Fixed bug when field `Override "From" Details` was not updated
+
 = 1.8.3 (2022-08-30): =
 - Plugin refactoring. Widget fixes for working with Legacy Widget Block. PHP8.0 support check
 
