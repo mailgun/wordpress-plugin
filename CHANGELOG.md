@@ -1,5 +1,8 @@
 Changelog
 =========
+1.8.7 (2022-11-12)
+- Fixed bug when field `Override "From" Details` was not updated
+
 1.8.6 (2022-11-09)
 - Version update
 
