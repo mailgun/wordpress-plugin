@@ -112,13 +112,6 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs)
 if (!function_exists('wp_mail')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
-        // Compact the input, apply the filters, and extract them back out
-        $extractData = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
-        if (!is_array($extractData)) {
-            $extractData = (array)$extractData;
-        }
-        extract($extractData, EXTR_OVERWRITE);
-
         $mailgun = get_option('mailgun');
         $region = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $mailgun['region'];
         $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $mailgun['apiKey'];
@@ -129,7 +122,7 @@ if (!function_exists('wp_mail')) {
         }
 
         // If a region is not set via defines or through the options page, default to US region.
-        if (!((bool)$region)) {
+        if (!($region)) {
             error_log('[Mailgun] No region configuration was found! Defaulting to US region.');
             $region = 'us';
         }
@@ -256,7 +249,7 @@ if (!function_exists('wp_mail')) {
             } elseif (is_array($body['o:tag'])) {
                 $body['o:tag'] = array_merge($body['o:tag'], $tags);
             } else {
-                $body['o:tag'] .= ',' . $tags;
+                $body['o:tag'] .= ',' . implode(',', $tags);
             }
         }
 
