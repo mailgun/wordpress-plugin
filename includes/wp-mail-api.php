@@ -126,6 +126,37 @@ if (!function_exists('wp_mail')) {
             error_log('[Mailgun] No region configuration was found! Defaulting to US region.');
             $region = 'us';
         }
+        
+        // Respect WordPress core filters
+        $atts = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'headers', 'attachments' ) );
+
+        if ( isset( $atts['to'] ) ) {
+            $to = $atts['to'];
+        }
+
+        if ( ! is_array( $to ) ) {
+            $to = explode( ',', $to );
+        }
+
+        if ( isset( $atts['subject'] ) ) {
+            $subject = $atts['subject'];
+        }
+
+        if ( isset( $atts['message'] ) ) {
+            $message = $atts['message'];
+        }
+
+        if ( isset( $atts['headers'] ) ) {
+            $headers = $atts['headers'];
+        }
+
+        if ( isset( $atts['attachments'] ) ) {
+            $attachments = $atts['attachments'];
+        }
+
+        if (!is_array($attachments)) {
+            $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
+        }
 
         if (!is_array($attachments)) {
             $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
