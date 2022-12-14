@@ -1,5 +1,8 @@
 Changelog
 =========
+1.8.8 (2022-12-11)
+- Fixed bug when `$to` override in the `wp_mail` function
+
 1.8.7 (2022-11-12)
 - Fixed bug when field `Override "From" Details` was not updated
 
