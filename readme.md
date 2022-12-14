@@ -5,7 +5,7 @@ Contributors: mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 6.1
-Stable tag: 1.8.8
+Stable tag: 1.8.9
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -130,6 +130,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+= 1.8.9 (2022-12-14): =
+- Fixed bug with removed wp_mail filter
+
 = 1.8.8 (2022-12-11): =
 - Fixed bug when `$to` override in the `wp_mail` function
 
