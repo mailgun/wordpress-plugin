@@ -130,32 +130,28 @@ if (!function_exists('wp_mail')) {
         // Respect WordPress core filters
         $atts = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'headers', 'attachments' ) );
 
-        if ( isset( $atts['to'] ) ) {
+        if (isset($atts['to'])) {
             $to = $atts['to'];
         }
 
-        if ( ! is_array( $to ) ) {
-            $to = explode( ',', $to );
+        if (!is_array($to)) {
+            $to = explode(',', $to);
         }
 
-        if ( isset( $atts['subject'] ) ) {
+        if (isset($atts['subject'])) {
             $subject = $atts['subject'];
         }
 
-        if ( isset( $atts['message'] ) ) {
+        if (isset($atts['message'])) {
             $message = $atts['message'];
         }
 
-        if ( isset( $atts['headers'] ) ) {
+        if (isset($atts['headers'])) {
             $headers = $atts['headers'];
         }
 
-        if ( isset( $atts['attachments'] ) ) {
+        if (isset($atts['attachments'])) {
             $attachments = $atts['attachments'];
-        }
-
-        if (!is_array($attachments)) {
-            $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
         }
 
         if (!is_array($attachments)) {
