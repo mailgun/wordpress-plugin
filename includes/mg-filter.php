@@ -93,7 +93,7 @@ function mg_detect_from_name($from_name_header = null)
     }
 
     $filter_from_name = null;
-    if (has_filter('wp_mail_from_name')) {
+    if ((!isset($mg_override_from) || $mg_override_from == '0') && has_filter('wp_mail_from_name')) {
         $filter_from_name = apply_filters(
             'wp_mail_from_name',
             $from_name
