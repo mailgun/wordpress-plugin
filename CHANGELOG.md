@@ -1,5 +1,8 @@
 Changelog
 =========
+1.8.10 (2022-12-26)
+- Fixed bug with not overriding `from name` for Woocommerce
+
 1.8.9 (2022-12-14)
 - Fixed bug with removed wp_mail filter
 
