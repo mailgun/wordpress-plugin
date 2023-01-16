@@ -46,7 +46,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
     <span class="alignright">
         <a target="_blank" href="http://www.mailgun.com/">
-            <img src="<?php echo $icon?>" alt="Mailgun" style="width: 50px;"/>
+            <img src="<?php echo esc_attr($icon)?>" alt="Mailgun" style="width: 50px;"/>
         </a>
     </span>
 
@@ -54,7 +54,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
     <?php settings_fields('mailgun'); ?>
 
-    <h3><?php _e('Available Mailing Lists', 'mailgun'); ?> | <a href="<?php echo admin_url('options-general.php?page=mailgun'); ?>">Back to settings</a></h3>
+    <h3><?php _e('Available Mailing Lists', 'mailgun'); ?> | <a href="<?php echo esc_attr(admin_url('options-general.php?page=mailgun')); ?>">Back to settings</a></h3>
 
     <p><?php _e("{$missing_error}You must use a valid Mailgun domain name and API key to access lists", 'mailgun'); ?></p>
 
@@ -73,10 +73,10 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                 <?php foreach ($lists_arr as $list) : ?>
 
                     <tr>
-                        <td><?php echo $list['address']; ?></td>
-                        <td><?php echo $list['description']; ?></td>
+                        <td><?php echo esc_textarea($list['address']); ?></td>
+                        <td><?php echo esc_textarea($list['description']); ?></td>
                         <td>
-                            [mailgun id="<?php echo $list['address']; ?>"]
+                            [mailgun id="<?php echo esc_textarea($list['address']); ?>"]
                         </td>
                     </tr>
 
