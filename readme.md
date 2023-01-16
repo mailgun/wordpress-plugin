@@ -4,8 +4,8 @@ Mailgun for WordPress
 Contributors: mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
-Tested up to: 6.1
-Stable tag: 1.8.9
+Tested up to: 6.1.1
+Stable tag: 1.8.10
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -130,6 +130,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+= 1.8.10 (2022-12-26): =
+- Fixed bug with not overriding `from name` for Woocommerce
+
 = 1.8.9 (2022-12-14): =
 - Fixed bug with removed wp_mail filter
 
