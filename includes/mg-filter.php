@@ -152,7 +152,7 @@ function mg_detect_from_address($from_addr_header = null): string
             if (function_exists('get_current_site')) {
                 $sitedomain = get_current_site()->domain;
             } else {
-                $sitedomain = strtolower($_SERVER['SERVER_NAME']);
+                $sitedomain = strtolower(sanitize_text_field($_SERVER['SERVER_NAME']));
                 if (substr($sitedomain, 0, 4) === 'www.') {
                     $sitedomain = substr($sitedomain, 4);
                 }

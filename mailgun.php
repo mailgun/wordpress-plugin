@@ -3,7 +3,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.8.10
+ * Version:      1.9
  * Tested up to: 6.1
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
@@ -301,10 +301,10 @@ class Mailgun
      */
     public function add_list()
     {
-        $name = $_POST['name'] ?? null;
-        $email = $_POST['email'] ?? null;
+        $name = sanitize_text_field($_POST['name'] ?? null);
+        $email = sanitize_text_field($_POST['email'] ?? null);
 
-        $list_addresses = $_POST['addresses'];
+        $list_addresses = sanitize_text_field($_POST['addresses']);
 
         if (!empty($list_addresses)) {
             $result = [];
@@ -360,20 +360,20 @@ class Mailgun
         // All list info from the API; used for list info when more than one list is available to subscribe to
         $all_list_addresses = $this->get_lists();
     ?>
-        <div class="mailgun-list-widget-front <?php echo $widget_class_id; ?> widget">
-            <form class="list-form <?php echo $form_class_id; ?>">
+        <div class="mailgun-list-widget-front <?php echo esc_attr($widget_class_id); ?> widget">
+            <form class="list-form <?php echo esc_attr($form_class_id); ?>">
                 <div class="mailgun-list-widget-inputs">
                     <?php if (isset($args[ 'list_title' ])): ?>
                         <div class="mailgun-list-title">
                             <h4 class="widget-title">
-                                <span><?php echo $args[ 'list_title' ]; ?></span>
+                                <span><?php echo wp_kses_data($args[ 'list_title' ]); ?></span>
                             </h4>
                         </div>
                     <?php endif; ?>
                     <?php if (isset($args[ 'list_description' ])): ?>
                         <div class="mailgun-list-description">
                             <p class="widget-description">
-                                <span><?php echo $args[ 'list_description' ]; ?></span>
+                                <span><?php echo wp_kses_data($args[ 'list_description' ]); ?></span>
                             </p>
                         </div>
                     <?php endif; ?>
@@ -399,15 +399,15 @@ class Mailgun
                         ?>
                                 <li>
                                     <input type="checkbox" class="mailgun-list-name"
-                                           name="addresses[<?php echo $la[ 'address' ]; ?>]"/> <?php echo ($la[ 'name' ] ?: $la[ 'address' ]); ?>
+                                           name="addresses[<?php echo esc_attr($la[ 'address' ]); ?>]"/> <?php echo esc_attr($la[ 'name' ] ?: $la[ 'address' ]); ?>
                                 </li>
                         <?php endforeach; ?>
                     </ul>
                 <?php else: ?>
-                    <input type="hidden" name="addresses[<?php echo $list_addresses[ 0 ]; ?>]" value="on"/>
+                    <input type="hidden" name="addresses[<?php echo esc_attr($list_addresses[ 0 ]); ?>]" value="on"/>
                 <?php endif; ?>
 
-                <input class="mailgun-list-submit-button" data-form-id="<?php echo $form_class_id; ?>" type="button"
+                <input class="mailgun-list-submit-button" data-form-id="<?php echo esc_attr($form_class_id); ?>" type="button"
                        value="Subscribe"/>
                 <input type="hidden" name="mailgun-submission" value="1"/>
 
@@ -454,9 +454,9 @@ class Mailgun
 
                   // success
                   if ((data.status === 200)) {
-                    jQuery('.<?php echo $widget_class_id; ?> .widget-list-panel').css('display', 'none')
-                    jQuery('.<?php echo $widget_class_id; ?> .list-form').css('display', 'none')
-                    jQuery('.<?php echo $widget_class_id; ?> .result-panel').css('display', 'block')
+                    jQuery('.<?php echo esc_attr($widget_class_id); ?> .widget-list-panel').css('display', 'none')
+                    jQuery('.<?php echo esc_attr($widget_class_id); ?> .list-form').css('display', 'none')
+                    jQuery('.<?php echo esc_attr($widget_class_id); ?> .result-panel').css('display', 'block')
                     // error
                   } else {
                     alert(data_msg)
