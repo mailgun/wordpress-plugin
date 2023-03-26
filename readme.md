@@ -5,7 +5,7 @@ Contributors: mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 3.3
 Tested up to: 6.1.1
-Stable tag: 1.9
+Stable tag: 1.9.1
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -130,7 +130,12 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
-= 1.9 (2023-01-18): =
+
+= 1.9.1 (2023-03-26): =
+- Remove not needed error logging.
+- Fixed bug with Override param for Woocommerce
+
+- = 1.9 (2023-01-18): =
 - Sanitizing and escaping vars. Possible security issues
 
 = 1.8.10 (2022-12-26): =

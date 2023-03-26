@@ -195,7 +195,6 @@ if (!function_exists('wp_mail')) {
                         // Mainly for legacy -- process a From: header if it's there
                         case 'from':
                             if (strpos($content, '<') !== false) {
-                                // So... making my life hard again?
                                 $from_name = substr($content, 0, strpos($content, '<') - 1);
                                 $from_name = str_replace('"', '', $from_name);
                                 $from_name = trim($from_name);
@@ -246,12 +245,17 @@ if (!function_exists('wp_mail')) {
 
         $from_name = mg_detect_from_name($from_name);
         $from_email = mg_detect_from_address($from_email);
+        $fromString = "{$from_name} <{$from_email}>";
+        if (isReplyToOverride()) {
+            $headers['Reply-to'] = $fromString;
+        }
 
-        $body = array(
-            'from' => "{$from_name} <{$from_email}>",
+        $body = [
+            'from' => $fromString,
             'to' => $to,
             'subject' => $subject,
-        );
+        ];
+
 
         $rcpt_data = apply_filters('mg_mutate_to_rcpt_vars', $to);
         if (!is_null($rcpt_data['rcpt_vars'])) {
@@ -332,8 +336,6 @@ if (!function_exists('wp_mail')) {
         } else if ('text/html' === $content_type) {
             $body['html'] = $message;
         } else {
-            // Unknown Content-Type??
-            error_log('[mailgun] Got unknown Content-Type: ' . $content_type);
             $body['text'] = $message;
             $body['html'] = $message;
         }
@@ -454,7 +456,7 @@ if (!function_exists('wp_mail')) {
         }
 
         // Not sure there is any additional checking that needs to be done here, but why not?
-        if ($response_body->message != 'Queued. Thank you.') {
+        if ($response_body->message !== 'Queued. Thank you.') {
             mg_api_last_error($response_body->message);
 
             return false;
