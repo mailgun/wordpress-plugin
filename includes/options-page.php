@@ -57,7 +57,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
     <div id="icon-options-general" class="icon32"><br/></div>
     <span class="alignright">
 				<a target="_blank" href="http://www.mailgun.com/">
-					<img src="<?php echo $icon ?>" alt="Mailgun" style="width:50px;"/>
+					<img src="<?php echo esc_attr($icon) ?>" alt="Mailgun" style="width:50px;"/>
 				</a>
 			</span>
     <h2><?php _e('Mailgun', 'mailgun'); ?></h2>
@@ -75,7 +75,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                 )
             ), esc_url($url), '_blank'
         );
-        echo $link;
+        echo wp_kses_data($link);
         ?>
     </p>
 
@@ -92,7 +92,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                 )
             ), esc_url($url), '_blank'
         );
-        echo $link;
+        echo wp_kses_data($link);
         ?>
     </p>
 
@@ -107,11 +107,11 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                 </th>
                 <td>
                     <?php if ($mailgun_region_const): ?>
-                        <input type="hidden" name="mailgun[region]" value="<?php echo $mailgun_region ?>">
+                        <input type="hidden" name="mailgun[region]" value="<?php echo esc_attr($mailgun_region) ?>">
                     <?php endif ?>
 
                     <select id="mailgun-region"
-                            name="mailgun[region]" <?php echo $mailgun_region_const ? 'disabled="disabled"' : '' ?>>
+                            name="mailgun[region]" <?php echo esc_attr($mailgun_region_const) ? 'disabled="disabled"' : '' ?>>
                         <option value="us"<?php selected('us', $mailgun_region); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
                         <option value="eu"<?php selected('eu', $mailgun_region); ?>><?php _e('Europe', 'mailgun') ?></option>
                     </select>
@@ -128,7 +128,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                 </th>
                 <td>
                     <?php if (!is_null($mailgun_use_api_const)): ?>
-                        <input type="hidden" name="mailgun[useAPI]" value="<?php echo $mailgun_use_api ?>">
+                        <input type="hidden" name="mailgun[useAPI]" value="<?php echo esc_attr($mailgun_use_api) ?>">
                     <?php endif ?>
 
                     <select id="mailgun-api"
@@ -218,7 +218,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                 </th>
                 <td>
                     <?php if (!is_null($mailgun_secure_const)): ?>
-                        <input type="hidden" name="mailgun[secure]" value="<?php echo $mailgun_secure ?>">
+                        <input type="hidden" name="mailgun[secure]" value="<?php echo esc_attr($mailgun_secure) ?>">
                     <?php endif ?>
 
                     <select name="mailgun[secure]" <?php echo !is_null($mailgun_secure_const) ? 'disabled="disabled"' : '' ?>>
@@ -238,7 +238,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                 </th>
                 <td>
                     <?php if ($mailgun_sectype_const): ?>
-                        <input type="hidden" name="mailgun[sectype]" value="<?php echo $mailgun_sectype ?>">
+                        <input type="hidden" name="mailgun[sectype]" value="<?php echo esc_attr($mailgun_sectype) ?>">
                     <?php endif ?>
 
                     <select name="mailgun[sectype]" <?php echo $mailgun_sectype_const ? 'disabled="disabled"' : '' ?>>
@@ -275,7 +275,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                                 )
                             ), esc_url($url), '_blank'
                         );
-                        echo $link;
+                        echo wp_kses_data($link);
                         ?>
                     </p>
                 </td>
@@ -302,7 +302,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                                 )
                             ), esc_url($url), '_blank'
                         );
-                        echo $link;
+                        echo wp_kses_data($link);
                         ?>
                     </p>
                 </td>
@@ -387,7 +387,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                                 )
                             ), esc_url($url1), esc_url($url2), '_blank'
                         );
-                        echo $link;
+                        echo wp_kses_data($link);
                         ?>
                     </p>
                 </td>
@@ -429,7 +429,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                             )
                         ), esc_url($url)
                     );
-                    echo $link;
+                    echo wp_kses_data($link);
                     ?>
                 </td>
             </tr>

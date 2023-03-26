@@ -67,7 +67,7 @@ class MailgunAdmin extends Mailgun
      */
     public function init()
     {
-        $sitename = strtolower($_SERVER['SERVER_NAME']);
+        $sitename = sanitize_text_field(strtolower($_SERVER['SERVER_NAME']));
         if (substr($sitename, 0, 4) === 'www.') {
             $sitename = substr($sitename, 4);
         }
@@ -166,7 +166,7 @@ class MailgunAdmin extends Mailgun
                         ajaxurl,
                         {
                             action: 'mailgun-test',
-                            _wpnonce: '<?php echo wp_create_nonce(); ?>'
+                            _wpnonce: '<?php echo esc_attr(wp_create_nonce()); ?>'
                         }
                     )
                         .complete(function () {
@@ -386,7 +386,7 @@ class MailgunAdmin extends Mailgun
         nocache_headers();
         header('Content-Type: application/json');
 
-        if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['_wpnonce'])):
+        if (!current_user_can('manage_options') || !wp_verify_nonce(sanitize_text_field($_GET['_wpnonce']))):
             die(
             json_encode(array(
                 'message' => __('Unauthorized', 'mailgun'),
