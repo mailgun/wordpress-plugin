@@ -93,6 +93,7 @@ function mg_detect_from_name($from_name_header = null)
     }
 
     $filter_from_name = null;
+
     if ((!isset($mg_override_from) || $mg_override_from == '0') && has_filter('wp_mail_from_name')) {
         $filter_from_name = apply_filters(
             'wp_mail_from_name',
@@ -165,7 +166,7 @@ function mg_detect_from_address($from_addr_header = null): string
     }
 
     $filter_from_addr = null;
-    if (has_filter('wp_mail_from')) {
+    if ((!isset($mg_override_from) || $mg_override_from == '0') && has_filter('wp_mail_from')) {
         $filter_from_addr = apply_filters(
             'wp_mail_from',
             $from_addr
@@ -234,7 +235,7 @@ function mg_parse_headers($headers = []): array
             }
 
             // Explode the header
-            list($name, $value) = explode(':', trim($header), 2);
+            [$name, $value] = explode(':', trim($header), 2);
 
             // Clean up the values
             $name = trim($name);
@@ -329,4 +330,13 @@ function mg_smtp_get_region($getRegion)
         default:
             return false;
     }
+}
+
+/**
+ * @return false|mixed
+ */
+function isReplyToOverride()
+{
+    $mg_opts = get_option('mailgun');
+    return (bool)($mg_opts['override-from'] ?? false);
 }
