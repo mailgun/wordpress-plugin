@@ -42,6 +42,7 @@ function mg_api_last_error($error = null)
         return $last_error;
     }
 
+    do_action('mailgun_error_track', $error);
     $tmp = $last_error;
     $last_error = $error;
 

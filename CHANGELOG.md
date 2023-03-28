@@ -1,5 +1,16 @@
 Changelog
 =========
+1.9.2 (2023-03-28)
+- Added action for better dev experience in tracking error `mailgun_error_track`
+- Added header `h:Sender`
+
+1.9.1 (2023-03-26)
+- Remove not needed error logging.
+- Fixed bug with Override param for Woocommerce
+
+1.9 (2023-01-18)
+- Sanitizing and escaping vars. Possible security issues
+
 1.8.10 (2022-12-26)
 - Fixed bug with not overriding `from name` for Woocommerce
 
