@@ -1,5 +1,8 @@
 Changelog
 =========
+1.9.3 (2023-04-08)
+- Fixed `Reply-to` header. It's not overridden anymore
+
 1.9.2 (2023-03-28)
 - Added action for better dev experience in tracking error `mailgun_error_track`
 - Added header `h:Sender`

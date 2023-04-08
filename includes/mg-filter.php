@@ -331,12 +331,3 @@ function mg_smtp_get_region($getRegion)
             return false;
     }
 }
-
-/**
- * @return false|mixed
- */
-function isReplyToOverride()
-{
-    $mg_opts = get_option('mailgun');
-    return (bool)($mg_opts['override-from'] ?? false);
-}

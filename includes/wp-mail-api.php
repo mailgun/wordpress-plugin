@@ -245,9 +245,6 @@ if (!function_exists('wp_mail')) {
         $from_name = mg_detect_from_name($from_name);
         $from_email = mg_detect_from_address($from_email);
         $fromString = "{$from_name} <{$from_email}>";
-        if (isReplyToOverride()) {
-            $headers['Reply-to'] = $fromString;
-        }
 
         $body = [
             'from' => $fromString,
