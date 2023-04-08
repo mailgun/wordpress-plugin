@@ -5,7 +5,7 @@ Contributors: mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 4.4
 Tested up to: 6.1.1
-Stable tag: 1.9.2
+Stable tag: 1.9.3
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -128,6 +128,9 @@ MAILGUN_FROM_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 1.9.3 (2023-04-08) =
+- Fixed `Reply-to` header. It's not overridden anymore
 
 = 1.9.2 (2023-03-28): =
 - Added action for better dev experience in tracking error `mailgun_error_track`
