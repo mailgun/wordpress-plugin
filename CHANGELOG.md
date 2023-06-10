@@ -1,5 +1,8 @@
 Changelog
 =========
+1.9.4 (2023-06-10)
+- Fixed bug `Fatal error on lists page when another plugin redeclare wp_mail()`
+
 1.9.3 (2023-04-08)
 - Fixed `Reply-to` header. It's not overridden anymore
 
