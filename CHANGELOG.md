@@ -1,5 +1,8 @@
 Changelog
 =========
+1.9.5 (2023-06-20)
+- Fix bug with sending emails
+
 1.9.4 (2023-06-10)
 - Fixed bug `Fatal error on lists page when another plugin redeclare wp_mail()`
 

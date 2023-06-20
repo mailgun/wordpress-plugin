@@ -5,7 +5,7 @@ Contributors: mailgun, sivel, lookahead.io, m35dev
 Tags: mailgun, smtp, http, api, mail, email
 Requires at least: 4.4
 Tested up to: 6.1.1
-Stable tag: 1.9.4
+Stable tag: 1.9.5
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -129,9 +129,12 @@ MAILGUN_FROM_ADDRESS Type: string
 
 == Changelog ==
 
+= 1.9.5 (2023-06-20): =
+- Fix bug with sending emails
+
+
 = 1.9.4 (2023-06-10): =
 - Fixed bug `Fatal error on lists page when another plugin redeclare wp_mail()`
-
 
 = 1.9.3 (2023-04-08) =
 - Fixed `Reply-to` header. It's not overridden anymore
