@@ -64,6 +64,8 @@ MAILGUN_SECURE       Type: boolean  Choices: '0' or '1' (0 = false/no)
 MAILGUN_SECTYPE      Type: string   Choices: 'ssl' or 'tls'
 MAILGUN_FROM_NAME    Type: string
 MAILGUN_FROM_ADDRESS Type: string
+MAILGUN_TRACK_CLICKS Type: string Choices: 'yes' or 'no'
+MAILGUN_TRACK_OPENS  Type: string Choices: 'yes' or 'no'
 `
 
 - What hooks are available for use with other plugins?
