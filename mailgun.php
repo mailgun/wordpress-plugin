@@ -3,7 +3,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      1.9.4
+ * Version:      1.9.5
  * Tested up to: 6.1
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
@@ -81,7 +81,7 @@ class Mailgun
         // When using SMTP, we also need to inject a `wp_mail` filter to make "from" settings
         // work properly. Fixed issues with 1.5.7+
         if ($this->get_option('useAPI') || (defined('MAILGUN_USEAPI') && MAILGUN_USEAPI)) {
-            if (!function_exists('wp_mail') || !function_exists('mg_wp_mail')) {
+            if (!function_exists('wp_mail')) {
                 if (!include_once(__DIR__ . '/includes/wp-mail-api.php')) {
                     $this->deactivate_and_die(__DIR__ . '/includes/wp-mail-api.php');
                 }
