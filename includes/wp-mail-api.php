@@ -260,8 +260,18 @@ if (!function_exists('wp_mail')) {
         }
 
         $body['o:tag'] = [];
-        $body['o:tracking-clicks'] = !empty($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
-        $body['o:tracking-opens'] = empty($mailgun['track-opens']) ? 'no' : 'yes';
+        if (defined('MAILGUN_TRACK_CLICKS')) {
+            $trackClicks = MAILGUN_TRACK_CLICKS;
+        } else {
+            $trackClicks = !empty($mailgun['track-clicks']) ? $mailgun['track-clicks'] : 'no';
+        }
+        if (defined('MAILGUN_TRACK_OPENS')) {
+            $trackOpens = MAILGUN_TRACK_OPENS;
+        } else {
+            $trackOpens = empty($mailgun['track-opens']) ? 'no' : 'yes';
+        }
+        $body['o:tracking-clicks'] = $trackClicks;
+        $body['o:tracking-opens'] = $trackOpens;
 
         // this is the wordpress site tag
         if (isset($mailgun['tag'])) {
