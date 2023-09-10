@@ -33,8 +33,12 @@ class list_widget extends \WP_Widget
         );
     }
 
-    // Creating widget front-end
-    // This is where the action happens
+    /**
+     * @param $args
+     * @param $instance
+     * @return void
+     * @throws JsonException
+     */
     public function widget($args, $instance)
     {
         $mailgun = Mailgun::getInstance();
@@ -61,6 +65,11 @@ class list_widget extends \WP_Widget
     }
 
     // Widget Backend
+
+    /**
+     * @param $instance
+     * @return string|void
+     */
     public function form($instance)
     {
         if (isset($instance['list_address'])) {
@@ -102,11 +111,14 @@ class list_widget extends \WP_Widget
     }
 
     // Updating widget replacing old instances with new
+
+    /**
+     * @param $new_instance
+     * @param $old_instance
+     * @return array
+     */
     public function update($new_instance, $old_instance)
     {
-        $instance = array();
-        $instance = $new_instance;
-
-        return $instance;
+        return $new_instance;
     }
 }
