@@ -102,7 +102,7 @@ class MailgunAdmin extends Mailgun
      * @return    void
      *
      */
-    public function admin_menu()
+    public function admin_menu(): void
     {
         if (current_user_can('manage_options')) {
             $this->hook_suffix = add_options_page(__('Mailgun', 'mailgun'), __('Mailgun', 'mailgun'),
@@ -121,7 +121,7 @@ class MailgunAdmin extends Mailgun
      * @return    void
      *
      */
-    public function admin_js()
+    public function admin_js(): void
     {
         wp_enqueue_script('jquery');
     }
@@ -130,10 +130,13 @@ class MailgunAdmin extends Mailgun
      * Output JS to footer for enhanced admin page functionality.
      *
      */
-    public function admin_footer_js()
+    public function admin_footer_js(): void
     {
         ?>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" >
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script type="text/javascript">
+
             /* <![CDATA[ */
             var mailgunApiOrNot = function () {
                 if (jQuery('#mailgun-api').val() == 1) {
@@ -173,13 +176,16 @@ class MailgunAdmin extends Mailgun
                             jQuery('#mailgun-test').val('<?php _e('Test Configuration', 'mailgun'); ?>')
                         })
                         .success(function (data) {
-                            alert(
-                                'Mailgun ' + data.method + ' Test ' + data.message
-                                + '; status "' + data.error + '"'
-                            )
+                            if (typeof data.message !== 'undefined' && data.message === 'Failure') {
+                                toastr.error('Mailgun ' + data.method + ' Test ' + data.message
+                                    + '; status "' + data.error + '"');
+                            } else {
+                                toastr.success('Mailgun ' + data.method + ' Test ' + data.message
+                                    + '; status "' + data.error + '"');
+                            }
                         })
                         .error(function () {
-                            alert('Mailgun Test <?php _e('Failure', 'mailgun'); ?>')
+                            toastr.error('Mailgun Test <?php _e('Failure', 'mailgun'); ?>')
                         })
                 })
                 jQuery('#mailgun-form').change(function () {
@@ -197,7 +203,7 @@ class MailgunAdmin extends Mailgun
      * @return    void
      *
      */
-    public function options_page()
+    public function options_page(): void
     {
         if (!@include 'options-page.php') {
             printf(__('<div id="message" class="updated fade"><p>The options page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>',
@@ -211,7 +217,7 @@ class MailgunAdmin extends Mailgun
      * @return    void
      *
      */
-    public function lists_page()
+    public function lists_page(): void
     {
         if (!@include 'lists-page.php') {
             printf(__('<div id="message" class="updated fade"><p>The lists page for the <strong>Mailgun</strong> plugin cannot be displayed. The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>',
@@ -227,7 +233,7 @@ class MailgunAdmin extends Mailgun
      * @return    void
      *
      */
-    public function admin_init()
+    public function admin_init(): void
     {
         $this->register_settings();
 
@@ -240,7 +246,7 @@ class MailgunAdmin extends Mailgun
      * @return    void
      *
      */
-    public function register_settings()
+    public function register_settings(): void
     {
         register_setting('mailgun', 'mailgun', array(&$this, 'validation'));
     }
@@ -253,7 +259,7 @@ class MailgunAdmin extends Mailgun
      * @return    array
      *
      */
-    public function validation(array $options)
+    public function validation(array $options): array
     {
         $apiKey = trim($options['apiKey']);
         $username = trim($options['username']);
@@ -303,12 +309,15 @@ class MailgunAdmin extends Mailgun
      * @return    void
      *
      */
-    public function admin_notices()
+    public function admin_notices(): void
     {
         $screen = get_current_screen();
-        if (!current_user_can('manage_options') || $screen->id == $this->hook_suffix):
+        if (!isset($screen)) {
             return;
-        endif;
+        }
+        if (!current_user_can('manage_options') || $screen->id === $this->hook_suffix) {
+            return;
+        }
 
         $smtpPasswordUndefined = (!$this->get_option('password') && (!defined('MAILGUN_PASSWORD') || !MAILGUN_PASSWORD));
         $smtpActiveNotConfigured = ($this->get_option('useAPI') === '0' && $smtpPasswordUndefined);
@@ -362,7 +371,7 @@ class MailgunAdmin extends Mailgun
      * @return    array
      *
      */
-    public function filter_plugin_actions($links)
+    public function filter_plugin_actions($links): array
     {
         $settings_link = '<a href="' . menu_page_url('mailgun', false) . '">' . __('Settings', 'mailgun') . '</a>';
         array_unshift($links, $settings_link);
@@ -427,13 +436,19 @@ class MailgunAdmin extends Mailgun
                 ), JSON_THROW_ON_ERROR)
             );
         }
-        $result = wp_mail(
-            $admin_email,
-            __('Mailgun WordPress Plugin Test', 'mailgun'),
-            sprintf(__("This is a test email generated by the Mailgun WordPress plugin.\n\nIf you have received this message, the requested test has succeeded.\n\nThe sending region is set to %s.\n\nThe method used to send this email was: %s.",
-                'mailgun'), $region, $method),
-            ['Content-Type: text/plain']
-        );
+
+        try {
+            $result = wp_mail(
+                $admin_email,
+                __('Mailgun WordPress Plugin Test', 'mailgun'),
+                sprintf(__("This is a test email generated by the Mailgun WordPress plugin.\n\nIf you have received this message, the requested test has succeeded.\n\nThe sending region is set to %s.\n\nThe method used to send this email was: %s.",
+                    'mailgun'), $region, $method),
+                ['Content-Type: text/plain']
+            );
+        } catch (Throwable $throwable) {
+            //Log purpose
+        }
+
 
 
 

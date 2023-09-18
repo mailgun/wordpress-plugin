@@ -331,3 +331,44 @@ function mg_smtp_get_region($getRegion)
             return false;
     }
 }
+
+/**
+ * Override WP VIP GO filter
+ * It sets default email address to `donotreply@wordpress.com`
+ */
+if ((defined('WPCOM_IS_VIP_ENV') && WPCOM_IS_VIP_ENV) || (defined('VIP_GO_ENV') && VIP_GO_ENV)) {
+
+    global $mg_from_mail;
+
+    /**
+     * @param string $from_mail
+     * @return mixed
+     */
+    function mg_wp_mail_from_standard(string $from_mail)
+    {
+        global $mg_from_mail;
+
+        $mg_from_mail = $from_mail;
+
+        return $from_mail;
+    }
+
+    add_filter('wp_mail_from', 'mg_wp_mail_from_standard', 0);
+
+    /**
+     * @param string $from_mail
+     * @return mixed
+     */
+    function mg_wp_mail_from_new(string $from_mail)
+    {
+        global $mg_from_mail;
+
+        if (!empty($mg_from_mail) && is_email($mg_from_mail)) {
+            return $mg_from_mail;
+        }
+
+        return $from_mail;
+    }
+
+    add_filter('wp_mail_from', 'mg_wp_mail_from_new', 2);
+}
