@@ -43,11 +43,13 @@ class MailgunAdmin extends Mailgun
     {
         parent::__construct();
 
+        $this->init();
+
         // Load localizations if available
         load_plugin_textdomain('mailgun', false, 'mailgun/languages');
 
         // Activation hook
-        register_activation_hook($this->plugin_file, [&$this, 'init']);
+        register_activation_hook($this->plugin_file, [&$this, 'activation']);
 
         // Hook into admin_init and register settings and potentially register an admin_notice
         add_action('admin_init', [&$this, 'admin_init']);
@@ -59,8 +61,22 @@ class MailgunAdmin extends Mailgun
         add_action('wp_ajax_mailgun-test', [&$this, 'ajax_send_test']);
     }
 
+	/**
+	 * Adds the default options during plugin activation.
+	 *
+	 * @return    void
+	 *
+	 */
+	public function activation() {
+		if (!$this->options) {
+			$this->options = $this->defaults;
+			add_option('mailgun', $this->options);
+		}
+    }
+
+
     /**
-     * Initialize the default options during plugin activation.
+     * Initialize the default property.
      *
      * @return    void
      *
@@ -90,10 +106,7 @@ class MailgunAdmin extends Mailgun
             'override-from' => '0',
             'tag' => $sitename,
         );
-        if (!$this->options) {
-            $this->options = $this->defaults;
-            add_option('mailgun', $this->options);
-        }
+
     }
 
     /**

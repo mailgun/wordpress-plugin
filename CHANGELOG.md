@@ -1,5 +1,8 @@
 Changelog
 =========
+= 1.9.7 (2024-01-03): =
+- Ensure defaults are always set to remove warnings in PHP 8.1+
+
 1.9.6 (2023-09-10)
 - Added typehints to methods 
 - Added code for making plugin WP VIP GO compatible for the `From mail`
