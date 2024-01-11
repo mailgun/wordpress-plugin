@@ -264,18 +264,13 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                     </select>
                     <p class="description">
                         <?php
-                        $url = 'https://documentation.mailgun.com/en/latest/user_manual.html#tracking-clicks';
-                        $link = sprintf(
-                            wp_kses(
-                                __('If enabled, Mailgun will track links. <a href="%1$s" target="%2$s">Open Tracking Documentation</a>.', 'mailgun'),
-                                array('a' => array(
-                                    'href' => array(),
-                                    'target' => array()
-                                )
-                                )
-                            ), esc_url($url), '_blank'
-                        );
-                        echo wp_kses_data($link);
+                        $link = __('If enabled, Mailgun will track links. <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-clicks" target="_blank">Open Tracking Documentation</a>.', 'mailgun');
+                        echo wp_kses($link, [
+                            'a' => [
+                                'href' => [],
+                                'target' => []
+                            ]
+                        ]);
                         ?>
                     </p>
                 </td>
@@ -291,18 +286,15 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                     </select>
                     <p class="description">
                         <?php
-                        $url = 'https://documentation.mailgun.com/en/latest/user_manual.html#tracking-opens';
-                        $link = sprintf(
-                            wp_kses(
-                                __('If enabled, HTML messages will include an open tracking beacon. <a href="%1$s" target="%2$s">Open Tracking Documentation</a>.', 'mailgun'),
-                                array('a' => array(
-                                    'href' => array(),
-                                    'target' => array()
-                                )
-                                )
-                            ), esc_url($url), '_blank'
+                        echo wp_kses(
+                                __('If enabled, HTML messages will include an open tracking beacon. <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-opens" target="_blank">Open Tracking Documentation</a>.', 'mailgun'),
+                                [
+                                        'a' => [
+                                            'href' => [],
+                                            'target' => []
+                                        ]
+                                ]
                         );
-                        echo wp_kses_data($link);
                         ?>
                     </p>
                 </td>
@@ -375,19 +367,14 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                         _e('If added, this tag will exist on every outbound message. Statistics will be populated in the Mailgun Control Panel. Use a comma to define multiple tags. ', 'mailgun');
                         _e('Learn more about', 'mailgun');
 
-                        $url1 = 'https://documentation.mailgun.com/en/latest/user_manual.html#tracking-messages';
-                        $url2 = 'https://documentation.mailgun.com/en/latest/user_manual.html#tagging';
-                        $link = sprintf(
-                            wp_kses(
-                                __('<a href="%1$s" target="%3$s">Tracking</a> and <a href="%2$s" target="%3$s">Tagging</a>', 'mailgun'),
-                                array('a' => array(
-                                    'href' => array(),
-                                    'target' => array()
-                                )
-                                )
-                            ), esc_url($url1), esc_url($url2), '_blank'
+                        echo wp_kses(
+                                __('<a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-messages" target="_blank">Tracking</a> and <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tagging" target="_blank">Tagging</a>', 'mailgun'),
+                            ['a' => [
+                                'href' => [],
+                                'target' => []
+                            ]
+                            ]
                         );
-                        echo wp_kses_data($link);
                         ?>
                     </p>
                 </td>
