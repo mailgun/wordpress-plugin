@@ -61,17 +61,16 @@ class MailgunAdmin extends Mailgun
         add_action('wp_ajax_mailgun-test', [&$this, 'ajax_send_test']);
     }
 
-	/**
-	 * Adds the default options during plugin activation.
-	 *
-	 * @return    void
-	 *
-	 */
-	public function activation() {
-		if (!$this->options) {
-			$this->options = $this->defaults;
-			add_option('mailgun', $this->options);
-		}
+    /**
+     * Adds the default options during plugin activation.
+     * @return    void
+     */
+    public function activation(): void
+    {
+        if (!$this->options) {
+            $this->options = $this->defaults;
+            add_option('mailgun', $this->options);
+        }
     }
 
 
@@ -81,7 +80,7 @@ class MailgunAdmin extends Mailgun
      * @return    void
      *
      */
-    public function init()
+    public function init(): void
     {
         $sitename = sanitize_text_field(strtolower($_SERVER['SERVER_NAME']));
         if (substr($sitename, 0, 4) === 'www.') {
@@ -338,26 +337,25 @@ class MailgunAdmin extends Mailgun
         $apiKeyUndefined = (!$this->get_option('apiKey') && (!defined('MAILGUN_APIKEY') || !MAILGUN_APIKEY));
         $apiActiveNotConfigured = ($this->get_option('useAPI') === '1' && ($apiRegionUndefined || $apiKeyUndefined));
 
-        if ($apiActiveNotConfigured || $smtpActiveNotConfigured):
-            ?>
+        if ($_SESSION['settings_turned_of'] === false && ($apiActiveNotConfigured || $smtpActiveNotConfigured) ) { ?>
             <div id='mailgun-warning' class='notice notice-warning is-dismissible'>
                 <p>
                     <?php
                     printf(
-                        __('Mailgun now supports multiple regions! The U.S. region will be used by default, but you can choose the EU region. You can configure your Mailgun settings in your wp-config.php file or <a href="%1$s">here</a>',
+                        __('Use HTTP API is turned off or you do not have SMTP credentials. You can configure your Mailgun settings in your wp-config.php file or <a href="%1$s">here</a>',
                             'mailgun'),
                         menu_page_url('mailgun', false)
                     );
                     ?>
                 </p>
             </div>
-        <?php
-        endif;
+        <?php $_SESSION['settings_turned_of'] = true; ?>
+        <?php } ?>
 
+        <?php
         if ($this->get_option('override-from') === '1' &&
             (!$this->get_option('from-name') || !$this->get_option('from-address'))
-        ):
-            ?>
+        ) { ?>
             <div id='mailgun-warning' class='notice notice-warning is-dismissible'>
                 <p>
                     <strong>
@@ -372,8 +370,7 @@ class MailgunAdmin extends Mailgun
                     ?>
                 </p>
             </div>
-        <?php
-        endif;
+        <?php }
     }
 
     /**
@@ -384,7 +381,7 @@ class MailgunAdmin extends Mailgun
      * @return    array
      *
      */
-    public function filter_plugin_actions($links): array
+    public function filter_plugin_actions(array $links): array
     {
         $settings_link = '<a href="' . menu_page_url('mailgun', false) . '">' . __('Settings', 'mailgun') . '</a>';
         array_unshift($links, $settings_link);
@@ -461,9 +458,6 @@ class MailgunAdmin extends Mailgun
         } catch (Throwable $throwable) {
             //Log purpose
         }
-
-
-
 
         if ($useAPI) {
             if (!function_exists('mg_api_last_error')) {

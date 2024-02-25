@@ -80,21 +80,19 @@ function mg_detect_from_name($from_name_header = null)
         $from_name = $from_name_header;
     } elseif (defined('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) {
         $from_name = MAILGUN_FROM_NAME;
-    } else {
-        if (empty($mg_from_name)) {
-            if (function_exists('get_current_site')) {
-                $from_name = get_current_site()->site_name;
-            } else {
-                $from_name = 'WordPress';
-            }
+    } else if (empty($mg_from_name)) {
+        if (function_exists('get_current_site')) {
+            $from_name = get_current_site()->site_name;
         } else {
-            $from_name = $mg_from_name;
+            $from_name = 'WordPress';
         }
+    } else {
+        $from_name = $mg_from_name;
     }
 
     $filter_from_name = null;
 
-    if ((!isset($mg_override_from) || $mg_override_from == '0') && has_filter('wp_mail_from_name')) {
+    if ((!isset($mg_override_from) || $mg_override_from === '0') && has_filter('wp_mail_from_name')) {
         $filter_from_name = apply_filters(
             'wp_mail_from_name',
             $from_name
@@ -148,25 +146,23 @@ function mg_detect_from_address($from_addr_header = null): string
         $from_addr = $from_addr_header;
     } elseif (defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) {
         $from_addr = MAILGUN_FROM_ADDRESS;
-    } else {
-        if (empty($mg_from_addr)) {
-            if (function_exists('get_current_site')) {
-                $sitedomain = get_current_site()->domain;
-            } else {
-                $sitedomain = strtolower(sanitize_text_field($_SERVER['SERVER_NAME']));
-                if (substr($sitedomain, 0, 4) === 'www.') {
-                    $sitedomain = substr($sitedomain, 4);
-                }
-            }
-
-            $from_addr = 'wordpress@' . $sitedomain;
+    } else if (empty($mg_from_addr)) {
+        if (function_exists('get_current_site')) {
+            $sitedomain = get_current_site()->domain;
         } else {
-            $from_addr = $mg_from_addr;
+            $sitedomain = strtolower(sanitize_text_field($_SERVER['SERVER_NAME']));
+            if (substr($sitedomain, 0, 4) === 'www.') {
+                $sitedomain = substr($sitedomain, 4);
+            }
         }
+
+        $from_addr = 'wordpress@' . $sitedomain;
+    } else {
+        $from_addr = $mg_from_addr;
     }
 
     $filter_from_addr = null;
-    if ((!isset($mg_override_from) || $mg_override_from == '0') && has_filter('wp_mail_from')) {
+    if ((!isset($mg_override_from) || $mg_override_from === '0') && has_filter('wp_mail_from')) {
         $filter_from_addr = apply_filters(
             'wp_mail_from',
             $from_addr
@@ -214,7 +210,7 @@ function mg_parse_headers($headers = []): array
         $tmp = $headers;
     }
 
-    $new_headers = array();
+    $new_headers = [];
     if (!empty($tmp)) {
         $name = null;
         $value = null;
@@ -242,14 +238,14 @@ function mg_parse_headers($headers = []): array
             $value = trim($value);
 
             if (!isset($new_headers[$name])) {
-                $new_headers[$name] = array();
+                $new_headers[$name] = [];
             }
 
-            $new_headers[$name][] = array(
+            $new_headers[$name][] = [
                 'value' => $value,
                 'boundary' => $boundary,
                 'parts' => $parts,
-            );
+            ];
         }
     }
 
@@ -268,7 +264,7 @@ function mg_parse_headers($headers = []): array
  */
 function mg_dump_headers($headers = null): string
 {
-    if (is_null($headers) || !is_array($headers)) {
+    if (!is_array($headers)) {
         return '';
     }
 

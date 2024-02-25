@@ -58,9 +58,11 @@ function mg_api_last_error(string $error = null): ?string
  * @since 1.5.7
  */
 add_filter('mg_mutate_to_rcpt_vars', 'mg_mutate_to_rcpt_vars_cb');
+
 /**
  * @param $to_addrs
  * @return array
+ * @throws JsonException
  */
 function mg_mutate_to_rcpt_vars_cb($to_addrs): array
 {

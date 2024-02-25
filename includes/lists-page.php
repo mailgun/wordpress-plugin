@@ -26,8 +26,8 @@ $missing_error = '';
 $api_key = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $this->get_option('apiKey');
 $mailgun_domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $this->get_option('domain');
 
-if ($api_key != '') {
-    if ($mailgun_domain == '') {
+if ($api_key !== '') {
+    if ($mailgun_domain === '') {
         $missing_error = '<strong style="color:red;">Missing or invalid Mailgun Domain</strong>. ';
     }
 } else {

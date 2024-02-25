@@ -56,10 +56,10 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 <div class="wrap">
     <div id="icon-options-general" class="icon32"><br/></div>
     <span class="alignright">
-				<a target="_blank" href="http://www.mailgun.com/">
-					<img src="<?php echo esc_attr($icon) ?>" alt="Mailgun" style="width:50px;"/>
-				</a>
-			</span>
+            <a target="_blank" href="http://www.mailgun.com/">
+                <img src="<?php echo esc_attr($icon) ?>" alt="Mailgun" style="width:50px;"/>
+            </a>
+    </span>
     <h2><?php _e('Mailgun', 'mailgun'); ?></h2>
 
     <p>
