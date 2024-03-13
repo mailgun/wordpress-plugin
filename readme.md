@@ -3,8 +3,8 @@ Mailgun for WordPress
 
 Contributors: mailgun, sivel, lookahead.io, m35dev, alanfuller
 Tags: mailgun, smtp, http, api, mail, email
-Tested up to: 6.4
-Stable tag: 1.9.8
+Tested up to: 6.4.3
+Stable tag: 1.9.9
 License: GPLv2 or later
 
 Easily send email from your WordPress site through Mailgun using the HTTP API or SMTP.
