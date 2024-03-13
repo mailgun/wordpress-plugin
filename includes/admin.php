@@ -337,7 +337,7 @@ class MailgunAdmin extends Mailgun
         $apiKeyUndefined = (!$this->get_option('apiKey') && (!defined('MAILGUN_APIKEY') || !MAILGUN_APIKEY));
         $apiActiveNotConfigured = ($this->get_option('useAPI') === '1' && ($apiRegionUndefined || $apiKeyUndefined));
 
-        if ((!isset($_SESSION['settings_turned_of']) || $_SESSION['settings_turned_of'] === false) && ($apiActiveNotConfigured || $smtpActiveNotConfigured) ) { ?>
+        if (isset($_SESSION) && (!isset($_SESSION['settings_turned_of']) || $_SESSION['settings_turned_of'] === false) && ($apiActiveNotConfigured || $smtpActiveNotConfigured) ) { ?>
             <div id='mailgun-warning' class='notice notice-warning is-dismissible'>
                 <p>
                     <?php
