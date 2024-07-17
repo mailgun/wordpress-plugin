@@ -1,6 +1,22 @@
 Changelog
 =========
-= 1.9.7 (2024-01-03): =
+
+2.0.1 (2024-07-17)
+- Updated changelog
+
+2.0.0 (2024-07-17)
+ - Updated plugin version and version compatibility
+ - Updated tags, located in the svn. Keep only 5 last tags according to Wordpress.org rules
+
+1.9.9 (2024-03-13)
+- Improve admin notices about not fully configured plugin
+- Small code cleaning
+
+1.9.8 (2024-02-25)
+- Improve admin notices about not fully configured plugin
+- Small code cleaning
+
+1.9.7 (2024-01-03)
 - Ensure defaults are always set to remove warnings in PHP 8.1+
 
 1.9.6 (2023-09-10)
