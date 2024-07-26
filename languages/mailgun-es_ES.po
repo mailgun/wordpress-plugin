@@ -205,3 +205,6 @@ msgstr ""
 #: includes/options-page.php:74
 msgid "Save Changes"
 msgstr "Guardar cambios"
+
+msgid "Reply-to address"
+msgstr "dirección de respuesta"

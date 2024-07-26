@@ -45,6 +45,9 @@ $mailgun_from_name = $mailgun_from_name_const ?: $this->get_option('from-name');
 $mailgun_from_address_const = ((defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) ? MAILGUN_FROM_ADDRESS : null);
 $mailgun_from_address = $mailgun_from_address_const ?: $this->get_option('from-address');
 
+$mailgunReplyToAddressConst = ((defined('MAILGUN_REPLY_TO_ADDRESS') && MAILGUN_REPLY_TO_ADDRESS) ? MAILGUN_REPLY_TO_ADDRESS : null);
+$mailgunReplyTo = $mailgunReplyToAddressConst ?: $this->get_option('reply_to');
+
 $mailgun_secure_const = (defined('MAILGUN_SECURE') ? MAILGUN_SECURE : null);
 $mailgun_secure = !is_null($mailgun_secure_const) ? ((string)(1 * $mailgun_secure_const)) : $this->get_option('secure');
 
@@ -314,6 +317,24 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                     <p class="description">
                         <?php
                         _e('The &lt;address@mydomain.com&gt; part of the sender information (<code>"Excited User &lt;user@samples.mailgun.org&gt;"</code>). This address will appear as the `From` address on sent mail. <strong>It is recommended that the @mydomain portion matches your Mailgun sending domain.</strong>', 'mailgun');
+                        ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <?php _e('Reply To Address', 'mailgun'); ?>
+                </th>
+                <td>
+                    <input type="text"
+                           class="regular-text"
+                           name="mailgun[reply_to]"
+                           value="<?php esc_attr_e($mailgunReplyTo); ?>"
+                           placeholder="wordpress@mydomain.com"
+                    />
+                    <p class="description">
+                        <?php
+                        _e('Reply-to address', 'mailgun');
                         ?>
                     </p>
                 </td>

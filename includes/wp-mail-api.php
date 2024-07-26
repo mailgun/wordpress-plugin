@@ -396,6 +396,11 @@ if (!function_exists('wp_mail')) {
             }
         }
 
+        $replyTo = (defined('MAILGUN_REPLY_TO_ADDRESS') && MAILGUN_REPLY_TO_ADDRESS) ? MAILGUN_REPLY_TO_ADDRESS : get_option('reply_to');
+        if (!empty($replyTo)) {
+            $headers['Reply-To'] = $replyTo;
+        }
+
         // Set custom headers
         if (!empty($headers)) {
             foreach ((array)$headers as $name => $content) {
