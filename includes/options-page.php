@@ -55,6 +55,9 @@ $mailgun_use_api_const = (defined('MAILGUN_USEAPI') ? MAILGUN_USEAPI : null);
 $mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use_api_const)) : $this->get_option('useAPI');
 $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
+$trackClicks = (defined('MAILGUN_TRACK_CLICKS') ? MAILGUN_TRACK_CLICKS : null);
+$trackOpens = (defined('MAILGUN_TRACK_OPENS') ? MAILGUN_TRACK_OPENS : null);
+
 $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
 
 ?>
@@ -262,7 +265,7 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('Click Tracking', 'mailgun'); ?>
                 </th>
                 <td>
-                    <select name="mailgun[track-clicks]">
+                    <select name="mailgun[track-clicks]" <?php echo $trackClicks ? 'disabled="disabled"' : '' ?>>
                         <option value="htmlonly"<?php selected('htmlonly', $this->get_option('track-clicks')); ?>><?php _e('HTML Only', 'mailgun'); ?></option>
                         <option value="yes"<?php selected('yes', $this->get_option('track-clicks')); ?>><?php _e('Yes', 'mailgun'); ?></option>
                         <option value="no"<?php selected('no', $this->get_option('track-clicks')); ?>><?php _e('No', 'mailgun'); ?></option>
@@ -285,7 +288,7 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('Open Tracking', 'mailgun'); ?>
                 </th>
                 <td>
-                    <select name="mailgun[track-opens]">
+                    <select name="mailgun[track-opens]" <?php echo $trackOpens ? 'disabled="disabled"' : '' ?>>
                         <option value="1"<?php selected('1', $this->get_option('track-opens')); ?>><?php _e('Yes', 'mailgun'); ?></option>
                         <option value="0"<?php selected('0', $this->get_option('track-opens')); ?>><?php _e('No', 'mailgun'); ?></option>
                     </select>

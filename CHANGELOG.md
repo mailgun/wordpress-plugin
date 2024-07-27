@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.0 (2024-07-27)
+ - Added ability to suppress Track Clicks when we send Reset Password email (it was an issue with domain url in the email)
+ - Added field to setup Reply-to(header) email for the emails. 
+
 2.0.1 (2024-07-17)
 - Updated changelog
 
