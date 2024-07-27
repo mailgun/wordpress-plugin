@@ -55,6 +55,8 @@ $mailgun_use_api_const = (defined('MAILGUN_USEAPI') ? MAILGUN_USEAPI : null);
 $mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use_api_const)) : $this->get_option('useAPI');
 $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
+$suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
+
 ?>
 <div class="wrap">
     <div id="icon-options-general" class="icon32"><br/></div>
@@ -397,6 +399,21 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
                             ]
                         );
                         ?>
+                    </p>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">
+                    <?php _e('Suppress Click Track for password reset email', 'mailgun'); ?> <br>
+                </th>
+                <td>
+                    <select
+                            name="mailgun[suppress_clicks]">
+                        <option value="yes"<?php selected('yes', $suppressClicks); ?>><?php _e('Yes', 'mailgun'); ?></option>
+                        <option value="no"<?php selected('no', $suppressClicks); ?>><?php _e('No', 'mailgun'); ?></option>
+                    </select>
+                    <p class="description">
+                        <span><?php _e('Experimental function', 'mailgun'); ?></span>
                     </p>
                 </td>
             </tr>
