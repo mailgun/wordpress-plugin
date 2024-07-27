@@ -3,8 +3,8 @@ Mailgun for WordPress
 
 Contributors: mailgun, sivel, lookahead.io, m35dev, alanfuller
 Tags: mailgun, smtp, http, api, mail, email
-Tested up to: 6.5.5
-Stable tag: 2.0.1
+Tested up to: 6.6.1
+Stable tag: 2.1.0
 License: GPLv2 or later
 
 Easily send email from your WordPress site through Mailgun using the HTTP API or SMTP.
@@ -128,6 +128,11 @@ MAILGUN_TRACK_OPENS  Type: string Choices: 'yes' or 'no'
 
 
 == Changelog ==
+
+= 2.1.0 (2024-07-27): =
+- Added ability to suppress Track Clicks when we send Reset Password email (it was an issue with domain url in the email)
+- Added field to setup Reply-to(header) email for the emails.
+- When constants MAILGUN_TRACK_CLICKS, MAILGUN_TRACK_OPENS are used, we disable field on the UI as we do for other fields
 
 = 2.0.1 (2024-07-17): =
 - Updated changelog
