@@ -366,3 +366,6 @@ msgstr ""
 
 msgid "Reply-to address"
 msgstr ""
+
+msgid "Suppress Click Track for password reset email"
+msgstr ""
