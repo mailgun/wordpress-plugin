@@ -87,6 +87,10 @@ class Mailgun
                     $this->deactivate_and_die(__DIR__ . '/includes/wp-mail-api.php');
                 }
             }
+
+            if (!function_exists('mg_api_get_region') && !in_array(__DIR__ . '/includes/mg-api.php', get_included_files())) {
+                include __DIR__ . '/includes/mg-api.php';
+            }
         } else {
             // Using SMTP, include the SMTP filter
             if (!function_exists('mg_smtp_mail_filter')) {
