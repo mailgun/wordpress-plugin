@@ -88,8 +88,8 @@ class Mailgun
                 }
             }
 
-            if (!function_exists('mg_api_get_region')) {
-                include __DIR__ .'/mg-filter.php';
+            if (!function_exists('mg_api_get_region') && !in_array(__DIR__ . '/includes/mg-api.php', get_included_files())) {
+                include __DIR__ . '/includes/mg-api.php';
             }
         } else {
             // Using SMTP, include the SMTP filter
