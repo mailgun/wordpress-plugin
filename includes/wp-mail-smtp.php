@@ -80,7 +80,9 @@ function wp_mail_failed($error)
     if (is_wp_error($error)) {
         mg_smtp_last_error($error->get_error_message());
     } else {
-        mg_smtp_last_error($error->__toString());
+        if (method_exists($error, '__toString')) {
+            mg_smtp_last_error($error->__toString());
+        }
     }
 }
 
