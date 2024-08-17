@@ -4,7 +4,7 @@ Mailgun for WordPress
 Contributors: mailgun, sivel, lookahead.io, m35dev, alanfuller
 Tags: mailgun, smtp, http, api, mail, email
 Tested up to: 6.6.1
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 
 Easily send email from your WordPress site through Mailgun using the HTTP API or SMTP.
@@ -131,6 +131,9 @@ MAILGUN_REPLY_TO_ADDRESS Type: string
 
 
 == Changelog ==
+
+= 2.1.1 (2024-08-17): =
+- Added fallback to regular mail in case or error during sending email vua API
 
 = 2.1.0 (2024-07-27): =
 - Added ability to suppress Track Clicks when we send Reset Password email (it was an issue with domain url in the email)

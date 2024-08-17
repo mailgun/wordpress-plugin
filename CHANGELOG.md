@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.1.1 (2024-08-17)
+- Added fallback to regular mail in case or error during sending email vua API
+
 2.1.0 (2024-07-27)
  - Added ability to suppress Track Clicks when we send Reset Password email (it was an issue with domain url in the email)
  - Added field to setup Reply-to(header) email for the emails. 
