@@ -126,8 +126,10 @@ MAILGUN_TRACK_OPENS  Type: string Choices: 'yes' or 'no'
 5. Using a Subscription Code
 6. Subscription Form Seen By Site Visitors
 
-
 == Changelog ==
+
+= 2.1.1 (2024-08-17): =
+- Added fallback to regular mail in case or error during sending email vua API
 
 = 2.1.0 (2024-07-27): =
 - Added ability to suppress Track Clicks when we send Reset Password email (it was an issue with domain url in the email)
