@@ -3,7 +3,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      2.1.1
+ * Version:      2.1.2
  * Requires PHP: 7.4
  * Requires at least: 4.4
  * Author:       Mailgun
@@ -86,10 +86,6 @@ class Mailgun
                 if (!include_once(__DIR__ . '/includes/wp-mail-api.php')) {
                     $this->deactivate_and_die(__DIR__ . '/includes/wp-mail-api.php');
                 }
-            }
-
-            if (!function_exists('mg_api_get_region') && !in_array(__DIR__ . '/includes/mg-api.php', get_included_files())) {
-                include __DIR__ . '/includes/mg-api.php';
             }
         } else {
             // Using SMTP, include the SMTP filter
