@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.1.2 (2024-11-17)
+ - Fixed code. Removed line that try to connect not existing file. Fixed versions in the plugin
+
 2.1.1 (2024-08-17)
 - Added fallback to regular mail in case or error during sending email vua API
 
