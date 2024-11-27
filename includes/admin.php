@@ -118,12 +118,12 @@ class MailgunAdmin extends Mailgun
     {
         if (current_user_can('manage_options')) {
             $this->hook_suffix = add_options_page(__('Mailgun', 'mailgun'), __('Mailgun', 'mailgun'),
-                'manage_options', 'mailgun', array(&$this, 'options_page'));
+                'manage_options', 'mailgun', [&$this, 'options_page']);
             add_options_page(__('Mailgun Lists', 'mailgun'), __('Mailgun Lists', 'mailgun'), 'manage_options',
-                'mailgun-lists', array(&$this, 'lists_page'));
-            add_action("admin_print_scripts-{$this->hook_suffix}", array(&$this, 'admin_js'));
-            add_filter("plugin_action_links_{$this->plugin_basename}", array(&$this, 'filter_plugin_actions'));
-            add_action("admin_footer-{$this->hook_suffix}", array(&$this, 'admin_footer_js'));
+                'mailgun-lists', [&$this, 'lists_page']);
+            add_action("admin_print_scripts-{$this->hook_suffix}", [&$this, 'admin_js']);
+            add_filter("plugin_action_links_{$this->plugin_basename}", [&$this, 'filter_plugin_actions']);
+            add_action("admin_footer-{$this->hook_suffix}", [&$this, 'admin_footer_js']);
         }
     }
 
@@ -145,7 +145,7 @@ class MailgunAdmin extends Mailgun
     public function admin_footer_js(): void
     {
         ?>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" >
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script type="text/javascript">
 
@@ -260,7 +260,7 @@ class MailgunAdmin extends Mailgun
      */
     public function register_settings(): void
     {
-        register_setting('mailgun', 'mailgun', array(&$this, 'validation'));
+        register_setting('mailgun', 'mailgun', [&$this, 'validation']);
     }
 
     /**
@@ -337,7 +337,7 @@ class MailgunAdmin extends Mailgun
         $apiKeyUndefined = (!$this->get_option('apiKey') && (!defined('MAILGUN_APIKEY') || !MAILGUN_APIKEY));
         $apiActiveNotConfigured = ($this->get_option('useAPI') === '1' && ($apiRegionUndefined || $apiKeyUndefined));
 
-        if (isset($_SESSION) && (!isset($_SESSION['settings_turned_of']) || $_SESSION['settings_turned_of'] === false) && ($apiActiveNotConfigured || $smtpActiveNotConfigured) ) { ?>
+        if (isset($_SESSION) && (!isset($_SESSION['settings_turned_of']) || $_SESSION['settings_turned_of'] === false) && ($apiActiveNotConfigured || $smtpActiveNotConfigured)) { ?>
             <div id='mailgun-warning' class='notice notice-warning is-dismissible'>
                 <p>
                     <?php
@@ -349,7 +349,7 @@ class MailgunAdmin extends Mailgun
                     ?>
                 </p>
             </div>
-        <?php $_SESSION['settings_turned_of'] = true; ?>
+            <?php $_SESSION['settings_turned_of'] = true; ?>
         <?php } ?>
 
         <?php
@@ -403,11 +403,11 @@ class MailgunAdmin extends Mailgun
 
         if (!current_user_can('manage_options') || !wp_verify_nonce(sanitize_text_field($_GET['_wpnonce']))) {
             die(
-                json_encode(array(
-                    'message' => __('Unauthorized', 'mailgun'),
-                    'method' => null,
-                    'error' => __('Unauthorized', 'mailgun'),
-                ), JSON_THROW_ON_ERROR)
+            json_encode([
+                'message' => __('Unauthorized', 'mailgun'),
+                'method' => null,
+                'error' => __('Unauthorized', 'mailgun'),
+            ], JSON_THROW_ON_ERROR)
             );
         }
 
@@ -440,11 +440,11 @@ class MailgunAdmin extends Mailgun
         $admin_email = get_option('admin_email');
         if (!$admin_email) {
             die(
-                json_encode(array(
-                    'message' => __('Admin Email is empty', 'mailgun'),
-                    'method' => $method,
-                    'error' => __('Admin Email is empty', 'mailgun'),
-                ), JSON_THROW_ON_ERROR)
+            json_encode([
+                'message' => __('Admin Email is empty', 'mailgun'),
+                'method' => $method,
+                'error' => __('Admin Email is empty', 'mailgun'),
+            ], JSON_THROW_ON_ERROR)
             );
         }
 
@@ -482,7 +482,7 @@ class MailgunAdmin extends Mailgun
         }
 
         // Admin Email is used as 'to' parameter, but in case of 'Test Configuration' this message is not clear for the user, so replaced with more appropriate one
-        if (false !== strpos($error_msg, "'to'") && false !== strpos($error_msg, 'is not a valid')) {
+        if (str_contains($error_msg, "'to'") && str_contains($error_msg, 'is not a valid')) {
             $error_msg = sprintf(
                 "Administration Email Address (%s) is not valid and can't be used for test, you can change it at General Setting page",
                 $admin_email
@@ -491,22 +491,22 @@ class MailgunAdmin extends Mailgun
 
         if ($result) {
             die(
-                json_encode(array(
-                    'message' => __('Success', 'mailgun'),
-                    'method' => $method,
-                    'error' => __('Success', 'mailgun'),
-                ), JSON_THROW_ON_ERROR)
+            json_encode([
+                'message' => __('Success', 'mailgun'),
+                'method' => $method,
+                'error' => __('Success', 'mailgun'),
+            ], JSON_THROW_ON_ERROR)
             );
         }
 
         // Error message will always be returned in case of failure, if not - connection wasn't successful
         $error_msg = $error_msg ?: "Can't connect to Mailgun";
         die(
-            json_encode(array(
-                'message' => __('Failure', 'mailgun'),
-                'method' => $method,
-                'error' => $error_msg,
-            ), JSON_THROW_ON_ERROR)
+        json_encode([
+            'message' => __('Failure', 'mailgun'),
+            'method' => $method,
+            'error' => $error_msg,
+        ], JSON_THROW_ON_ERROR)
         );
     }
 }

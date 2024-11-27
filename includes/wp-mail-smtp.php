@@ -103,7 +103,7 @@ function mg_smtp_mail_filter(array $args)
 
     // $headers and $attachments are optional - make sure they exist
     $headers = (!isset($headers)) ? '' : $headers;
-    $attachments = (!isset($attachments)) ? array() : $attachments;
+    $attachments = (!isset($attachments)) ? [] : $attachments;
 
     $mg_opts = get_option('mailgun');
     $mg_headers = mg_parse_headers($headers);
@@ -142,7 +142,7 @@ function mg_smtp_mail_filter(array $args)
     $from_addr = mg_detect_from_address($from_addr);
 
     $from_header['value'] = sprintf('%s <%s>', $from_name, $from_addr);
-    $mg_headers['From'] = array($from_header);
+    $mg_headers['From'] = [$from_header];
 
     // Header compaction
     $headers = mg_dump_headers($mg_headers);
