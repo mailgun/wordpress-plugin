@@ -76,11 +76,11 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
         $link = sprintf(
             wp_kses(
                 __('A <a href="%1$s" target="%2$s">Mailgun</a> account is required to use this plugin and the Mailgun service.', 'mailgun'),
-                array('a' => array(
-                    'href' => array(),
-                    'target' => array()
-                )
-                )
+                ['a' => [
+                    'href' => [],
+                    'target' => []
+                ]
+                ]
             ), esc_url($url), '_blank'
         );
         echo wp_kses_data($link);
@@ -93,11 +93,11 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
         $link = sprintf(
             wp_kses(
                 __('If you need to register for an account, you can do so at <a href="%1$s" target="%2$s">Mailgun.com</a>.', 'mailgun'),
-                array('a' => array(
-                    'href' => array(),
-                    'target' => array()
-                )
-                )
+                ['a' => [
+                    'href' => [],
+                    'target' => []
+                ]
+                ]
             ), esc_url($url), '_blank'
         );
         echo wp_kses_data($link);
@@ -172,7 +172,7 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('API Key', 'mailgun'); ?>
                 </th>
                 <td>
-                    <input type="text" class="regular-text" name="mailgun[apiKey]"
+                    <input type="password" class="regular-text" name="mailgun[apiKey]"
                            value="<?php esc_attr_e($mailgun_api_key); ?>"
                            placeholder="key-3ax6xnjp29jd6fds4gc373sgvjxteol0"
                         <?php echo $mailgun_api_key_const ? 'readonly="readonly"' : '' ?>
@@ -451,10 +451,10 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     $link = sprintf(
                         wp_kses(
                             __('<a href="%1$s" target="%2$s">View available lists</a>.', 'mailgun'),
-                            array('a' => array(
-                                'href' => array(),
-                            )
-                            )
+                            ['a' => [
+                                'href' => [],
+                            ]
+                            ]
                         ), esc_url($url)
                     );
                     echo wp_kses_data($link);

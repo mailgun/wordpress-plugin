@@ -112,6 +112,9 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs): array
  *
  */
 if (!function_exists('wp_mail')) {
+    /**
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
     function wp_mail($to, $subject, $message, $headers = '', $attachments = [])
     {
         $mailgun = get_option('mailgun');
@@ -159,6 +162,9 @@ if (!function_exists('wp_mail')) {
         if (!is_array($attachments)) {
             $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
         }
+
+        $cc = [];
+        $bcc = [];
 
         // Headers
         if (empty($headers)) {

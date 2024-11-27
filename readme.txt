@@ -4,7 +4,8 @@ Mailgun for WordPress
 Contributors: mailgun, sivel, lookahead.io, m35dev, alanfuller
 Tags: mailgun, smtp, http, api, mail, email
 Tested up to: 6.7
-Stable tag: 2.1.2
+Stable tag: 2.1.3
+Requires PHP: 7.4
 License: GPLv2 or later
 
 Easily send email from your WordPress site through Mailgun using the HTTP API or SMTP.
@@ -127,6 +128,9 @@ MAILGUN_TRACK_OPENS  Type: string Choices: 'yes' or 'no'
 6. Subscription Form Seen By Site Visitors
 
 == Changelog ==
+
+= 2.1.3 (2024-11-27): =
+-  Use password type for API Key field for hide it. Fix warning related co compact() method
 
 = 2.1.2 (2024-11-17): =
  - Fixed code. Removed line that try to connect not existing file. Fixed versions in the plugin

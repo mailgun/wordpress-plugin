@@ -138,8 +138,6 @@ function mg_detect_from_address($from_addr_header = null): string
     $mg_override_from = $mg_opts['override-from'] ?? null;
     $mg_from_addr = $mg_opts['from-address'] ?? null;
 
-    $from_addr = null;
-
     if ($mg_override_from && !is_null($mg_from_addr)) {
         $from_addr = $mg_from_addr;
     } elseif (!is_null($from_addr_header)) {
@@ -223,7 +221,7 @@ function mg_parse_headers($headers = []): array
                 // Does this header have a boundary?
                 if (false !== stripos($header, 'boundary=')) {
                     $parts = preg_split('/boundary=/i', trim($header));
-                    $boundary = trim(str_replace(array('"', '\''), '', $parts[1]));
+                    $boundary = trim(str_replace(['"', '\''], '', $parts[1]));
                 }
                 $value .= $header;
 
@@ -271,7 +269,7 @@ function mg_dump_headers($headers = null): string
     $header_string = '';
     foreach ($headers as $name => $values) {
         $header_string .= sprintf("%s: ", $name);
-        $header_values = array();
+        $header_values = [];
 
         foreach ($values as $content) {
             // XXX - Is it actually okay to discard `parts` and `boundary`?

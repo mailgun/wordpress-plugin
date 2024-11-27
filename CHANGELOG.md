@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.1.3 (2024-11-27)
+-  Use password type for API Key field for hide it. Fix warning related co compact() method
+
 2.1.2 (2024-11-17)
  - Fixed code. Removed line that try to connect not existing file. Fixed versions in the plugin
 
