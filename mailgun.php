@@ -382,37 +382,38 @@ class Mailgun
                     <?php endif; ?>
                     <?php if (isset($args[ 'collect_name' ]) && (int)$args['collect_name'] === 1): ?>
                         <p class="mailgun-list-widget-name">
-                            <strong>Name:</strong>
-                            <input type="text" name="name"/>
+                            <label><strong>Name:</strong></label>
+                            <input type="text" name="name" placeholder="Name"/>
                         </p>
                     <?php endif; ?>
                     <p class="mailgun-list-widget-email">
-                        <strong>Email:</strong>
-                        <input type="text" name="email"/>
+                        <label><strong>Email:</strong></label>
+                        <input type="text" name="email" placeholder="Email"/>
                     </p>
                 </div>
 
-                <?php if (count($list_addresses) > '1'): ?>
-                    <ul class="mailgun-lists" style="list-style: none;">
-                        <?php
-                            foreach ($all_list_addresses as $la):
-                                if (!in_array($la[ 'address' ], $list_addresses)):
-                                    continue;
-                                endif;
-                        ?>
-                                <li>
-                                    <input type="checkbox" class="mailgun-list-name"
-                                           name="addresses[<?php echo esc_attr($la[ 'address' ]); ?>]"/> <?php echo esc_attr($la[ 'name' ] ?: $la[ 'address' ]); ?>
-                                </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php else: ?>
-                    <input type="hidden" name="addresses[<?php echo esc_attr($list_addresses[ 0 ]); ?>]" value="on"/>
-                <?php endif; ?>
-
-                <input class="mailgun-list-submit-button" data-form-id="<?php echo esc_attr($form_class_id); ?>" type="button"
-                       value="Subscribe"/>
-                <input type="hidden" name="mailgun-submission" value="1"/>
+                <div class="mailgun-list-widget-lists">
+                    <?php if (count($list_addresses) > '1'): ?>
+                        <ul class="mailgun-lists" style="list-style: none;">
+                            <?php
+                                foreach ($all_list_addresses as $la):
+                                    if (!in_array($la[ 'address' ], $list_addresses)):
+                                        continue;
+                                    endif;
+                            ?>
+                                    <li>
+                                        <input type="checkbox" class="mailgun-list-name"
+                                               name="addresses[<?php echo esc_attr($la[ 'address' ]); ?>]"/> <?php echo esc_attr($la[ 'name' ] ?: $la[ 'address' ]); ?>
+                                    </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <input type="hidden" name="addresses[<?php echo esc_attr($list_addresses[ 0 ]); ?>]" value="on"/>
+                    <?php endif; ?>
+                    <input class="mailgun-list-submit-button" data-form-id="<?php echo esc_attr($form_class_id); ?>" type="button"
+                           value="Subscribe"/>
+                    <input type="hidden" name="mailgun-submission" value="1"/>
+                </div>
 
             </form>
             <div class="widget-list-panel result-panel" style="display:none;">
@@ -440,6 +441,14 @@ class Mailgun
               if (jQuery('.' + form_id + ' .mailgun-list-widget-email input').val() === '') {
                 alert('Please enter your subscription email.')
                 return
+              }
+
+              // Email validation regex pattern              
+              var emailPattern = /.+@.+\..{2,}/;
+
+              if (!emailPattern.test(jQuery('.' + form_id + ' .mailgun-list-widget-email input').val())) {
+                  alert('Please enter a valid email address.')
+                  return
               }
 
               jQuery.ajax({
