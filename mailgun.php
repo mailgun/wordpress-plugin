@@ -67,6 +67,11 @@ class Mailgun
     protected $assetsDir;
 
     /**
+     * @var string
+     */
+    private $api_endpoint;
+
+    /**
      * Setup shared functionality for Admin and Front End.
      *
      */
@@ -186,7 +191,7 @@ class Mailgun
      * Deactivate this plugin and die.
      * Deactivate the plugin when files critical to it's operation cannot be loaded
      *
-     * @param    $file    Files critical to plugin functionality
+     * @param string $file files critical to plugin functionality
      *
      * @return    void
      */
@@ -219,6 +224,9 @@ class Mailgun
         $apiKey = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $options[ 'apiKey' ];
         $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $options[ 'domain' ];
 
+        if (!function_exists('mg_api_get_region')) {
+            include __DIR__ . '/includes/mg-filter.php';
+        }
         $region = mg_api_get_region($getRegion);
         $this->api_endpoint = ($region) ?: 'https://api.mailgun.net/v3/';
 
