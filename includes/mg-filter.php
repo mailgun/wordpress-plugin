@@ -65,7 +65,7 @@ function get_mime_content_type(string $filepath, string $default_type = 'text/pl
  *
  * @since    1.5.8
  */
-function mg_detect_from_name($from_name_header = null)
+function mg_detect_from_name($from_name_header = null): string
 {
     // Get options to avoid strict mode problems
     $mg_opts = get_option('mailgun');
@@ -148,7 +148,7 @@ function mg_detect_from_address($from_addr_header = null): string
         if (function_exists('get_current_site')) {
             $sitedomain = get_current_site()->domain;
         } else {
-            $sitedomain = strtolower(sanitize_text_field($_SERVER['SERVER_NAME']));
+            $sitedomain = strtolower(sanitize_text_field($_SERVER['SERVER_NAME'] ?? site_url()));
             if (substr($sitedomain, 0, 4) === 'www.') {
                 $sitedomain = substr($sitedomain, 4);
             }
@@ -254,13 +254,13 @@ function mg_parse_headers($headers = []): array
  * Takes a header array in the format produced by mg_parse_headers and
  * dumps them down in to a submittable header format.
  *
- * @param array $headers Headers to dump
+ * @param array|null $headers Headers to dump
  *
  * @return    string    String of \r\n separated headers
  *
  * @since    1.5.8
  */
-function mg_dump_headers($headers = null): string
+function mg_dump_headers(array $headers = null): string
 {
     if (!is_array($headers)) {
         return '';
@@ -336,9 +336,9 @@ if ((defined('WPCOM_IS_VIP_ENV') && WPCOM_IS_VIP_ENV) || (defined('VIP_GO_ENV') 
 
     /**
      * @param string $from_mail
-     * @return mixed
+     * @return string
      */
-    function mg_wp_mail_from_standard(string $from_mail)
+    function mg_wp_mail_from_standard(string $from_mail): string
     {
         global $mg_from_mail;
 
@@ -351,9 +351,9 @@ if ((defined('WPCOM_IS_VIP_ENV') && WPCOM_IS_VIP_ENV) || (defined('VIP_GO_ENV') 
 
     /**
      * @param string $from_mail
-     * @return mixed
+     * @return string
      */
-    function mg_wp_mail_from_new(string $from_mail)
+    function mg_wp_mail_from_new(string $from_mail): string
     {
         global $mg_from_mail;
 

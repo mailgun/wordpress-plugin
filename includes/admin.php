@@ -24,12 +24,12 @@ class MailgunAdmin extends Mailgun
     /**
      * @var    array    Array of "safe" option defaults.
      */
-    private $defaults;
+    private array $defaults;
 
     /**
      * @var array
      */
-    protected $options = [];
+    protected array $options = [];
 
     protected $hook_suffix;
 
@@ -82,7 +82,7 @@ class MailgunAdmin extends Mailgun
      */
     public function init(): void
     {
-        $sitename = sanitize_text_field(strtolower($_SERVER['SERVER_NAME']));
+        $sitename = sanitize_text_field(strtolower($_SERVER['SERVER_NAME'] ?? site_url()));
         if (substr($sitename, 0, 4) === 'www.') {
             $sitename = substr($sitename, 4);
         }
@@ -396,7 +396,7 @@ class MailgunAdmin extends Mailgun
      *
      * @throws JsonException
      */
-    public function ajax_send_test()
+    public function ajax_send_test(): string
     {
         nocache_headers();
         header('Content-Type: application/json');
