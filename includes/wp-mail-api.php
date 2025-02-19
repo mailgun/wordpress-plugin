@@ -71,6 +71,7 @@ function mg_mutate_to_rcpt_vars_cb($to_addrs): array
     }
 
     if (has_filter('mg_use_recipient_vars_syntax')) {
+        $rcpt_vars = [];
         $use_rcpt_vars = apply_filters('mg_use_recipient_vars_syntax', null);
         if ($use_rcpt_vars) {
 

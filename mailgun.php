@@ -44,7 +44,7 @@ class Mailgun
     /**
      * @var Mailgun $instance
      */
-    private static $instance;
+    private static Mailgun $instance;
 
     /**
      * @var false|mixed|null
@@ -54,22 +54,22 @@ class Mailgun
     /**
      * @var string
      */
-    protected $plugin_file;
+    protected string $plugin_file;
 
     /**
      * @var string
      */
-    protected $plugin_basename;
+    protected string $plugin_basename;
 
     /**
      * @var string
      */
-    protected $assetsDir;
+    protected string $assetsDir;
 
     /**
      * @var string
      */
-    private $api_endpoint;
+    private string $api_endpoint;
 
     /**
      * Setup shared functionality for Admin and Front End.
@@ -108,7 +108,7 @@ class Mailgun
     /**
      * @return static
      */
-    public static function getInstance()
+    public static function getInstance(): Mailgun
     {
         if (!isset(self::$instance)) {
             self::$instance = new self();
@@ -149,7 +149,7 @@ class Mailgun
      * @return    void
      *
      */
-    public function phpmailer_init(&$phpmailer)
+    public function phpmailer_init(&$phpmailer): void
     {
         $username = (defined('MAILGUN_USERNAME') && MAILGUN_USERNAME) ? MAILGUN_USERNAME : $this->get_option('username');
         $domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $this->get_option('domain');
@@ -195,7 +195,7 @@ class Mailgun
      *
      * @return    void
      */
-    public function deactivate_and_die($file)
+    public function deactivate_and_die($file): void
     {
         load_plugin_textdomain('mailgun', false, 'mailgun/languages');
         $message = sprintf(__('Mailgun has been automatically deactivated because the file <strong>%s</strong> is missing. Please reinstall the plugin and reactivate.'),
@@ -210,14 +210,14 @@ class Mailgun
     /**
      * Make a Mailgun api call.
      *
-     * @param    string $uri    The endpoint for the Mailgun API
-     * @param    array  $params Array of parameters passed to the API
-     * @param    string $method The form request type
+     * @param string $uri    The endpoint for the Mailgun API
+     * @param array $params Array of parameters passed to the API
+     * @param string $method The form request type
      *
      * @return    string
      *
      */
-    public function api_call($uri, $params = [], $method = 'POST'): string
+    public function api_call(string $uri, array $params = [], string $method = 'POST'): string
     {
         $options = get_option('mailgun');
         $getRegion = (defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : $options[ 'region' ];
@@ -308,7 +308,7 @@ class Mailgun
      *
      * @throws JsonException
      */
-    public function add_list()
+    public function add_list(): void
     {
         $name = sanitize_text_field($_POST['name'] ?? null);
         $email = sanitize_text_field($_POST['email'] ?? null);
@@ -359,7 +359,7 @@ class Mailgun
      *
      * @throws JsonException
      */
-    public function list_form(string $list_address, array $args = [], array $instance = [])
+    public function list_form(string $list_address, array $args = [], array $instance = []): void
     {
         $widgetId = $args['widget_id'] ?? 0;
         $widget_class_id = "mailgun-list-widget-{$widgetId}";
