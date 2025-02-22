@@ -1,7 +1,6 @@
 <?php
-
-/*
- * mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
+/**
+ * Mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
  * Copyright (C) 2016 Mailgun, et al.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,14 +16,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * @package Mailgun
  */
 
 $mailgun = Mailgun::getInstance();
 
 // check mailgun domain & api key
-$missing_error = '';
-$api_key = (defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : $this->get_option('apiKey');
-$mailgun_domain = (defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : $this->get_option('domain');
+$missing_error  = '';
+$api_key        = ( defined('MAILGUN_APIKEY') && MAILGUN_APIKEY ) ? MAILGUN_APIKEY : $this->get_option('apiKey');
+$mailgun_domain = ( defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN ) ? MAILGUN_DOMAIN : $this->get_option('domain');
 
 if ($api_key !== '') {
     if ($mailgun_domain === '') {
@@ -36,7 +37,7 @@ if ($api_key !== '') {
 
 // import available lists
 $lists_arr = $mailgun->get_lists();
-$icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
+$icon      = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
 ?>
 
@@ -46,7 +47,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
     <span class="alignright">
         <a target="_blank" href="http://www.mailgun.com/">
-            <img src="<?php echo esc_attr($icon)?>" alt="Mailgun" style="width: 50px;"/>
+            <img src="<?php echo esc_attr($icon); ?>" alt="Mailgun" style="width: 50px;"/>
         </a>
     </span>
 
@@ -60,7 +61,7 @@ $icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
     <div id="mailgun-lists" style="margin-top:20px;">
 
-        <?php if (!empty($lists_arr)) : ?>
+        <?php if ( ! empty($lists_arr)) : ?>
 
             <table class="wp-list-table widefat fixed striped pages">
 

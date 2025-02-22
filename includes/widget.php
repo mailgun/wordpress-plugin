@@ -1,7 +1,7 @@
 <?php
-
-/*
- * mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
+/**
+ * @file wp-content/plugins/wordpress-plugin/includes/widget.php
+ * Mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
  * Copyright (C) 2016 Mailgun, et al.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,33 +17,35 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * @package Mailgun
  */
+class List_Widget extends \WP_Widget {
 
-class list_widget extends \WP_Widget
-{
-    public function __construct()
-    {
+    /**
+     * Register widget with WordPress.
+     */
+    public function __construct() {
         parent::__construct(
             // Base ID of your widget
             'list_widget',
             // Widget name will appear in UI
             __('Mailgun List Widget', 'wpb_widget_domain'),
             // Widget description
-            ['description' => __('Mailgun list widget', 'wpb_widget_domain')]
+            array( 'description' => __('Mailgun list widget', 'wpb_widget_domain') )
         );
     }
 
     /**
-     * @param $args
-     * @param $instance
+     * @param mixed $args
+     * @param mixed $instance
      * @return void
      * @throws JsonException
      */
-    public function widget($args, $instance)
-    {
+    public function widget( $args, $instance ) {
         $mailgun = Mailgun::getInstance();
 
-        if (!isset($instance['list_address']) || !$instance['list_address']) {
+        if ( ! isset($instance['list_address']) || ! $instance['list_address']) {
             return;
         }
         // vars
@@ -61,17 +63,16 @@ class list_widget extends \WP_Widget
             $args['list_description'] = $instance['list_description'];
         }
 
-        $mailgun->list_form($list_address, $args, $instance);
+        $mailgun->list_form($list_address, $args);
     }
 
     // Widget Backend
 
     /**
-     * @param $instance
+     * @param mixed $instance
      * @return string|void
      */
-    public function form($instance)
-    {
+    public function form( $instance ) {
         if (isset($instance['list_address'])) {
             $list_address = $instance['list_address'];
         } else {
@@ -84,7 +85,7 @@ class list_widget extends \WP_Widget
             $collect_name = '';
         }
 
-        $list_title = $instance['list_title'] ?? null;
+        $list_title       = $instance['list_title'] ?? null;
         $list_description = $instance['list_description'] ?? null;
 
         // Widget admin form
@@ -107,18 +108,15 @@ class list_widget extends \WP_Widget
                 <input class="widefat" id="<?php echo esc_attr($this->get_field_id('collect_name')); ?>" name="<?php echo esc_attr($this->get_field_name('collect_name')); ?>" type="checkbox" <?php echo esc_attr($collect_name); ?> />
             </p>
         </div>
-        <?php 
+        <?php
     }
 
-    // Updating widget replacing old instances with new
-
     /**
-     * @param $new_instance
-     * @param $old_instance
+     * @param mixed $new_instance
+     * @param mixed $old_instance
      * @return array
      */
-    public function update($new_instance, $old_instance)
-    {
+    public function update( $new_instance, $old_instance ) {
         return $new_instance;
     }
 }

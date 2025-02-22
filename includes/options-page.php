@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
  * Copyright (C) 2016 Mailgun, et al.
  *
@@ -17,46 +16,48 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * @package Mailgun
  */
 
 $mailgun = Mailgun::getInstance();
 
-$mailgun_domain_const = ((defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN) ? MAILGUN_DOMAIN : null);
-$mailgun_domain = $mailgun_domain_const ?: $this->get_option('domain');
+$mailgun_domain_const = ( ( defined('MAILGUN_DOMAIN') && MAILGUN_DOMAIN ) ? MAILGUN_DOMAIN : null );
+$mailgun_domain       = $mailgun_domain_const ?: $this->get_option('domain');
 
-$mailgun_region_const = ((defined('MAILGUN_REGION') && MAILGUN_REGION) ? MAILGUN_REGION : null);
-$mailgun_region = $mailgun_region_const ?: $this->get_option('region');
+$mailgun_region_const = ( ( defined('MAILGUN_REGION') && MAILGUN_REGION ) ? MAILGUN_REGION : null );
+$mailgun_region       = $mailgun_region_const ?: $this->get_option('region');
 
-$mailgun_api_key_const = ((defined('MAILGUN_APIKEY') && MAILGUN_APIKEY) ? MAILGUN_APIKEY : null);
-$mailgun_api_key = $mailgun_api_key_const ?: $this->get_option('apiKey');
+$mailgun_api_key_const = ( ( defined('MAILGUN_APIKEY') && MAILGUN_APIKEY ) ? MAILGUN_APIKEY : null );
+$mailgun_api_key       = $mailgun_api_key_const ?: $this->get_option('apiKey');
 
-$mailgun_username_const = ((defined('MAILGUN_USERNAME') && MAILGUN_USERNAME) ? MAILGUN_USERNAME : null);
-$mailgun_username = $mailgun_username_const ?: $this->get_option('username');
+$mailgun_username_const = ( ( defined('MAILGUN_USERNAME') && MAILGUN_USERNAME ) ? MAILGUN_USERNAME : null );
+$mailgun_username       = $mailgun_username_const ?: $this->get_option('username');
 
-$mailgun_password_const = ((defined('MAILGUN_PASSWORD') && MAILGUN_PASSWORD) ? MAILGUN_PASSWORD : null);
-$mailgun_password = $mailgun_password_const ?: $this->get_option('password');
+$mailgun_password_const = ( ( defined('MAILGUN_PASSWORD') && MAILGUN_PASSWORD ) ? MAILGUN_PASSWORD : null );
+$mailgun_password       = $mailgun_password_const ?: $this->get_option('password');
 
-$mailgun_sectype_const = ((defined('MAILGUN_SECTYPE') && MAILGUN_SECTYPE) ? MAILGUN_SECTYPE : null);
-$mailgun_sectype = $mailgun_sectype_const ?: $this->get_option('sectype');
+$mailgun_sectype_const = ( ( defined('MAILGUN_SECTYPE') && MAILGUN_SECTYPE ) ? MAILGUN_SECTYPE : null );
+$mailgun_sectype       = $mailgun_sectype_const ?: $this->get_option('sectype');
 
-$mailgun_from_name_const = ((defined('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME) ? MAILGUN_FROM_NAME : null);
-$mailgun_from_name = $mailgun_from_name_const ?: $this->get_option('from-name');
+$mailgun_from_name_const = ( ( defined('MAILGUN_FROM_NAME') && MAILGUN_FROM_NAME ) ? MAILGUN_FROM_NAME : null );
+$mailgun_from_name       = $mailgun_from_name_const ?: $this->get_option('from-name');
 
-$mailgun_from_address_const = ((defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS) ? MAILGUN_FROM_ADDRESS : null);
-$mailgun_from_address = $mailgun_from_address_const ?: $this->get_option('from-address');
+$mailgun_from_address_const = ( ( defined('MAILGUN_FROM_ADDRESS') && MAILGUN_FROM_ADDRESS ) ? MAILGUN_FROM_ADDRESS : null );
+$mailgun_from_address       = $mailgun_from_address_const ?: $this->get_option('from-address');
 
-$mailgunReplyToAddressConst = ((defined('MAILGUN_REPLY_TO_ADDRESS') && MAILGUN_REPLY_TO_ADDRESS) ? MAILGUN_REPLY_TO_ADDRESS : null);
-$mailgunReplyTo = $mailgunReplyToAddressConst ?: $this->get_option('reply_to');
+$mailgunReplyToAddressConst = ( ( defined('MAILGUN_REPLY_TO_ADDRESS') && MAILGUN_REPLY_TO_ADDRESS ) ? MAILGUN_REPLY_TO_ADDRESS : null );
+$mailgunReplyTo             = $mailgunReplyToAddressConst ?: $this->get_option('reply_to');
 
-$mailgun_secure_const = (defined('MAILGUN_SECURE') ? MAILGUN_SECURE : null);
-$mailgun_secure = !is_null($mailgun_secure_const) ? ((string)(1 * $mailgun_secure_const)) : $this->get_option('secure');
+$mailgun_secure_const = ( defined('MAILGUN_SECURE') ? MAILGUN_SECURE : null );
+$mailgun_secure       = ! is_null($mailgun_secure_const) ? ( (string) ( 1 * $mailgun_secure_const ) ) : $this->get_option('secure');
 
-$mailgun_use_api_const = (defined('MAILGUN_USEAPI') ? MAILGUN_USEAPI : null);
-$mailgun_use_api = !is_null($mailgun_use_api_const) ? ((string)(1 * $mailgun_use_api_const)) : $this->get_option('useAPI');
-$icon = $mailgun->getAssetsPath() . 'icon-128x128.png';
+$mailgun_use_api_const = ( defined('MAILGUN_USEAPI') ? MAILGUN_USEAPI : null );
+$mailgun_use_api       = ! is_null($mailgun_use_api_const) ? ( (string) ( 1 * $mailgun_use_api_const ) ) : $this->get_option('useAPI');
+$icon                  = $mailgun->getAssetsPath() . 'icon-128x128.png';
 
-$trackClicks = (defined('MAILGUN_TRACK_CLICKS') ? MAILGUN_TRACK_CLICKS : null);
-$trackOpens = (defined('MAILGUN_TRACK_OPENS') ? MAILGUN_TRACK_OPENS : null);
+$trackClicks = ( defined('MAILGUN_TRACK_CLICKS') ? MAILGUN_TRACK_CLICKS : null );
+$trackOpens  = ( defined('MAILGUN_TRACK_OPENS') ? MAILGUN_TRACK_OPENS : null );
 
 $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
 
@@ -65,23 +66,26 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
     <div id="icon-options-general" class="icon32"><br/></div>
     <span class="alignright">
             <a target="_blank" href="http://www.mailgun.com/">
-                <img src="<?php echo esc_attr($icon) ?>" alt="Mailgun" style="width:50px;"/>
+                <img src="<?php echo esc_attr($icon); ?>" alt="Mailgun" style="width:50px;"/>
             </a>
     </span>
     <h2><?php _e('Mailgun', 'mailgun'); ?></h2>
 
     <p>
         <?php
-        $url = 'https://www.mailgun.com';
+        $url  = 'https://www.mailgun.com';
         $link = sprintf(
             wp_kses(
                 __('A <a href="%1$s" target="%2$s">Mailgun</a> account is required to use this plugin and the Mailgun service.', 'mailgun'),
-                ['a' => [
-                    'href' => [],
-                    'target' => []
-                ]
-                ]
-            ), esc_url($url), '_blank'
+                array(
+					'a' => array(
+						'href'   => array(),
+						'target' => array(),
+					),
+                )
+            ),
+            esc_url($url),
+            '_blank'
         );
         echo wp_kses_data($link);
         ?>
@@ -89,16 +93,19 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
 
     <p>
         <?php
-        $url = 'https://signup.mailgun.com/new/signup';
+        $url  = 'https://signup.mailgun.com/new/signup';
         $link = sprintf(
             wp_kses(
                 __('If you need to register for an account, you can do so at <a href="%1$s" target="%2$s">Mailgun.com</a>.', 'mailgun'),
-                ['a' => [
-                    'href' => [],
-                    'target' => []
-                ]
-                ]
-            ), esc_url($url), '_blank'
+                array(
+					'a' => array(
+						'href'   => array(),
+						'target' => array(),
+					),
+                )
+            ),
+            esc_url($url),
+            '_blank'
         );
         echo wp_kses_data($link);
         ?>
@@ -114,14 +121,14 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('Select Your Region', 'mailgun'); ?>
                 </th>
                 <td>
-                    <?php if ($mailgun_region_const): ?>
-                        <input type="hidden" name="mailgun[region]" value="<?php echo esc_attr($mailgun_region) ?>">
+                    <?php if ($mailgun_region_const) : ?>
+                        <input type="hidden" name="mailgun[region]" value="<?php echo esc_attr($mailgun_region); ?>">
                     <?php endif ?>
 
                     <select id="mailgun-region"
-                            name="mailgun[region]" <?php echo esc_attr($mailgun_region_const) ? 'disabled="disabled"' : '' ?>>
-                        <option value="us"<?php selected('us', $mailgun_region); ?>><?php _e('U.S./North America', 'mailgun') ?></option>
-                        <option value="eu"<?php selected('eu', $mailgun_region); ?>><?php _e('Europe', 'mailgun') ?></option>
+                            name="mailgun[region]" <?php echo esc_attr($mailgun_region_const) ? 'disabled="disabled"' : ''; ?>>
+                        <option value="us"<?php selected('us', $mailgun_region); ?>><?php _e('U.S./North America', 'mailgun'); ?></option>
+                        <option value="eu"<?php selected('eu', $mailgun_region); ?>><?php _e('Europe', 'mailgun'); ?></option>
                     </select>
                     <p class="description">
                         <?php
@@ -135,12 +142,12 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('Use HTTP API', 'mailgun'); ?>
                 </th>
                 <td>
-                    <?php if (!is_null($mailgun_use_api_const)): ?>
-                        <input type="hidden" name="mailgun[useAPI]" value="<?php echo esc_attr($mailgun_use_api) ?>">
+                    <?php if ( ! is_null($mailgun_use_api_const)) : ?>
+                        <input type="hidden" name="mailgun[useAPI]" value="<?php echo esc_attr($mailgun_use_api); ?>">
                     <?php endif ?>
 
                     <select id="mailgun-api"
-                            name="mailgun[useAPI]" <?php echo !is_null($mailgun_use_api_const) ? 'disabled="disabled"' : '' ?>>
+                            name="mailgun[useAPI]" <?php echo ! is_null($mailgun_use_api_const) ? 'disabled="disabled"' : ''; ?>>
                         <option value="1"<?php selected('1', $mailgun_use_api); ?>><?php _e('Yes', 'mailgun'); ?></option>
                         <option value="0"<?php selected('0', $mailgun_use_api); ?>><?php _e('No', 'mailgun'); ?></option>
                     </select>
@@ -157,10 +164,10 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <input type="text" class="regular-text"
-                           name="mailgun[domain]"
-                           value="<?php esc_attr_e($mailgun_domain); ?>"
-                           placeholder="samples.mailgun.org"
-                        <?php echo $mailgun_domain_const ? 'readonly="readonly"' : '' ?>
+                            name="mailgun[domain]"
+                            value="<?php esc_attr_e($mailgun_domain); ?>"
+                            placeholder="samples.mailgun.org"
+                        <?php echo $mailgun_domain_const ? 'readonly="readonly"' : ''; ?>
                     />
                     <p class="description">
                         <?php _e('Your Mailgun Domain Name.', 'mailgun'); ?>
@@ -173,9 +180,9 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <input type="password" class="regular-text" name="mailgun[apiKey]"
-                           value="<?php esc_attr_e($mailgun_api_key); ?>"
-                           placeholder="key-3ax6xnjp29jd6fds4gc373sgvjxteol0"
-                        <?php echo $mailgun_api_key_const ? 'readonly="readonly"' : '' ?>
+                            value="<?php esc_attr_e($mailgun_api_key); ?>"
+                            placeholder="key-3ax6xnjp29jd6fds4gc373sgvjxteol0"
+                        <?php echo $mailgun_api_key_const ? 'readonly="readonly"' : ''; ?>
                     />
                     <p class="description">
                         <?php
@@ -190,10 +197,10 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <input type="text" class="regular-text"
-                           name="mailgun[username]"
-                           value="<?php esc_attr_e($mailgun_username); ?>"
-                           placeholder="postmaster"
-                        <?php echo $mailgun_username_const ? 'readonly="readonly"' : '' ?>
+                            name="mailgun[username]"
+                            value="<?php esc_attr_e($mailgun_username); ?>"
+                            placeholder="postmaster"
+                        <?php echo $mailgun_username_const ? 'readonly="readonly"' : ''; ?>
                     />
                     <p class="description">
                         <?php
@@ -208,10 +215,10 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <input type="text" class="regular-text"
-                           name="mailgun[password]"
-                           value="<?php esc_attr_e($mailgun_password); ?>"
-                           placeholder="my-password"
-                        <?php echo $mailgun_password_const ? 'readonly="readonly"' : '' ?>
+                            name="mailgun[password]"
+                            value="<?php esc_attr_e($mailgun_password); ?>"
+                            placeholder="my-password"
+                        <?php echo $mailgun_password_const ? 'readonly="readonly"' : ''; ?>
                     />
                     <p class="description">
                         <?php
@@ -225,11 +232,11 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('Use Secure SMTP', 'mailgun'); ?>
                 </th>
                 <td>
-                    <?php if (!is_null($mailgun_secure_const)): ?>
-                        <input type="hidden" name="mailgun[secure]" value="<?php echo esc_attr($mailgun_secure) ?>">
+                    <?php if ( ! is_null($mailgun_secure_const)) : ?>
+                        <input type="hidden" name="mailgun[secure]" value="<?php echo esc_attr($mailgun_secure); ?>">
                     <?php endif ?>
 
-                    <select name="mailgun[secure]" <?php echo !is_null($mailgun_secure_const) ? 'disabled="disabled"' : '' ?>>
+                    <select name="mailgun[secure]" <?php echo ! is_null($mailgun_secure_const) ? 'disabled="disabled"' : ''; ?>>
                         <option value="1"<?php selected('1', $mailgun_secure); ?>><?php _e('Yes', 'mailgun'); ?></option>
                         <option value="0"<?php selected('0', $mailgun_secure); ?>><?php _e('No', 'mailgun'); ?></option>
                     </select>
@@ -245,11 +252,11 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('Security Type', 'mailgun'); ?>
                 </th>
                 <td>
-                    <?php if ($mailgun_sectype_const): ?>
-                        <input type="hidden" name="mailgun[sectype]" value="<?php echo esc_attr($mailgun_sectype) ?>">
+                    <?php if ($mailgun_sectype_const) : ?>
+                        <input type="hidden" name="mailgun[sectype]" value="<?php echo esc_attr($mailgun_sectype); ?>">
                     <?php endif ?>
 
-                    <select name="mailgun[sectype]" <?php echo $mailgun_sectype_const ? 'disabled="disabled"' : '' ?>>
+                    <select name="mailgun[sectype]" <?php echo $mailgun_sectype_const ? 'disabled="disabled"' : ''; ?>>
                         <option value="ssl"<?php selected('ssl', $mailgun_sectype); ?>>SSL</option>
                         <option value="tls"<?php selected('tls', $mailgun_sectype); ?>>TLS</option>
                     </select>
@@ -265,7 +272,7 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('Click Tracking', 'mailgun'); ?>
                 </th>
                 <td>
-                    <select name="mailgun[track-clicks]" <?php echo $trackClicks ? 'disabled="disabled"' : '' ?>>
+                    <select name="mailgun[track-clicks]" <?php echo $trackClicks ? 'disabled="disabled"' : ''; ?>>
                         <option value="htmlonly"<?php selected('htmlonly', $this->get_option('track-clicks')); ?>><?php _e('HTML Only', 'mailgun'); ?></option>
                         <option value="yes"<?php selected('yes', $this->get_option('track-clicks')); ?>><?php _e('Yes', 'mailgun'); ?></option>
                         <option value="no"<?php selected('no', $this->get_option('track-clicks')); ?>><?php _e('No', 'mailgun'); ?></option>
@@ -273,12 +280,15 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <p class="description">
                         <?php
                         $link = __('If enabled, Mailgun will track links. <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-clicks" target="_blank">Open Tracking Documentation</a>.', 'mailgun');
-                        echo wp_kses($link, [
-                            'a' => [
-                                'href' => [],
-                                'target' => []
-                            ]
-                        ]);
+                        echo wp_kses(
+                            $link,
+                            array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array(),
+								),
+							)
+                        );
                         ?>
                     </p>
                 </td>
@@ -288,20 +298,20 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <?php _e('Open Tracking', 'mailgun'); ?>
                 </th>
                 <td>
-                    <select name="mailgun[track-opens]" <?php echo $trackOpens ? 'disabled="disabled"' : '' ?>>
+                    <select name="mailgun[track-opens]" <?php echo $trackOpens ? 'disabled="disabled"' : ''; ?>>
                         <option value="1"<?php selected('1', $this->get_option('track-opens')); ?>><?php _e('Yes', 'mailgun'); ?></option>
                         <option value="0"<?php selected('0', $this->get_option('track-opens')); ?>><?php _e('No', 'mailgun'); ?></option>
                     </select>
                     <p class="description">
                         <?php
                         echo wp_kses(
-                                __('If enabled, HTML messages will include an open tracking beacon. <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-opens" target="_blank">Open Tracking Documentation</a>.', 'mailgun'),
-                                [
-                                        'a' => [
-                                            'href' => [],
-                                            'target' => []
-                                        ]
-                                ]
+                            __('If enabled, HTML messages will include an open tracking beacon. <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-opens" target="_blank">Open Tracking Documentation</a>.', 'mailgun'),
+                            array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array(),
+								),
+							)
                         );
                         ?>
                     </p>
@@ -313,11 +323,11 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <input type="text"
-                           class="regular-text"
-                           name="mailgun[from-address]"
-                           value="<?php esc_attr_e($mailgun_from_address); ?>"
-                           placeholder="wordpress@mydomain.com"
-                        <?php echo $mailgun_from_address_const ? 'readonly="readonly"' : '' ?>
+                            class="regular-text"
+                            name="mailgun[from-address]"
+                            value="<?php esc_attr_e($mailgun_from_address); ?>"
+                            placeholder="wordpress@mydomain.com"
+                        <?php echo $mailgun_from_address_const ? 'readonly="readonly"' : ''; ?>
                     />
                     <p class="description">
                         <?php
@@ -332,10 +342,10 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <input type="text"
-                           class="regular-text"
-                           name="mailgun[reply_to]"
-                           value="<?php esc_attr_e($mailgunReplyTo); ?>"
-                           placeholder="wordpress@mydomain.com"
+                            class="regular-text"
+                            name="mailgun[reply_to]"
+                            value="<?php esc_attr_e($mailgunReplyTo); ?>"
+                            placeholder="wordpress@mydomain.com"
                     />
                     <p class="description">
                         <?php
@@ -350,10 +360,10 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <input type="text" class="regular-text"
-                           name="mailgun[from-name]"
-                           value="<?php esc_attr_e($mailgun_from_name); ?>"
-                           placeholder="WordPress"
-                        <?php echo $mailgun_from_name_const ? 'readonly="readonly"' : '' ?>
+                            name="mailgun[from-name]"
+                            value="<?php esc_attr_e($mailgun_from_name); ?>"
+                            placeholder="WordPress"
+                        <?php echo $mailgun_from_name_const ? 'readonly="readonly"' : ''; ?>
                     />
                     <p class="description">
                         <?php
@@ -368,8 +378,8 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <select name="mailgun[override-from]">
-                        <option value="1"<?php selected('1', (int)$this->get_option('override-from')); ?>><?php _e('Yes', 'mailgun'); ?></option>
-                        <option value="0"<?php selected('0', (int)$this->get_option('override-from')); ?>><?php _e('No', 'mailgun'); ?></option>
+                        <option value="1"<?php selected('1', (int) $this->get_option('override-from')); ?>><?php _e('Yes', 'mailgun'); ?></option>
+                        <option value="0"<?php selected('0', (int) $this->get_option('override-from')); ?>><?php _e('No', 'mailgun'); ?></option>
                     </select>
                     <p class="description">
                         <?php
@@ -384,9 +394,9 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                 </th>
                 <td>
                     <input type="text" class="regular-text"
-                           name="mailgun[campaign-id]"
-                           value="<?php esc_attr_e($this->get_option('campaign-id')); ?>"
-                           placeholder="tag"
+                            name="mailgun[campaign-id]"
+                            value="<?php esc_attr_e($this->get_option('campaign-id')); ?>"
+                            placeholder="tag"
                     />
                     <p class="description">
                         <?php
@@ -394,12 +404,13 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                         _e('Learn more about', 'mailgun');
 
                         echo wp_kses(
-                                __('<a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-messages" target="_blank">Tracking</a> and <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tagging" target="_blank">Tagging</a>', 'mailgun'),
-                            ['a' => [
-                                'href' => [],
-                                'target' => []
-                            ]
-                            ]
+                            __('<a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-messages" target="_blank">Tracking</a> and <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tagging" target="_blank">Tagging</a>', 'mailgun'),
+                            array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array(),
+								),
+							)
                         );
                         ?>
                     </p>
@@ -451,11 +462,13 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     $link = sprintf(
                         wp_kses(
                             __('<a href="%1$s" target="%2$s">View available lists</a>.', 'mailgun'),
-                            ['a' => [
-                                'href' => [],
-                            ]
-                            ]
-                        ), esc_url($url)
+                            array(
+								'a' => array(
+									'href' => array(),
+								),
+                            )
+                        ),
+                        esc_url($url)
                     );
                     echo wp_kses_data($link);
                     ?>
@@ -469,13 +482,13 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
         </p>
         <p class="submit">
             <input type="submit"
-                   class="button-primary"
-                   value="<?php _e('Save Changes', 'mailgun'); ?>"
+                    class="button-primary"
+                    value="<?php _e('Save Changes', 'mailgun'); ?>"
             />
             <input type="button"
-                   id="mailgun-test"
-                   class="button-secondary"
-                   value="<?php _e('Test Configuration', 'mailgun'); ?>"
+                    id="mailgun-test"
+                    class="button-secondary"
+                    value="<?php _e('Test Configuration', 'mailgun'); ?>"
             />
         </p>
 

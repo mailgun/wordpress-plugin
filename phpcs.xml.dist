@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress Coding Standards" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PHPCSStandards/PHP_CodeSniffer/master/phpcs.xsd">
+
+    <description>The Coding standard for the WordPress Coding Standards itself.</description>
+    <!--
+    #############################################################################
+    COMMAND LINE ARGUMENTS
+    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Annotated-Ruleset
+    #############################################################################
+    -->
+
+    <file>.</file>
+
+    <!-- Exclude Composer vendor directory. -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+
+    <!-- Only check PHP files. -->
+    <arg name="extensions" value="php"/>
+
+    <!-- Show progress, show the error codes for each message (source). -->
+    <arg value="ps"/>
+
+    <!-- Strip the filepaths down to the relevant bit. -->
+    <arg name="basepath" value="."/>
+
+    <!-- Check up to 8 files simultaneously. -->
+    <arg name="parallel" value="8"/>
+
+    <arg name="tab-width" value="0"/> <!-- Prevents PHPCS from enforcing tab width -->
+
+    <!-- Exclude specific rule that enforces tabs -->
+    <rule ref="Generic.WhiteSpace.ScopeIndent">
+        <properties>
+            <property name="ignoreIndentationTokens" type="array">
+                <element value="T_COMMENT"/>
+                <element value="T_DOC_COMMENT_OPEN_TAG"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Disable tab enforcement -->
+    <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+
+    <rule ref="WordPress">
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/> <!-- Fully exclude tab enforcement -->
+    </rule>
+
+    <!--
+    #############################################################################
+    SET UP THE RULESETS
+    #############################################################################
+    -->
+
+    <rule ref="WordPress">
+        <!-- This project needs to comply with naming standards from PHPCS, not WP. -->
+        <exclude name="WordPress.Files.FileName"/>
+        <exclude name="WordPress.NamingConventions.ValidVariableName"/>
+
+        <!-- While conditions with assignments are a typical way to walk the token stream. -->
+        <exclude name="Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+
+        <!-- The code in this project is run in the context of PHPCS, not WP. -->
+        <exclude name="WordPress.DateTime"/>
+        <exclude name="WordPress.DB"/>
+        <exclude name="WordPress.Security"/>
+        <exclude name="WordPress.WP"/>
+
+        <!-- Linting is done in a separate CI job, no need to duplicate it. -->
+        <exclude name="Generic.PHP.Syntax"/>
+    </rule>
+
+    <!--
+    #############################################################################
+    SNIFF SPECIFIC CONFIGURATION
+    #############################################################################
+    -->
+
+    <rule ref="WordPress.Arrays.MultipleStatementAlignment">
+        <properties>
+            <property name="alignMultilineItems" value="!=100"/>
+            <property name="exact" value="false" phpcs-only="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="WordPress">
+        <!-- Disable inline comment ending enforcement -->
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+        <!-- Disable requirement for a short description in doc comments -->
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+        <!-- Disable snake_case requirement for method names -->
+        <exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid"/>
+        <!-- Disable enforcement of full stops at the end of parameter comments -->
+        <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop"/>
+        <exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
+        <exclude name="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode"/>
+        <exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis"/>
+        <exclude name="PEAR.Functions.FunctionCallSignature.SpaceBeforeCloseBracket"/>
+        <exclude name="PEAR.Functions.FunctionCallSignature.SpaceAfterOpenBracket"/>
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis"/>
+        <exclude name="Generic.Commenting.DocComment.ShortNotCapital"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+        <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceAfterOpen"/>
+        <exclude name="Generic.CodeAnalysis.AssignmentInCondition.Found"/>
+        <exclude name="Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure"/>
+        <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceBeforeClose"/>
+        <exclude name="WordPress.PHP.DontExtract.extract_extract"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
+        <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
+    </rule>
+</ruleset>
