@@ -19,17 +19,16 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-class list_widget extends \WP_Widget
-{
-    public function __construct()
-    {
+class list_widget extends \WP_Widget {
+
+    public function __construct() {
         parent::__construct(
             // Base ID of your widget
             'list_widget',
             // Widget name will appear in UI
             __('Mailgun List Widget', 'wpb_widget_domain'),
             // Widget description
-            ['description' => __('Mailgun list widget', 'wpb_widget_domain')]
+            array( 'description' => __('Mailgun list widget', 'wpb_widget_domain') )
         );
     }
 
@@ -39,11 +38,10 @@ class list_widget extends \WP_Widget
      * @return void
      * @throws JsonException
      */
-    public function widget($args, $instance)
-    {
+    public function widget( $args, $instance ) {
         $mailgun = Mailgun::getInstance();
 
-        if (!isset($instance['list_address']) || !$instance['list_address']) {
+        if ( ! isset($instance['list_address']) || ! $instance['list_address']) {
             return;
         }
         // vars
@@ -61,7 +59,7 @@ class list_widget extends \WP_Widget
             $args['list_description'] = $instance['list_description'];
         }
 
-        $mailgun->list_form($list_address, $args, $instance);
+        $mailgun->list_form($list_address, $args);
     }
 
     // Widget Backend
@@ -70,8 +68,7 @@ class list_widget extends \WP_Widget
      * @param $instance
      * @return string|void
      */
-    public function form($instance)
-    {
+    public function form( $instance ) {
         if (isset($instance['list_address'])) {
             $list_address = $instance['list_address'];
         } else {
@@ -84,7 +81,7 @@ class list_widget extends \WP_Widget
             $collect_name = '';
         }
 
-        $list_title = $instance['list_title'] ?? null;
+        $list_title       = $instance['list_title'] ?? null;
         $list_description = $instance['list_description'] ?? null;
 
         // Widget admin form
@@ -107,7 +104,7 @@ class list_widget extends \WP_Widget
                 <input class="widefat" id="<?php echo esc_attr($this->get_field_id('collect_name')); ?>" name="<?php echo esc_attr($this->get_field_name('collect_name')); ?>" type="checkbox" <?php echo esc_attr($collect_name); ?> />
             </p>
         </div>
-        <?php 
+        <?php
     }
 
     // Updating widget replacing old instances with new
@@ -117,8 +114,7 @@ class list_widget extends \WP_Widget
      * @param $old_instance
      * @return array
      */
-    public function update($new_instance, $old_instance)
-    {
+    public function update( $new_instance, $old_instance ) {
         return $new_instance;
     }
 }

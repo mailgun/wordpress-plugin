@@ -22,7 +22,7 @@ jobs:
           standard_repo: '' # Public (git) repository URL of the coding standard
           repo_branch: 'master' # Branch of Standard repository
           phpcs_bin_path: 'phpcs' # Custom PHPCS bin path
-          use_local_config: 'false' # Use local config if available
+          use_local_config: 'true' # Use local config if available
           extra_args: '' # Extra arguments passing to the command
           only_changed_files: '' # Run the linter only on the changed files. Accepts true|false
           only_changed_lines: '' # Run the linter only on the changed lines. Accepts true|false
