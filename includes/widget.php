@@ -1,7 +1,7 @@
 <?php
-
-/*
- * mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
+/**
+ * @file wp-content/plugins/wordpress-plugin/includes/widget.php
+ * Mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
  * Copyright (C) 2016 Mailgun, et al.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,10 +17,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * @package Mailgun
  */
+class List_Widget extends \WP_Widget {
 
-class list_widget extends \WP_Widget {
-
+    /**
+     * Register widget with WordPress.
+     */
     public function __construct() {
         parent::__construct(
             // Base ID of your widget
@@ -33,8 +37,8 @@ class list_widget extends \WP_Widget {
     }
 
     /**
-     * @param $args
-     * @param $instance
+     * @param mixed $args
+     * @param mixed $instance
      * @return void
      * @throws JsonException
      */
@@ -65,7 +69,7 @@ class list_widget extends \WP_Widget {
     // Widget Backend
 
     /**
-     * @param $instance
+     * @param mixed $instance
      * @return string|void
      */
     public function form( $instance ) {
@@ -107,11 +111,9 @@ class list_widget extends \WP_Widget {
         <?php
     }
 
-    // Updating widget replacing old instances with new
-
     /**
-     * @param $new_instance
-     * @param $old_instance
+     * @param mixed $new_instance
+     * @param mixed $old_instance
      * @return array
      */
     public function update( $new_instance, $old_instance ) {

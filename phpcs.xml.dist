@@ -104,5 +104,8 @@
         <exclude name="Generic.CodeAnalysis.AssignmentInCondition.Found"/>
         <exclude name="Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure"/>
         <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceBeforeClose"/>
+        <exclude name="WordPress.PHP.DontExtract.extract_extract"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
     </rule>
 </ruleset>

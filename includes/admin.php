@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * mailgun-wordpress-plugin - Sending mail from WordPress using Mailgun
  * Copyright (C) 2016 Mailgun, et al.
  *
@@ -17,8 +16,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * @package Mailgun
  */
-
 class MailgunAdmin extends Mailgun {
 
     /**
@@ -31,6 +31,9 @@ class MailgunAdmin extends Mailgun {
      */
     protected array $options = array();
 
+    /**
+     * @var string $hook_suffix
+     */
     protected $hook_suffix;
 
     /**
@@ -400,11 +403,10 @@ class MailgunAdmin extends Mailgun {
     /**
      * AJAX callback function to test mail sending functionality.
      *
-     * @return    string
-     *
+     * @return void
      * @throws JsonException
      */
-    public function ajax_send_test(): string {
+    public function ajax_send_test(): void {
         nocache_headers();
         header('Content-Type: application/json');
 

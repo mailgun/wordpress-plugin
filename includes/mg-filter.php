@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * mailgun-wordpress-plugin - Sending mail from Wordpress using Mailgun
  * Copyright (C) 2016 Mailgun, et al.
  *
@@ -17,8 +16,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * @package Mailgun
  */
-
 
 /**
  * Tries several methods to get the MIME Content-Type of a file.
@@ -60,6 +60,7 @@ function get_mime_content_type( string $filepath, string $default_type = 'text/p
  * `$from_addr` before being returned. The filtered result is null-tested
  * before being returned.
  *
+ * @param string $from_name_header
  * @return    string
  *
  * @since    1.5.8
@@ -108,7 +109,7 @@ function mg_detect_from_name( $from_name_header = null ): string {
  * This operates as a filter for the from address. If the override is set,
  * a given address will except in ONE case.
  * If the override is not enabled this is the from address resolution order:
- *  1. From address given by headers - {@param $from_addr_header}
+ *  1. From address given by headers - {$from_addr_header}
  *  2. From address set in Mailgun settings
  *  3. From `MAILGUN_FROM_ADDRESS` constant
  *  4. From address constructed as `wordpress@<your_site_domain>`
@@ -123,8 +124,7 @@ function mg_detect_from_name( $from_name_header = null ): string {
  * might appear to be another option but some hosts may refuse to
  * relay mail from an unknown domain.
  *
- * @link     http://trac.wordpress.org/ticket/5007.
- *
+ * @param null $from_addr_header
  * @return    string
  *
  * @since    1.5.8

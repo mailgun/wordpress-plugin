@@ -514,7 +514,7 @@ class Mailgun {
      * Initialize List Widget.
      */
     public function load_list_widget() {
-        register_widget( 'list_widget' );
+        register_widget( 'List_Widget' );
         add_shortcode( 'mailgun', array( &$this, 'build_list_form' ) );
     }
 
