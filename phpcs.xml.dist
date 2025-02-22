@@ -69,9 +69,6 @@
         <exclude name="Generic.PHP.Syntax"/>
     </rule>
 
-    <!-- Enforce that methods in traits are always final. -->
-    <rule ref="Universal.FunctionDeclarations.RequireFinalMethodsInTraits"/>
-
     <!--
     #############################################################################
     SNIFF SPECIFIC CONFIGURATION
@@ -95,7 +92,6 @@
         <!-- Disable enforcement of full stops at the end of parameter comments -->
         <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop"/>
         <exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
-        <exclude name="Universal.Operators.DisallowShortTernary.Found"/>
         <exclude name="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode"/>
         <exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
         <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis"/>
