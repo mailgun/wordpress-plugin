@@ -67,9 +67,6 @@
 
         <!-- Linting is done in a separate CI job, no need to duplicate it. -->
         <exclude name="Generic.PHP.Syntax"/>
-
-        <!-- WordPressCS still has a PHP 5.4 minimum. -->
-        <exclude name="Modernize.FunctionCalls.Dirname"/>
     </rule>
 
     <!-- Enforce that methods in traits are always final. -->
