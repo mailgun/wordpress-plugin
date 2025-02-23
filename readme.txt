@@ -3,8 +3,8 @@ Mailgun for WordPress
 
 Contributors: mailgun, sivel, lookahead.io, m35dev, alanfuller
 Tags: mailgun, smtp, http, api, mail, email
-Tested up to: 6.7
-Stable tag: 2.1.3
+Tested up to: 6.7.2
+Stable tag: 2.1.4
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -128,6 +128,10 @@ MAILGUN_TRACK_OPENS  Type: string Choices: 'yes' or 'no'
 6. Subscription Form Seen By Site Visitors
 
 == Changelog ==
+
+= 2.1.4 (2025-02-23): =
+- Implemented coding standard into plugin
+- Fixed a few potential warning related to the plugin
 
 = 2.1.3 (2024-11-27): =
 -  Use password type for API Key field for hide it. Fix warning related co compact() method
