@@ -171,14 +171,8 @@ class MailgunAdmin extends Mailgun {
                 jQuery('#mailgun-test').click(function (e) {
                     e.preventDefault()
                     if (formModified) {
-                        var doTest = confirm('
-                        <?php
-                        _e(
-                            'The Mailgun plugin configuration has changed since you last saved. Do you wish to test anyway?\n\nClick "Cancel" and then "Save Changes" if you wish to save your changes.',
-                            'mailgun'
-                        );
-						?>
-                            ')
+                        var doTest = confirm('<?php _e('The Mailgun plugin configuration has changed since you last saved. Do you wish to test anyway?\n\nClick "Cancel" and then "Save Changes" if you wish to save your changes.',
+                            'mailgun'); ?>')
                         if (!doTest) {
                             return false
                         }
