@@ -77,12 +77,12 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
         $link = sprintf(
             wp_kses(
                 __('A <a href="%1$s" target="%2$s">Mailgun</a> account is required to use this plugin and the Mailgun service.', 'mailgun'),
-                array(
-					'a' => array(
-						'href'   => array(),
-						'target' => array(),
-					),
-                )
+                [
+					'a' => [
+						'href'   => [],
+						'target' => [],
+                    ],
+                ]
             ),
             esc_url($url),
             '_blank'
@@ -97,12 +97,12 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
         $link = sprintf(
             wp_kses(
                 __('If you need to register for an account, you can do so at <a href="%1$s" target="%2$s">Mailgun.com</a>.', 'mailgun'),
-                array(
-					'a' => array(
-						'href'   => array(),
-						'target' => array(),
-					),
-                )
+                [
+					'a' => [
+						'href'   => [],
+						'target' => [],
+                    ],
+                ]
             ),
             esc_url($url),
             '_blank'
@@ -282,12 +282,12 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                         $link = __('If enabled, Mailgun will track links. <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-clicks" target="_blank">Open Tracking Documentation</a>.', 'mailgun');
                         echo wp_kses(
                             $link,
-                            array(
-								'a' => array(
-									'href'   => array(),
-									'target' => array(),
-								),
-							)
+                            [
+								'a' => [
+									'href'   => [],
+									'target' => [],
+                                ],
+                            ]
                         );
                         ?>
                     </p>
@@ -306,12 +306,12 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                         <?php
                         echo wp_kses(
                             __('If enabled, HTML messages will include an open tracking beacon. <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-opens" target="_blank">Open Tracking Documentation</a>.', 'mailgun'),
-                            array(
-								'a' => array(
-									'href'   => array(),
-									'target' => array(),
-								),
-							)
+                            [
+								'a' => [
+									'href'   => [],
+									'target' => [],
+                                ],
+                            ]
                         );
                         ?>
                     </p>
@@ -405,12 +405,12 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
 
                         echo wp_kses(
                             __('<a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-messages" target="_blank">Tracking</a> and <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tagging" target="_blank">Tagging</a>', 'mailgun'),
-                            array(
-								'a' => array(
-									'href'   => array(),
-									'target' => array(),
-								),
-							)
+                            [
+								'a' => [
+									'href'   => [],
+									'target' => [],
+                                ],
+                            ]
                         );
                         ?>
                     </p>
@@ -462,11 +462,11 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     $link = sprintf(
                         wp_kses(
                             __('<a href="%1$s" target="%2$s">View available lists</a>.', 'mailgun'),
-                            array(
-								'a' => array(
-									'href' => array(),
-								),
-                            )
+                            [
+								'a' => [
+									'href' => [],
+                                ],
+                            ]
                         ),
                         esc_url($url)
                     );

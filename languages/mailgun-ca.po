@@ -207,3 +207,19 @@ msgstr ""
 #: includes/options-page.php:74
 msgid "Save Changes"
 msgstr "Desar els canvis"
+
+#: includes/widget.php:84
+msgid "Title (optional):"
+msgstr "Titre (optionnel):"
+
+#: includes/widget.php:88
+msgid "Description (optional):"
+msgstr "Description (optionnelle):"
+
+#: includes/widget.php:92
+msgid "List addresses (required):"
+msgstr "Lister les adresses (obligatoire):"
+
+#: includes/widget.php:96
+msgid "Collect name:"
+msgstr "Collecter le nom:"

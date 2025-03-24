@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.1.6 (2025-03-24)
+- Added translation for the widget
+
 2.1.3 (2024-11-27)
 -  Use password type for API Key field for hide it. Fix warning related co compact() method
 

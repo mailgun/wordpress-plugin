@@ -3,7 +3,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      2.1.6
+ * Version:      2.1.7
  * Requires PHP: 7.4
  * Requires at least: 4.4
  * Author:       Mailgun
@@ -227,9 +227,9 @@ class Mailgun {
 
         $time    = time();
         $url     = $this->api_endpoint . $uri;
-        $headers = array(
+        $headers = [
             'Authorization' => 'Basic ' . base64_encode( "api:{$apiKey}" ),
-        );
+        ];
 
         switch ( $method ) {
             case 'GET':
@@ -248,12 +248,12 @@ class Mailgun {
         }
 
         // make the request
-        $args = array(
+        $args = [
             'method'    => $method,
             'body'      => $params,
             'headers'   => $headers,
             'sslverify' => true,
-        );
+        ];
 
         // make the remote request
         $result = wp_remote_request( $url, $args );
@@ -282,9 +282,9 @@ class Mailgun {
      * @throws JsonException
      */
     public function get_lists(): array {
-        $results = array();
+        $results = [];
 
-        $lists_json = $this->api_call( 'lists', array(), 'GET' );
+        $lists_json = $this->api_call( 'lists', [], 'GET' );
 
         $lists_arr = json_decode( $lists_json, true, 512, JSON_THROW_ON_ERROR );
         if ( isset( $lists_arr['items'] ) && ! empty( $lists_arr['items'] ) ) {
@@ -304,20 +304,20 @@ class Mailgun {
     public function add_list(): void {
         $name           = sanitize_text_field( $_POST['name'] ?? null );
         $email          = sanitize_text_field( $_POST['email'] ?? null );
-        $list_addresses = array();
+        $list_addresses = [];
         foreach ( $_POST['addresses'] as $address => $val ) {
             $list_addresses[ sanitize_text_field( $address ) ] = sanitize_text_field( $val );
         }
 
         if ( ! empty( $list_addresses ) ) {
-            $result = array();
+            $result = [];
             foreach ( $list_addresses as $address => $val ) {
                 $result[] = $this->api_call(
                     "lists/{$address}/members",
-                    array(
+                    [
                         'address' => $email,
                         'name'    => $name,
-                    )
+                    ]
                 );
             }
             $message = 'Thank you!';
@@ -329,18 +329,18 @@ class Mailgun {
                 }
 			}
             echo json_encode(
-                array(
+                [
 					'status'  => 200,
 					'message' => $message,
-                ),
+                ],
                 JSON_THROW_ON_ERROR
             );
         } else {
             echo json_encode(
-                array(
+                [
 					'status'  => 500,
 					'message' => 'Uh oh. We weren\'t able to add you to the list' . count( $list_addresses ) ? 's.' : '. Please try again.',
-                ),
+                ],
                 JSON_THROW_ON_ERROR
             );
         }

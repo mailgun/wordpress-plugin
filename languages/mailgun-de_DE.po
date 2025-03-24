@@ -210,3 +210,19 @@ msgstr "Antwortadresse"
 
 msgid "Suppress Click Track for password reset email"
 msgstr "Klick-Tracking für Passwort-Reset-Email unterdrücken"
+
+#: includes/widget.php:84
+msgid "Title (optional):"
+msgstr "Titel (optional):"
+
+#: includes/widget.php:88
+msgid "Description (optional):"
+msgstr "Beschreibung (optional):"
+
+#: includes/widget.php:92
+msgid "List addresses (required):"
+msgstr "Adressen auflisten (erforderlich):"
+
+#: includes/widget.php:96
+msgid "Collect name:"
+msgstr "Namen erfassen:"
