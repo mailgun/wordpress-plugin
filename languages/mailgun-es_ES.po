@@ -211,3 +211,19 @@ msgstr "dirección de respuesta"
 
 msgid "Suppress Click Track for password reset email"
 msgstr "Suprimir seguimiento de clics para el email de restablecimiento de contraseña"
+
+#: includes/widget.php:84
+msgid "Title (optional):"
+msgstr "Título (opcional):"
+
+#: includes/widget.php:88
+msgid "Description (optional):"
+msgstr "Descripción (opcional):"
+
+#: includes/widget.php:92
+msgid "List addresses (required):"
+msgstr "Listar direcciones (obligatorio):"
+
+#: includes/widget.php:96
+msgid "Collect name:"
+msgstr "Recopilar nombre:"
