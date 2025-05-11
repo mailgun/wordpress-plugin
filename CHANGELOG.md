@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.1.8 (2025-05-11)
+- Just keep update WP version. And tested compatibility with it
+
 2.1.6 (2025-03-24)
 - Added translation for the widget
 
