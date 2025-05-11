@@ -136,9 +136,6 @@ MAILGUN_REPLY_TO_ADDRESS Type: string
 = 2.1.8 (2025-05-11): =
 - Just keep update WP version. And tested compatibility with it
 
-= 2.1.6 (2025-03-24): =
-- Added translation for the widget
-
 = 2.1.6 (2025-03-07): =
 - Fixed bug with sending test emails (JS error). Basically it's 2.1.5. Just version updates
 
