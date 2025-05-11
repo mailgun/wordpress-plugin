@@ -114,5 +114,6 @@
         <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
         <exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
         <exclude name="Squiz.PHP.EmbeddedPhp.ContentBeforeEnd"/>
+        <exclude name="Squiz.PHP.EmbeddedPhp.ContentBeforeOpen"/>
     </rule>
 </ruleset>
