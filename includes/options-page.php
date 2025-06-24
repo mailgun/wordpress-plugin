@@ -60,6 +60,7 @@ $trackClicks = ( defined('MAILGUN_TRACK_CLICKS') ? MAILGUN_TRACK_CLICKS : null )
 $trackOpens  = ( defined('MAILGUN_TRACK_OPENS') ? MAILGUN_TRACK_OPENS : null );
 
 $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
+$emailFallback = $this->get_option('email_fallback') ?: 'no';
 
 ?>
 <div class="wrap">
@@ -429,6 +430,18 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <p class="description">
                         <span><?php _e('Experimental function', 'mailgun'); ?></span>
                     </p>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">
+                    <?php _e('Email fallback', 'mailgun'); ?> <br>
+                </th>
+                <td>
+                    <select
+                            name="mailgun[email_fallback]">
+                        <option value="yes"<?php selected('yes', $emailFallback); ?>><?php _e('Yes', 'mailgun'); ?></option>
+                        <option value="no"<?php selected('no', $emailFallback); ?>><?php _e('No', 'mailgun'); ?></option>
+                    </select>
                 </td>
             </tr>
         </table>
