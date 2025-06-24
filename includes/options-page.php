@@ -60,6 +60,13 @@ $trackClicks = ( defined('MAILGUN_TRACK_CLICKS') ? MAILGUN_TRACK_CLICKS : null )
 $trackOpens  = ( defined('MAILGUN_TRACK_OPENS') ? MAILGUN_TRACK_OPENS : null );
 
 $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
+$emailFallback = $this->get_option('email_fallback') ?: 'no';
+
+$settings = [];
+try {
+    $settings = $mailgun->getTrackingSettings();
+} catch (Throwable $e) {
+}
 
 ?>
 <div class="wrap">
@@ -116,6 +123,24 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
         <?php settings_fields('mailgun'); ?>
 
         <table class="form-table">
+            <?php if ($settings) : ?>
+                <tr>
+                    <th><?php _e('Domain tracking settings from account', 'mailgun'); ?></th>
+                    <td>
+                        <ul>
+                            <li>
+                                <b>Click tracking</b> &mdash; <?php echo $settings['tracking']['open']['active'] == 1 ? 'Yes' : 'No'?>
+                            </li>
+                            <li>
+                                <b>Open tracking</b> &mdash;  <?php echo $settings['tracking']['click']['active'] == 1 ? 'Yes' : 'No'?>
+                            </li>
+                            <li>
+                                <b>Unsubscribes</b> &mdash; <?php echo $settings['tracking']['unsubscribe']['active'] == 1 ? 'Yes' : 'No'?>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            <?php endif; ?>
             <tr valign="top">
                 <th scope="row">
                     <?php _e('Select Your Region', 'mailgun'); ?>
@@ -429,6 +454,18 @@ $suppressClicks = $this->get_option('suppress_clicks') ?: 'no';
                     <p class="description">
                         <span><?php _e('Experimental function', 'mailgun'); ?></span>
                     </p>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">
+                    <?php _e('Email fallback', 'mailgun'); ?> <br>
+                </th>
+                <td>
+                    <select
+                            name="mailgun[email_fallback]">
+                        <option value="yes"<?php selected('yes', $emailFallback); ?>><?php _e('Yes', 'mailgun'); ?></option>
+                        <option value="no"<?php selected('no', $emailFallback); ?>><?php _e('No', 'mailgun'); ?></option>
+                    </select>
                 </td>
             </tr>
         </table>

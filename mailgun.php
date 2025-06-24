@@ -3,7 +3,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      2.1.8
+ * Version:      2.1.9
  * Requires PHP: 7.4
  * Requires at least: 4.4
  * Author:       Mailgun
@@ -295,6 +295,21 @@ class Mailgun {
     }
 
     /**
+     * @return array
+     * @throws JsonException
+     */
+    public function getTrackingSettings(): array
+    {
+        $domain   = ( defined( 'MAILGUN_DOMAIN' ) && MAILGUN_DOMAIN ) ? MAILGUN_DOMAIN : $this->get_option( 'domain' );
+        if (!$domain) {
+            return [];
+        }
+        $settings = $this->api_call(sprintf("domains/%s/tracking", $domain), [], 'GET' );
+
+        return json_decode( $settings, true, 512, JSON_THROW_ON_ERROR );
+    }
+
+    /**
      * Handle add list ajax post.
      *
      * @return    void    json
@@ -384,17 +399,18 @@ class Mailgun {
                     <?php endif; ?>
                     <?php if ( isset( $args['collect_name'] ) && (int) $args['collect_name'] === 1 ) : ?>
                         <p class="mailgun-list-widget-name">
-                            <strong>Name:</strong>
-                            <input type="text" name="name"/>
+                            <label><strong>Name:</strong></label>
+                            <input type="text" name="name" placeholder="Name"/>
                         </p>
                     <?php endif; ?>
                     <p class="mailgun-list-widget-email">
-                        <strong>Email:</strong>
-                        <input type="text" name="email"/>
+                        <label><strong>Email:</strong></label>
+                        <input type="text" name="email" placeholder="Email"/>
                     </p>
                 </div>
 
-                <?php if ( count( $list_addresses ) > '1' ) : ?>
+                <div class="mailgun-list-widget-lists">
+                    <?php if ( count( $list_addresses ) > '1' ) : ?>
                     <ul class="mailgun-lists" style="list-style: none;">
                         <?php
 						foreach ( $all_list_addresses as $la ) :
@@ -414,7 +430,7 @@ class Mailgun {
 
                 <input class="mailgun-list-submit-button" data-form-id="<?php echo esc_attr( $form_class_id ); ?>" type="button"
                         value="Subscribe"/>
-                <input type="hidden" name="mailgun-submission" value="1"/>
+                <input type="hidden" name="mailgun-submission" value="1"/></div>
 
             </form>
             <div class="widget-list-panel result-panel" style="display:none;">
@@ -443,6 +459,14 @@ class Mailgun {
                 alert('Please enter your subscription email.')
                 return
                 }
+
+              // Email validation regex pattern
+              var emailPattern = /.+@.+\..{2,}/;
+
+              if (!emailPattern.test(jQuery('.' + form_id + ' .mailgun-list-widget-email input').val())) {
+                  alert('Please enter a valid email address.')
+                  return
+              }
 
                 jQuery.ajax({
                 url: '<?php echo admin_url( 'admin-ajax.php?action=add_list' ); ?>',

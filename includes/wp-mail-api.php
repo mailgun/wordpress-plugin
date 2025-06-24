@@ -495,8 +495,8 @@ if ( ! function_exists('wp_mail')) {
         }
 
         // Email Fallback
-
-        if ($isFallbackNeeded) {
+        $isFallbackEnabled = get_option('email_fallback') ?: 'no';
+        if ($isFallbackNeeded && $isFallbackEnabled === 'yes') {
             global $phpmailer;
 
             // (Re)create it, if it's gone missing.
