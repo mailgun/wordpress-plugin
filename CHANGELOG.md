@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.1.9 (2025-06-24)
+- Added fallback option. Merge PR for widget
+
 2.1.8 (2025-05-11)
 - Just keep update WP version. And tested compatibility with it
 

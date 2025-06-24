@@ -3,7 +3,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      2.1.8
+ * Version:      2.1.9
  * Requires PHP: 7.4
  * Requires at least: 4.4
  * Author:       Mailgun
@@ -292,6 +292,21 @@ class Mailgun {
         }
 
         return $results;
+    }
+
+    /**
+     * @return array
+     * @throws JsonException
+     */
+    public function getTrackingSettings(): array
+    {
+        $domain   = ( defined( 'MAILGUN_DOMAIN' ) && MAILGUN_DOMAIN ) ? MAILGUN_DOMAIN : $this->get_option( 'domain' );
+        if (!$domain) {
+            return [];
+        }
+        $settings = $this->api_call(sprintf("domains/%s/tracking", $domain), [], 'GET' );
+
+        return json_decode( $settings, true, 512, JSON_THROW_ON_ERROR );
     }
 
     /**

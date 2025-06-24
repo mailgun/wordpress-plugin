@@ -4,7 +4,7 @@ Mailgun for WordPress
 Contributors: mailgun, sivel, lookahead.io, m35dev, alanfuller
 Tags: mailgun, smtp, http, api, mail, email
 Tested up to: 6.8.1
-Stable tag: 2.1.8
+Stable tag: 2.1.9
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -128,6 +128,9 @@ MAILGUN_TRACK_OPENS  Type: string Choices: 'yes' or 'no'
 6. Subscription Form Seen By Site Visitors
 
 == Changelog ==
+
+= 2.1.9 (2025-06-24): =
+- Added fallback option. Merge PR for widget
 
 = 2.1.8 (2025-05-11): =
 - Just keep update WP version. And tested compatibility with it
