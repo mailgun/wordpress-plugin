@@ -3,9 +3,9 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      2.1.9
+ * Version:      2.1.10
  * Requires PHP: 7.4
- * Requires at least: 4.4
+ * Requires at least: 5.6
  * Author:       Mailgun
  * Author URI:   http://www.mailgun.com/
  * License:      GPLv2 or later
@@ -213,7 +213,7 @@ class Mailgun {
      *
      * @return    string
      */
-    public function api_call( string $uri, array $params = array(), string $method = 'POST' ): string {
+    public function api_call( string $uri, array $params = [], string $method = 'POST' ): string {
         $options   = get_option( 'mailgun' );
         $getRegion = ( defined( 'MAILGUN_REGION' ) && MAILGUN_REGION ) ? MAILGUN_REGION : $options['region'];
         $apiKey    = ( defined( 'MAILGUN_APIKEY' ) && MAILGUN_APIKEY ) ? MAILGUN_APIKEY : $options['apiKey'];
@@ -369,7 +369,7 @@ class Mailgun {
      * @param array  $args widget arguments
      * @throws JsonException
      */
-    public function list_form( string $list_address, array $args = array() ): void {
+    public function list_form( string $list_address, array $args = []): void {
         $widgetId        = $args['widget_id'] ?? 0;
         $widget_class_id = "mailgun-list-widget-{$widgetId}";
         $form_class_id   = "list-form-{$widgetId}";

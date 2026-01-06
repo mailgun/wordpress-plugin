@@ -162,7 +162,7 @@ function mg_detect_from_address( $from_addr_header = null ): string {
             'wp_mail_from',
             $from_addr
         );
-        if ( ! is_null($filter_from_addr) || ! empty($filter_from_addr)) {
+        if (!is_null($filter_from_addr)) {
             $from_addr = $filter_from_addr;
         }
     }
@@ -193,9 +193,9 @@ function mg_detect_from_address( $from_addr_header = null ): string {
  *
  * @since    1.5.8
  */
-function mg_parse_headers( $headers = array() ): array {
+function mg_parse_headers( $headers = []): array {
     if (empty($headers)) {
-        return array();
+        return [];
     }
 
     if ( ! is_array($headers)) {
@@ -204,7 +204,7 @@ function mg_parse_headers( $headers = array() ): array {
         $tmp = $headers;
     }
 
-    $new_headers = array();
+    $new_headers = [];
     if ( ! empty($tmp)) {
         $name     = null;
         $value    = null;
@@ -232,7 +232,7 @@ function mg_parse_headers( $headers = array() ): array {
             $value = trim($value);
 
             if ( ! isset($new_headers[ $name ])) {
-                $new_headers[ $name ] = array();
+                $new_headers[ $name ] = [];
             }
 
             $new_headers[ $name ][] = array(
@@ -264,7 +264,7 @@ function mg_dump_headers( array $headers = null ): string {
     $header_string = '';
     foreach ($headers as $name => $values) {
         $header_string .= sprintf('%s: ', $name);
-        $header_values  = array();
+        $header_values  = [];
 
         foreach ($values as $content) {
             // XXX - Is it actually okay to discard `parts` and `boundary`?
