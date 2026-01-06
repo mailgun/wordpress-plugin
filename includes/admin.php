@@ -29,7 +29,7 @@ class MailgunAdmin extends Mailgun {
     /**
      * @var array
      */
-    protected array $options = array();
+    protected array $options = [];
 
     /**
      * @var string $hook_suffix

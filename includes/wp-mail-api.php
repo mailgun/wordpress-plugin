@@ -71,7 +71,7 @@ function mg_mutate_to_rcpt_vars_cb( $to_addrs ): array {
     }
 
     if (has_filter('mg_use_recipient_vars_syntax')) {
-        $rcpt_vars     = array();
+        $rcpt_vars     = [];
         $use_rcpt_vars = apply_filters('mg_use_recipient_vars_syntax', null);
         if ($use_rcpt_vars) {
 
@@ -122,7 +122,7 @@ if ( ! function_exists('wp_mail')) {
      * @return bool
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    function wp_mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
+    function wp_mail( $to, $subject, $message, $headers = '', $attachments = []) {
         $mailgun = get_option('mailgun');
         $region  = ( defined('MAILGUN_REGION') && MAILGUN_REGION ) ? MAILGUN_REGION : $mailgun['region'];
         $apiKey  = ( defined('MAILGUN_APIKEY') && MAILGUN_APIKEY ) ? MAILGUN_APIKEY : $mailgun['apiKey'];
@@ -169,12 +169,12 @@ if ( ! function_exists('wp_mail')) {
             $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
         }
 
-        $cc  = array();
-        $bcc = array();
+        $cc  = [];
+        $bcc = [];
 
         // Headers
         if (empty($headers)) {
-            $headers = array();
+            $headers = [];
         } else {
             if ( ! is_array($headers)) {
                 // Explode the headers out, so this function can take both
@@ -183,9 +183,9 @@ if ( ! function_exists('wp_mail')) {
             } else {
                 $tempheaders = $headers;
             }
-            $headers = array();
-            $cc      = array();
-            $bcc     = array();
+            $headers = [];
+            $cc      = [];
+            $bcc     = [];
 
             // If it's actually got contents
             if ( ! empty($tempheaders)) {
@@ -273,7 +273,7 @@ if ( ! function_exists('wp_mail')) {
             $body['recipient-variables'] = $rcpt_data['rcpt_vars'];
         }
 
-        $body['o:tag'] = array();
+        $body['o:tag'] = [];
         if (defined('MAILGUN_TRACK_CLICKS')) {
             $trackClicks = MAILGUN_TRACK_CLICKS;
         } else {
