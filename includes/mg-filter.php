@@ -256,7 +256,7 @@ function mg_parse_headers( $headers = []): array {
  *
  * @since    1.5.8
  */
-function mg_dump_headers( array $headers = null ): string {
+function mg_dump_headers( ?array $headers = null ): string {
     if ( ! is_array($headers)) {
         return '';
     }

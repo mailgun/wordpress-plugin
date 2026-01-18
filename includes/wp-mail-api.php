@@ -33,7 +33,7 @@ if ( ! include __DIR__ . '/mg-filter.php') {
  * @return string|null    Last error that occurred.
  * @since    1.5.0
  */
-function mg_api_last_error( string $error = null ): ?string {
+function mg_api_last_error( ?string $error = null ): ?string {
     static $last_error;
 
     if (null === $error) {
