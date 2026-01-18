@@ -283,15 +283,7 @@ class MailgunAdmin extends Mailgun {
                 $apiKey = substr($apiKey, 4);
             }
 
-            if (1 === preg_match('(\w{32}-\w{8}-\w{8})', $apiKey)) {
-                $options['apiKey'] = $apiKey;
-            } else {
-                $pos = strpos($apiKey, 'key-');
-                if ($pos === false || $pos > 4) {
-                    $apiKey = "key-{$apiKey}";
-                }
-                $options['apiKey'] = $apiKey;
-            }
+            $options['apiKey'] = $apiKey;
         }
 
         if ( ! empty($username)) {

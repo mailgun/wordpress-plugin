@@ -190,9 +190,7 @@ msgid "API Key"
 msgstr ""
 
 #: includes/options-page.php:60
-msgid ""
-"Your Mailgun API key, that starts with and includes \"key-\". Only valid for "
-"use with the API."
+msgid "Your Mailgun API key. Only valid for use with the API."
 msgstr ""
 
 #: includes/options-page.php:65
