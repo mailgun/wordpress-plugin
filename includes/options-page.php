@@ -129,10 +129,10 @@ try {
                     <td>
                         <ul>
                             <li>
-                                <b>Click tracking</b> &mdash; <?php echo $settings['tracking']['open']['active'] == 1 ? 'Yes' : 'No'?>
+                                <b>Click tracking</b> &mdash; <?php echo $settings['tracking']['click']['active'] == 1 ? 'Yes' : 'No'?>
                             </li>
                             <li>
-                                <b>Open tracking</b> &mdash;  <?php echo $settings['tracking']['click']['active'] == 1 ? 'Yes' : 'No'?>
+                                <b>Open tracking</b> &mdash;  <?php echo $settings['tracking']['open']['active'] == 1 ? 'Yes' : 'No'?>
                             </li>
                             <li>
                                 <b>Unsubscribes</b> &mdash; <?php echo $settings['tracking']['unsubscribe']['active'] == 1 ? 'Yes' : 'No'?>
