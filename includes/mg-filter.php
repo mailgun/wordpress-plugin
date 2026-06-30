@@ -145,7 +145,12 @@ function mg_detect_from_address( $from_addr_header = null ): string {
         if (function_exists('get_current_site')) {
             $sitedomain = get_current_site()->domain;
         } else {
-            $sitedomain = strtolower(sanitize_text_field($_SERVER['SERVER_NAME'] ?? site_url()));
+            $sitedomain = isset($_SERVER['SERVER_NAME']) && !empty($_SERVER['SERVER_NAME']) 
+                ? $_SERVER['SERVER_NAME'] 
+                : wp_parse_url(site_url(), PHP_URL_HOST);
+
+            $sitedomain = strtolower(sanitize_text_field($sitedomain));
+            
             if (substr($sitedomain, 0, 4) === 'www.') {
                 $sitedomain = substr($sitedomain, 4);
             }
