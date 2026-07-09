@@ -4,7 +4,7 @@ Mailgun for WordPress
 Contributors: mailgun, sivel, lookahead.io, m35dev, alanfuller
 Tags: mailgun, smtp, http, api, mail, email
 Tested up to: 7.0
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -128,6 +128,9 @@ MAILGUN_TRACK_OPENS  Type: string Choices: 'yes' or 'no'
 6. Subscription Form Seen By Site Visitors
 
 == Changelog ==
+
+= 2.2.1 (2026-07-09): =
+- Security fix: add nonce verification and server-side list address validation to the `add_list` AJAX action to prevent unauthenticated arbitrary list subscription (reported by Pedro Pinho)
 
 = 2.1.9 (2025-06-24): =
 - Added fallback option. Merge PR for widget

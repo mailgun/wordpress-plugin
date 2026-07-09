@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.2.1 (2026-07-09)
+- Security fix: add nonce verification and server-side list address validation to the `add_list` AJAX action to prevent unauthenticated arbitrary list subscription (reported by Pedro Pinho)
+
 2.1.9 (2025-06-24)
 - Added fallback option. Merge PR for widget
 
