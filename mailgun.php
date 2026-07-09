@@ -3,7 +3,7 @@
  * Plugin Name:  Mailgun
  * Plugin URI:   http://wordpress.org/extend/plugins/mailgun/
  * Description:  Mailgun integration for WordPress
- * Version:      2.2.0
+ * Version:      2.2.1
  * Requires PHP: 7.4
  * Requires at least: 5.6
  * Author:       Mailgun
@@ -317,11 +317,22 @@ class Mailgun {
      * @throws JsonException
      */
     public function add_list(): void {
+        if ( ! isset( $_POST['mailgun_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mailgun_nonce'] ) ), 'mailgun_subscribe' ) ) {
+            wp_send_json( [ 'status' => 403, 'message' => 'Invalid request.' ], 403 );
+            return;
+        }
+
         $name           = sanitize_text_field( $_POST['name'] ?? null );
         $email          = sanitize_text_field( $_POST['email'] ?? null );
         $list_addresses = [];
-        foreach ( $_POST['addresses'] as $address => $val ) {
-            $list_addresses[ sanitize_text_field( $address ) ] = sanitize_text_field( $val );
+
+        $valid_lists = array_column( $this->get_lists(), 'address' );
+
+        foreach ( ( $_POST['addresses'] ?? [] ) as $address => $val ) {
+            $sanitized_address = sanitize_text_field( $address );
+            if ( in_array( $sanitized_address, $valid_lists, true ) ) {
+                $list_addresses[ $sanitized_address ] = sanitize_text_field( $val );
+            }
         }
 
         if ( ! empty( $list_addresses ) ) {
@@ -430,7 +441,8 @@ class Mailgun {
 
                 <input class="mailgun-list-submit-button" data-form-id="<?php echo esc_attr( $form_class_id ); ?>" type="button"
                         value="Subscribe"/>
-                <input type="hidden" name="mailgun-submission" value="1"/></div>
+                <input type="hidden" name="mailgun-submission" value="1"/>
+                <?php wp_nonce_field( 'mailgun_subscribe', 'mailgun_nonce' ); ?></div>
 
             </form>
             <div class="widget-list-panel result-panel" style="display:none;">
