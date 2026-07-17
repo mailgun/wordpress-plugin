@@ -243,7 +243,7 @@ class Mailgun {
             case 'DELETE':
                 $params['sess'] = '';
                 $params['time'] = $time;
-                $params['hash'] = sha1( date( 'U' ) );
+                $params['hash'] = hash( 'sha256', date( 'U' ) );
                 break;
         }
 
@@ -522,7 +522,7 @@ class Mailgun {
      */
     public function build_list_form( array $atts ): string {
         if ( isset( $atts['id'] ) && $atts['id'] !== '' ) {
-            $args['widget_id'] = md5( rand( 10000, 99999 ) . $atts['id'] );
+            $args['widget_id'] = hash( 'sha256', rand( 10000, 99999 ) . $atts['id'] );
 
             if (isset( $atts['collect_name'] ) ) {
                 $args['collect_name'] = true;
