@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.2.2 (2026-07-17)
+- Security fix: replace insecure SHA-1/MD5 hash functions with SHA-256 for the API request hash, multipart boundary generation, and widget ID generation
+
 2.2.1 (2026-07-09)
 - Security fix: add nonce verification and server-side list address validation to the `add_list` AJAX action to prevent unauthenticated arbitrary list subscription (reported by Pedro Pinho)
 

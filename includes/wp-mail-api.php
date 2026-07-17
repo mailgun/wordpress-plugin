@@ -436,7 +436,7 @@ if ( ! function_exists('wp_mail')) {
         $payload = '';
 
         // First, generate a boundary for the multipart message.
-        $boundary = sha1(uniqid('', true));
+        $boundary = hash('sha256', uniqid('', true));
 
         // Allow other plugins to apply body changes before creating the payload.
         $body = apply_filters('mg_mutate_message_body', $body);
