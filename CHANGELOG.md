@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.3 (2026-08-31)
+- Tested and confirmed compatible with WordPress 7.1
+- Fix: settings page "Test Configuration" button now works on modern WordPress - replaced the jQuery AJAX handlers removed in jQuery 3.0 (`complete`/`success`/`error`) with `always`/`done`/`fail`
+- Fix: load the plugin text domain on the `init` hook to avoid the "translation loading triggered too early" notice in WordPress 6.7+
+
 2.2.2 (2026-07-17)
 - Security fix: replace insecure SHA-1/MD5 hash functions with SHA-256 for the API request hash, multipart boundary generation, and widget ID generation
 

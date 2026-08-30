@@ -46,8 +46,15 @@ class MailgunAdmin extends Mailgun {
 
         $this->init();
 
-        // Load localizations if available
-        load_plugin_textdomain('mailgun', false, 'mailgun/languages');
+        // Load localizations if available. Deferred to `init` because WordPress 6.7+
+        // triggers a "translation loading was triggered too early" notice when a text
+        // domain is loaded before the `init` action.
+        add_action(
+            'init',
+            static function (): void {
+                load_plugin_textdomain('mailgun', false, 'mailgun/languages');
+            }
+        );
 
         // Activation hook
         register_activation_hook($this->plugin_file, array( &$this, 'activation' ));
@@ -163,7 +170,7 @@ class MailgunAdmin extends Mailgun {
 
             }
             var formModified = false
-            jQuery().ready(function () {
+            jQuery(function () {
                 mailgunApiOrNot()
                 jQuery('#mailgun-api').change(function () {
                     mailgunApiOrNot()
@@ -186,10 +193,10 @@ class MailgunAdmin extends Mailgun {
                             _wpnonce: '<?php echo esc_attr(wp_create_nonce()); ?>'
                         }
                     )
-                        .complete(function () {
+                        .always(function () {
                             jQuery('#mailgun-test').val('<?php _e('Test Configuration', 'mailgun'); ?>')
                         })
-                        .success(function (data) {
+                        .done(function (data) {
                             if (typeof data.message !== 'undefined' && data.message === 'Failure') {
                                 toastr.error('Mailgun ' + data.method + ' Test ' + data.message
                                     + '; status "' + data.error + '"');
@@ -198,7 +205,7 @@ class MailgunAdmin extends Mailgun {
                                     + '; status "' + data.error + '"');
                             }
                         })
-                        .error(function () {
+                        .fail(function () {
                             toastr.error('Mailgun Test <?php _e('Failure', 'mailgun'); ?>')
                         })
                 })
