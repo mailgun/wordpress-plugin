@@ -10,6 +10,8 @@ License: GPLv2 or later
 
 Easily send email from your WordPress site through Mailgun using the HTTP API or SMTP.
 
+**Security notice: versions 2.2.0 and earlier contain fixed vulnerabilities (unauthenticated arbitrary list subscription, weak SHA-1/MD5 hashing). We strongly recommend updating to the latest version immediately.**
+
 
 == Description ==
 
@@ -126,6 +128,11 @@ MAILGUN_TRACK_OPENS  Type: string Choices: 'yes' or 'no'
 4. Setting up a Subscription Widget
 5. Using a Subscription Code
 6. Subscription Form Seen By Site Visitors
+
+== Upgrade Notice ==
+
+= 2.2.3 =
+Security: versions 2.2.0 and earlier are vulnerable to unauthenticated arbitrary list subscription (fixed in 2.2.1) and use weak SHA-1/MD5 hashing (fixed in 2.2.2). If you are running 2.2.0 or older, update immediately.
 
 == Changelog ==
 
